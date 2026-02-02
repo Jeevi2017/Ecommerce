@@ -1,0 +1,141 @@
+/*
+  This CSS file styles the side-scrolling product carousel.
+  It enables horizontal scrolling, hides the scrollbar, and styles
+  the navigation buttons.
+*/
+
+/* General component styling to provide a clean and responsive base */
+.container {
+  padding-bottom: 2rem;
+}
+
+/* --- Product Carousel Styling --- */
+.product-carousel-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+.product-carousel {
+  display: flex;
+  overflow-x: auto;
+  gap: 1.5rem; /* Space between product cards */
+  padding: 1rem 1rem;
+  scroll-behavior: smooth; /* Smooth scrolling animation */
+  -webkit-overflow-scrolling: touch; /* iOS smooth scrolling */
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+  width: 100%; /* Ensure it takes up full width */
+}
+
+/* Hide scrollbar for WebKit browsers (Chrome, Safari, Edge) */
+.product-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+/* Card container to ensure proper spacing and sizing */
+.product-card-container {
+  flex: 0 0 auto; /* Prevent card from growing or shrinking, only takes up its content size */
+  width: 250px; /* Fixed width for each card */
+  min-width: 250px;
+}
+
+/* --- Carousel Navigation Buttons --- */
+.carousel-control {
+  font-size: 1.5rem;
+  font-weight: bold;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  position: absolute;
+  z-index: 10;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.carousel-control:hover {
+  background-color: #007bff;
+  color: #fff;
+  border-color: #007bff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.carousel-control:first-of-type {
+  left: 0; /* Position left button at the edge of the container */
+  transform: translateY(-50%) translateX(-50%);
+}
+
+.carousel-control:last-of-type {
+  right: 0; /* Position right button at the edge of the container */
+  transform: translateY(-50%) translateX(50%);
+}
+
+/* --- Responsive adjustments for different screen sizes --- */
+@media (max-width: 768px) {
+  .product-card-container {
+    width: 200px;
+    min-width: 200px;
+  }
+}
+
+@media (max-width: 576px) {
+  .carousel-control {
+    font-size: 1.25rem;
+    height: 40px;
+    width: 40px;
+  }
+  
+  .product-carousel-wrapper {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+  
+  .carousel-control:first-of-type {
+    left: 0;
+    transform: translateY(-50%) translateX(-50%);
+  }
+  
+  .carousel-control:last-of-type {
+    right: 0;
+    transform: translateY(-50%) translateX(50%);
+  }
+}
+
+/* --- Product Card Styling --- */
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 1rem !important;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-img-top {
+  border-bottom: 1px solid #eee;
+  object-fit: cover;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+}
+
+.card-title {
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+}
+
+.card-text {
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.spinner-border {
+  vertical-align: middle;
+  margin-right: 8px;
+}

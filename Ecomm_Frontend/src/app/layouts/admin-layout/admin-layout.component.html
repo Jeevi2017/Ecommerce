@@ -1,0 +1,78 @@
+<div class="d-flex min-vh-100 bg-light">
+  <!-- Sidebar -->
+  <nav class="sidebar bg-primary text-white flex-shrink-0 p-3">
+    <a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none fw-bold" routerLink="/admin">
+      <i data-lucide="shield-check" class="me-2 icon-small"></i>
+      Admin Dashboard
+    </a>
+    <hr class="text-white">
+
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li class="nav-item">
+        <a class="nav-link text-white rounded-3 mb-1" routerLink="/admin" routerLinkActive="active">
+          <i data-lucide="layout-dashboard" class="me-1 icon-small"></i> Dashboard
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white rounded-3 mb-1" routerLink="/admin/orders" routerLinkActive="active">
+          <i data-lucide="shopping-cart" class="me-1 icon-small"></i> Orders
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white rounded-3 mb-1" routerLink="/admin/customers" routerLinkActive="active">
+          <i data-lucide="users" class="me-1 icon-small"></i> Customers
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white rounded-3 mb-1" routerLink="/admin/categories" routerLinkActive="active">
+          <i data-lucide="tag" class="me-1 icon-small"></i> Categories
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white rounded-3 mb-1" routerLink="/admin/discounts" routerLinkActive="active">
+          <i data-lucide="percent" class="me-1 icon-small"></i> Discounts
+        </a>
+      </li>
+      <li class="nav-item" *ngIf="isSuperAdmin">
+        <a class="nav-link text-white rounded-3 mb-1" routerLink="/admin/user-management" routerLinkActive="active">
+          <i data-lucide="shield" class="me-1 icon-small"></i> User Management
+        </a>
+      </li>
+      <!-- Products Dropdown -->
+      <li class="nav-item dropdown">
+        <button class="nav-link text-white rounded-3 mb-1 dropdown-toggle btn w-100 text-start" 
+                type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <i data-lucide="package" class="me-1 icon-small"></i> Products
+        </button>
+        <ul class="dropdown-menu dropdown-menu-dark shadow-sm">
+          <li><a class="dropdown-item" routerLink="/admin/products">View Products</a></li>
+          <li><a class="dropdown-item" routerLink="/admin/products/create">Add Product</a></li>
+          <li><a class="dropdown-item" routerLink="/admin/products/bulk-upload">Bulk Upload</a></li>
+        </ul>
+      </li>
+    </ul>
+
+    <hr class="text-white">
+
+    <!-- User Info -->
+    <div class="dropdown">
+      <button class="btn btn-primary w-100 text-white d-flex align-items-center justify-content-between dropdown-toggle"
+              type="button" id="adminUserDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        <span><i data-lucide="user-circle" class="me-1 icon-small"></i> {{ currentUsername }}</span>
+        <span class="badge bg-light text-dark">{{ currentUserRole }}</span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-dark shadow-sm w-100" aria-labelledby="adminUserDropdown">
+        <li>
+          <button class="dropdown-item" (click)="logout()">
+            <i data-lucide="log-out" class="me-1 icon-small"></i> Logout
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="flex-grow-1 p-4">
+    <router-outlet></router-outlet>
+  </div>
+</div>

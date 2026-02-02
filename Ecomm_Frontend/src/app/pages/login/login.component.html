@@ -1,0 +1,73 @@
+<div class="login-background">
+  <div class="container mt-5">
+    
+    <!-- STANDARD LOGIN -->
+    <div *ngIf="!twoFactorAuthRequired && !profileIncomplete" class="form-fade-in">
+      <h2>Login</h2>
+      <form (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="identifier" class="form-label">User Name</label>
+          <div class="glossy-input-group">
+            <input type="text" id="identifier" class="form-control" 
+                   [(ngModel)]="identifier" name="identifier" required 
+                   placeholder="Enter phone or username"/>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <div class="glossy-input-group">
+            <input [type]="showPassword ? 'text' : 'password'" 
+                   id="password" class="form-control" [(ngModel)]="password" 
+                   name="password" required />
+            <button class="eye-toggle" type="button" (click)="togglePasswordVisibility()">
+              <i [class]="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+            </button>
+          </div>
+        </div>
+
+        <button class="btn btn-primary w-100" type="submit">Login</button>
+        <p class="mt-4 text-center">
+         Register now to see our amazing products <a [routerLink]="['/signup']">Register now</a>
+        </p>
+        <div *ngIf="error" class="text-danger text-center mt-2">{{ error }}</div>
+      </form>
+    </div>
+
+    <!-- COMPLETE PROFILE (MIGRATION) -->
+    <div *ngIf="profileIncomplete" class="form-fade-in">
+      <h2>Link Phone Number</h2>
+      <p class="text-muted">We are moving to phone-based login. Please provide your phone number to continue.</p>
+      <form (ngSubmit)="onCompleteProfile()">
+        <div class="mb-3">
+          <label for="newPhone" class="form-label">Phone Number</label>
+          <div class="glossy-input-group">
+            <input type="tel" id="newPhone" class="form-control" 
+                   [(ngModel)]="newPhoneNumber" name="newPhone" 
+                   required placeholder="e.g. 1234567890" />
+          </div>
+        </div>
+        <div class="d-flex gap-2">
+          <button class="btn btn-success flex-grow-1" type="submit">Update Profile</button>
+          <button class="btn btn-secondary" type="button" (click)="cancelMigration()">Cancel</button>
+        </div>
+        <div *ngIf="error" class="text-danger text-center mt-2">{{ error }}</div>
+      </form>
+    </div>
+
+    <!-- 2FA SECTION -->
+    <div *ngIf="twoFactorAuthRequired" class="form-fade-in">
+      <h2>Verification</h2>
+      <div class="alert alert-info">{{ twoFactorMessage }}</div>
+      <form (ngSubmit)="onVerify2FACode()">
+        <div class="mb-3">
+          <label for="twoFactorCode" class="form-label">Code</label>
+          <input type="text" id="twoFactorCode" class="form-control" 
+                 [(ngModel)]="twoFactorCode" name="twoFactorCode" required />
+        </div>
+        <button class="btn btn-success w-100" type="submit">Verify</button>
+      </form>
+    </div>
+
+  </div>
+</div>

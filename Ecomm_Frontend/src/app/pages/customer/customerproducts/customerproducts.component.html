@@ -1,0 +1,139 @@
+<!-- ================= CATEGORY NAVIGATION BAR ================= -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm mb-4">
+  <div class="container-fluid">
+    <ul class="navbar-nav d-flex flex-row flex-wrap w-100">
+
+      <!-- ALL CATEGORIES -->
+      <li class="nav-item me-3">
+        <a
+          class="nav-link"
+          [ngClass]="{
+            'fw-bold text-primary': selectedCategoryId === null,
+            'text-dark': selectedCategoryId !== null
+          }"
+          (click)="selectCategory(null)">
+          All Categories
+        </a>
+      </li>
+
+      <!-- DYNAMIC CATEGORIES -->
+      <li class="nav-item me-3" *ngFor="let category of categories">
+        <a
+          class="nav-link"
+          [ngClass]="{
+            'fw-bold text-primary': selectedCategoryId === category.id,
+            'text-dark': selectedCategoryId !== category.id
+          }"
+          (click)="selectCategory(category.id ?? null)">
+          {{ category.name }}
+        </a>
+      </li>
+
+    </ul>
+  </div>
+</nav>
+
+<!-- ================= MAIN CONTAINER ================= -->
+<div class="container">
+
+  <!-- LOADING -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="mt-2">Loading amazing products...</p>
+  </div>
+
+  <!-- ERROR -->
+  <div *ngIf="error"
+       class="alert alert-danger alert-dismissible fade show"
+       role="alert">
+    {{ error }}
+    <button type="button"
+            class="btn-close"
+            aria-label="Close"
+            (click)="error = null">
+    </button>
+  </div>
+
+  <!-- NO PRODUCTS -->
+  <div *ngIf="!loading && !error && products.length === 0"
+       class="alert alert-info text-center py-4">
+    <h4>No products found!</h4>
+    <p>Please check back later.</p>
+  </div>
+
+  <!-- ================= PRODUCT CAROUSEL ================= -->
+  <div *ngIf="!loading && !error && products.length > 0"
+       class="product-carousel-wrapper">
+
+    <!-- LEFT SCROLL -->
+    <button class="btn btn-outline-primary carousel-control"
+            (click)="scrollLeft()">
+      &lt;
+    </button>
+
+    <!-- PRODUCTS -->
+    <div #productCarousel class="product-carousel">
+      <div class="product-card-container" *ngFor="let product of products">
+
+        <a [routerLink]="['/home/products', product.id]"
+           class="text-decoration-none text-dark d-block h-100">
+
+          <div class="card h-100 shadow-sm rounded-3 overflow-hidden">
+
+            <!-- PRODUCT IMAGE -->
+            <img
+              [src]="product.images.length > 0
+                ? product.images[0]
+                : 'https://placehold.co/400x300/e0e0e0/555555?text=No+Image'"
+              class="card-img-top"
+              style="height: 200px; object-fit: cover"
+              alt="{{ product.name }}" />
+
+            <!-- PRODUCT BODY -->
+            <div class="card-body d-flex flex-column">
+
+              <h5 class="card-title text-truncate">
+                {{ product.name }}
+              </h5>
+
+              <p class="text-muted small mb-2">
+                {{ product.categoryName }}
+              </p>
+
+              <p class="flex-grow-1">
+                {{ product.description | slice:0:100 }}...
+              </p>
+
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <span class="fs-5 fw-bold text-success">
+                  ₹ {{ product.price | number:'1.2-2' }}
+                </span>
+
+                <span class="small"
+                      [ngClass]="{
+                        'text-success': product.stockQuantity > 10,
+                        'text-warning': product.stockQuantity <= 10 && product.stockQuantity > 0,
+                        'text-danger': product.stockQuantity === 0
+                      }">
+                  {{ product.stockQuantity > 0
+                      ? product.stockQuantity + ' in stock'
+                      : 'Out of stock' }}
+                </span>
+              </div>
+
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- RIGHT SCROLL -->
+    <button class="btn btn-outline-primary carousel-control"
+            (click)="scrollRight()">
+      &gt;
+    </button>
+
+  </div>
+
+  <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,219 @@
+/* -------------------------- */
+/* Reset and Base Styling */
+/* -------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #1f1f1f; /* Dark background */
+  color: #f0f0f0;
+}
+
+.d-flex.flex-column.min-vh-100 {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* -------------------------- */
+/* Navbar Styling */
+/* -------------------------- */
+.navbar {
+  background-color: #5C0D0D !important; /* Dark Bugatti Wine */
+  z-index: 1030;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.75rem;
+  color: #f8f9fa;
+  transition: color 0.3s ease;
+}
+
+.navbar-brand:hover {
+  color: #e0b0b0; /* Slight lighter wine */
+}
+
+.navbar .nav-link {
+  color: #f8f9fa;
+  transition: color 0.3s ease;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
+  color: #e0b0b0;
+}
+
+.navbar .dropdown-menu {
+  background-color: #340808; /* Darker wine */
+  border-radius: 0.5rem;
+}
+
+.navbar .dropdown-item {
+  color: #f8f9fa;
+  transition: all 0.2s ease;
+}
+
+.navbar .dropdown-item:hover {
+  background-color: #730f0f;
+  color: #fff !important;
+}
+
+/* Space between navbar items */
+.navbar-nav .nav-item {
+  margin-left: 2rem;   /* adjust: 1rem / 2rem as you like */
+}
+
+/* =========================
+   BANNER – FULL COVER + MAX CLARITY
+========================= */
+
+.banner-img-wrapper {
+  width: 100%;
+  height: 50vh;                 /* half viewport height */
+  overflow: hidden;
+  position: relative;
+}
+
+.banner-img-wrapper img.banner-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;            /* FULL COVER */
+  object-position: center;
+  display: block;
+
+  /* Clarity improvements */
+  image-rendering: auto;
+  -webkit-optimize-contrast: true;
+  backface-visibility: hidden;
+  transform: translateZ(0);     /* prevents GPU blur */
+}
+
+
+/* -------------------------- */
+/* Main Content Area */
+/* -------------------------- */
+.container.my-4.flex-grow-1 {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  flex-grow: 1;
+}
+
+/* -------------------------- */
+/* Header Banner */
+/* -------------------------- */
+header {
+  background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://placehold.co/1200x600/5C0D0D/ffffff?text=Customer+Dashboard+Banner');
+  background-size: cover;
+  background-position: center;
+  height: 45vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 600;
+  border-bottom: 2px solid #730f0f;
+}
+
+/* -------------------------- */
+/* Cards */
+/* -------------------------- */
+.card {
+  background-color: #2b0a0a; /* dark wine card */
+  color: #f8f9fa;
+  border: none;
+  border-radius: 1rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.5);
+}
+
+.card-img-top {
+  border-radius: 1rem 1rem 0 0;
+  object-fit: cover;
+  height: 200px;
+  border-bottom: 1px solid #730f0f;
+}
+
+.card-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.card-text {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* -------------------------- */
+/* Buttons */
+/* -------------------------- */
+.btn-custom {
+  background-color: #5C0D0D;
+  color: #fff;
+  border-radius: 0.5rem;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-custom:hover {
+  background-color: #730f0f;
+  color: #fff;
+}
+
+/* -------------------------- */
+/* Footer */
+/* -------------------------- */
+footer {
+  background-color: #340808;
+  color: #f8f9fa;
+  font-size: 0.9rem;
+  padding: 1.25rem 0;
+}
+
+footer a {
+  color: #e0b0b0 !important;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+footer a:hover {
+  color: #fff !important;
+  text-decoration: underline;
+}
+
+/* -------------------------- */
+/* Media Queries for Responsiveness */
+/* -------------------------- */
+@media (max-width: 991.98px) {
+  .navbar-collapse {
+    background-color: #5C0D0D !important;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .navbar-nav .nav-link {
+    padding: 0.5rem 1rem;
+  }
+
+  header {
+    font-size: 1.5rem;
+    height: 35vh;
+  }
+
+  .card-img-top {
+    height: 180px;
+  }
+}

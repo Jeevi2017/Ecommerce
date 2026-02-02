@@ -1,0 +1,480 @@
+2026-02-02 02:43:15.609 [kafka-coordinator-heartbeat-thread | product-upload-group] INFO  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Node 0 disconnected.
+2026-02-02 02:43:16.357 [kafka-coordinator-heartbeat-thread | product-upload-group] INFO  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Cancelled in-flight METADATA request with correlation id 8657 due to node 0 being disconnected (elapsed time since creation: 8ms, elapsed time since send: 8ms, throttle time: 0ms, request timeout: 30000ms)
+2026-02-02 02:43:16.549 [kafka-coordinator-heartbeat-thread | product-upload-group] INFO  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Node 2147483647 disconnected.
+2026-02-02 02:43:16.727 [kafka-coordinator-heartbeat-thread | product-upload-group] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Group coordinator NLKLLTP7204861.FPS.NIHILENT.com:9092 (id: 2147483647 rack: null) is unavailable or invalid due to cause: session timed out without receiving a heartbeat response. isDisconnected: false. Rediscovery will be attempted.
+2026-02-02 02:43:16.931 [kafka-coordinator-heartbeat-thread | product-upload-group] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Requesting disconnect from last known coordinator NLKLLTP7204861.FPS.NIHILENT.com:9092 (id: 2147483647 rack: null)
+2026-02-02 02:43:17.254 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Discovered group coordinator NLKLLTP7204861.FPS.NIHILENT.com:9092 (id: 2147483647 rack: null)
+2026-02-02 02:43:17.807 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Discovered group coordinator NLKLLTP7204861.FPS.NIHILENT.com:9092 (id: 2147483647 rack: null)
+2026-02-02 02:43:18.473 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Attempt to heartbeat with Generation{generationId=63, memberId='consumer-product-upload-group-1-381a0701-3f27-44fc-b5a4-890fb4616074', protocol='range'} and group instance id Optional.empty failed due to UNKNOWN_MEMBER_ID, resetting generation
+2026-02-02 02:43:18.563 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Resetting generation and member id due to: encountered UNKNOWN_MEMBER_ID from HEARTBEAT response
+2026-02-02 02:43:18.563 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Request joining group due to: encountered UNKNOWN_MEMBER_ID from HEARTBEAT response
+2026-02-02 02:43:18.563 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Giving away all assigned partitions as lost since generation/memberID has been reset,indicating that consumer is in old state or no longer part of the group
+2026-02-02 02:43:18.628 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=3h20s907ms400µs600ns).
+2026-02-02 02:43:18.684 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerRebalanceListenerInvoker - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Lost previously assigned partitions product-bulk-upload-0
+2026-02-02 02:43:18.883 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.s.k.l.KafkaMessageListenerContainer - product-upload-group: partitions lost: [product-bulk-upload-0]
+2026-02-02 02:43:18.975 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.s.k.l.KafkaMessageListenerContainer - product-upload-group: partitions revoked: [product-bulk-upload-0]
+2026-02-02 02:43:19.150 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] (Re-)joining group
+2026-02-02 02:43:19.676 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Request joining group due to: need to re-join with the given member-id: consumer-product-upload-group-1-ecb5f4a1-857b-4e62-9614-4c3e858c128e
+2026-02-02 02:43:19.782 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] (Re-)joining group
+2026-02-02 02:43:20.268 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Successfully joined group with generation Generation{generationId=65, memberId='consumer-product-upload-group-1-ecb5f4a1-857b-4e62-9614-4c3e858c128e', protocol='range'}
+2026-02-02 02:43:20.341 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Finished assignment for group at generation 65: {consumer-product-upload-group-1-ecb5f4a1-857b-4e62-9614-4c3e858c128e=Assignment(partitions=[product-bulk-upload-0])}
+2026-02-02 02:43:21.322 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Successfully synced group in generation Generation{generationId=65, memberId='consumer-product-upload-group-1-ecb5f4a1-857b-4e62-9614-4c3e858c128e', protocol='range'}
+2026-02-02 02:43:23.854 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Notifying assignor about the new Assignment(partitions=[product-bulk-upload-0])
+2026-02-02 02:43:23.897 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerRebalanceListenerInvoker - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Adding newly assigned partitions: product-bulk-upload-0
+2026-02-02 02:43:24.035 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.internals.ConsumerUtils - Setting offset for partition product-bulk-upload-0 to the committed offset FetchPosition{offset=7, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[NLKLLTP7204861.FPS.NIHILENT.com:9092 (id: 0 rack: null)], epoch=0}}
+2026-02-02 02:43:24.073 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.s.k.l.KafkaMessageListenerContainer - product-upload-group: partitions assigned: [product-bulk-upload-0]
+2026-02-02 10:52:28.524 [kafka-coordinator-heartbeat-thread | product-upload-group] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Group coordinator NLKLLTP7204861.FPS.NIHILENT.com:9092 (id: 2147483647 rack: null) is unavailable or invalid due to cause: coordinator unavailable. isDisconnected: true. Rediscovery will be attempted.
+2026-02-02 10:52:28.738 [kafka-coordinator-heartbeat-thread | product-upload-group] INFO  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Node 0 disconnected.
+2026-02-02 10:52:29.408 [kafka-coordinator-heartbeat-thread | product-upload-group] INFO  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Cancelled in-flight METADATA request with correlation id 8690 due to node 0 being disconnected (elapsed time since creation: 216ms, elapsed time since send: 216ms, throttle time: 0ms, request timeout: 30000ms)
+2026-02-02 10:52:31.269 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Discovered group coordinator NLKLLTP7204861.FPS.NIHILENT.com:9092 (id: 2147483647 rack: null)
+2026-02-02 10:52:31.412 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Attempt to heartbeat with Generation{generationId=65, memberId='consumer-product-upload-group-1-ecb5f4a1-857b-4e62-9614-4c3e858c128e', protocol='range'} and group instance id Optional.empty failed due to UNKNOWN_MEMBER_ID, resetting generation
+2026-02-02 10:52:31.493 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Resetting generation and member id due to: encountered UNKNOWN_MEMBER_ID from HEARTBEAT response
+2026-02-02 10:52:31.612 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Request joining group due to: encountered UNKNOWN_MEMBER_ID from HEARTBEAT response
+2026-02-02 10:52:31.706 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Giving away all assigned partitions as lost since generation/memberID has been reset,indicating that consumer is in old state or no longer part of the group
+2026-02-02 10:52:31.876 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerRebalanceListenerInvoker - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Lost previously assigned partitions product-bulk-upload-0
+2026-02-02 10:52:32.098 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.s.k.l.KafkaMessageListenerContainer - product-upload-group: partitions lost: [product-bulk-upload-0]
+2026-02-02 10:52:32.332 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.s.k.l.KafkaMessageListenerContainer - product-upload-group: partitions revoked: [product-bulk-upload-0]
+2026-02-02 10:52:32.526 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] (Re-)joining group
+2026-02-02 10:52:32.751 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Request joining group due to: need to re-join with the given member-id: consumer-product-upload-group-1-e5de23ee-2368-4c2d-819c-2090b9643d20
+2026-02-02 10:52:32.805 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] (Re-)joining group
+2026-02-02 10:52:32.986 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Successfully joined group with generation Generation{generationId=67, memberId='consumer-product-upload-group-1-e5de23ee-2368-4c2d-819c-2090b9643d20', protocol='range'}
+2026-02-02 10:52:33.017 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Finished assignment for group at generation 67: {consumer-product-upload-group-1-e5de23ee-2368-4c2d-819c-2090b9643d20=Assignment(partitions=[product-bulk-upload-0])}
+2026-02-02 10:52:33.108 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Successfully synced group in generation Generation{generationId=67, memberId='consumer-product-upload-group-1-e5de23ee-2368-4c2d-819c-2090b9643d20', protocol='range'}
+2026-02-02 10:52:33.139 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Notifying assignor about the new Assignment(partitions=[product-bulk-upload-0])
+2026-02-02 10:52:44.540 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=8h9m41s241ms437µs800ns).
+2026-02-02 10:52:45.355 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerRebalanceListenerInvoker - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Adding newly assigned partitions: product-bulk-upload-0
+2026-02-02 10:52:45.719 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.internals.ConsumerUtils - Setting offset for partition product-bulk-upload-0 to the committed offset FetchPosition{offset=7, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[NLKLLTP7204861.FPS.NIHILENT.com:9092 (id: 0 rack: null)], epoch=0}}
+2026-02-02 10:52:45.826 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.s.k.l.KafkaMessageListenerContainer - product-upload-group: partitions assigned: [product-bulk-upload-0]
+2026-02-02 11:23:33.704 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2026-02-02 11:23:33.859 [restartedMain] INFO  com.example.Ecomm.EcommApplication - Starting EcommApplication using Java 23.0.2 with PID 21152 (C:\Users\jeevitha.g\Desktop\Ecomm-main\Ecomm-main\Ecomm_final_with_kafka\Ecomm\target\classes started by jeevitha.g in C:\Users\jeevitha.g\Desktop\Ecomm-main\Ecomm-main\Ecomm_final_with_kafka\Ecomm)
+2026-02-02 11:23:33.861 [restartedMain] INFO  com.example.Ecomm.EcommApplication - No active profile set, falling back to 1 default profile: "default"
+2026-02-02 11:23:34.047 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-02-02 11:23:34.048 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-02-02 11:23:36.032 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-02-02 11:23:36.033 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-02-02 11:23:36.134 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data JPA - Could not safely identify store assignment for repository candidate interface com.example.Ecomm.repository.elasticsearch.ProductElasticsearchRepository; If you want this repository to be a JPA repository, consider annotating your entities with one of these annotations: jakarta.persistence.Entity, jakarta.persistence.MappedSuperclass (preferred), or consider extending one of the following types with your repository: org.springframework.data.jpa.repository.JpaRepository
+2026-02-02 11:23:36.221 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 169 ms. Found 17 JPA repository interfaces.
+2026-02-02 11:23:36.224 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-02-02 11:23:36.225 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Elasticsearch repositories in DEFAULT mode.
+2026-02-02 11:23:36.235 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 7 ms. Found 1 Elasticsearch repository interface.
+2026-02-02 11:23:38.928 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2026-02-02 11:23:38.960 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2026-02-02 11:23:38.967 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-02-02 11:23:38.968 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2026-02-02 11:23:39.149 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-02-02 11:23:39.150 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 5101 ms
+2026-02-02 11:23:39.601 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-02-02 11:23:39.819 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.15.Final
+2026-02-02 11:23:39.942 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-02-02 11:23:40.844 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-02-02 11:23:40.935 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-02-02 11:23:42.317 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@490cc5d5
+2026-02-02 11:23:42.322 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-02-02 11:23:42.609 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0.41
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-02-02 11:23:45.976 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-02-02 11:23:46.824 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-02-02 11:23:47.640 [restartedMain] WARN  o.s.aop.framework.CglibAopProxy - Unable to proxy interface-implementing method [public final void org.springframework.web.filter.OncePerRequestFilter.doFilter(jakarta.servlet.ServletRequest,jakarta.servlet.ServletResponse,jakarta.servlet.FilterChain) throws jakarta.servlet.ServletException,java.io.IOException] because it is marked as final, consider using interface-based JDK proxies instead.
+2026-02-02 11:23:47.641 [restartedMain] WARN  o.s.aop.framework.CglibAopProxy - Unable to proxy interface-implementing method [public final void org.springframework.web.filter.GenericFilterBean.init(jakarta.servlet.FilterConfig) throws jakarta.servlet.ServletException] because it is marked as final, consider using interface-based JDK proxies instead.
+2026-02-02 11:23:48.974 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2026-02-02 11:23:50.683 [restartedMain] INFO  o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-02-02 11:23:50.686 [restartedMain] WARN  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2026-02-02 11:23:52.914 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-02-02 11:23:55.432 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+2026-02-02 11:23:55.465 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8081 (http) with context path '/'
+2026-02-02 11:23:55.577 [restartedMain] INFO  o.a.k.c.consumer.ConsumerConfig - ConsumerConfig values: 
+	allow.auto.create.topics = true
+	auto.commit.interval.ms = 5000
+	auto.include.jmx.reporter = true
+	auto.offset.reset = earliest
+	bootstrap.servers = [localhost:9092]
+	check.crcs = true
+	client.dns.lookup = use_all_dns_ips
+	client.id = consumer-product-upload-group-1
+	client.rack = 
+	connections.max.idle.ms = 540000
+	default.api.timeout.ms = 60000
+	enable.auto.commit = false
+	enable.metrics.push = true
+	exclude.internal.topics = true
+	fetch.max.bytes = 52428800
+	fetch.max.wait.ms = 500
+	fetch.min.bytes = 1
+	group.id = product-upload-group
+	group.instance.id = null
+	group.protocol = classic
+	group.remote.assignor = null
+	heartbeat.interval.ms = 3000
+	interceptor.classes = []
+	internal.leave.group.on.close = true
+	internal.throw.on.fetch.stable.offset.unsupported = false
+	isolation.level = read_uncommitted
+	key.deserializer = class org.apache.kafka.common.serialization.StringDeserializer
+	max.partition.fetch.bytes = 1048576
+	max.poll.interval.ms = 300000
+	max.poll.records = 500
+	metadata.max.age.ms = 300000
+	metadata.recovery.strategy = none
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partition.assignment.strategy = [class org.apache.kafka.clients.consumer.RangeAssignor, class org.apache.kafka.clients.consumer.CooperativeStickyAssignor]
+	receive.buffer.bytes = 65536
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.header.urlencode = false
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	session.timeout.ms = 45000
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	value.deserializer = class org.springframework.kafka.support.serializer.JsonDeserializer
+
+2026-02-02 11:23:55.733 [restartedMain] INFO  o.a.k.c.t.i.KafkaMetricsCollector - initializing Kafka metrics collector
+2026-02-02 11:23:56.213 [restartedMain] INFO  o.a.kafka.common.utils.AppInfoParser - Kafka version: 3.9.1
+2026-02-02 11:23:56.214 [restartedMain] INFO  o.a.kafka.common.utils.AppInfoParser - Kafka commitId: f745dfdcee2b9851
+2026-02-02 11:23:56.214 [restartedMain] INFO  o.a.kafka.common.utils.AppInfoParser - Kafka startTimeMs: 1770011636209
+2026-02-02 11:23:56.225 [restartedMain] INFO  o.a.k.c.c.i.ClassicKafkaConsumer - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Subscribed to topic(s): product-bulk-upload
+2026-02-02 11:23:56.269 [restartedMain] INFO  com.example.Ecomm.EcommApplication - Started EcommApplication in 23.878 seconds (process running for 25.779)
+2026-02-02 11:23:56.280 [restartedMain] INFO  com.example.Ecomm.EcommApplication - Starting synchronization of product data to Elasticsearch...
+2026-02-02 11:23:58.088 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  org.apache.kafka.clients.Metadata - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Cluster ID: Rs2i3KQ5S8miSOmETizU9A
+2026-02-02 11:23:58.094 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Discovered group coordinator NLKLLTP7204861.FPS.NIHILENT.com:9092 (id: 2147483647 rack: null)
+2026-02-02 11:23:58.103 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] (Re-)joining group
+2026-02-02 11:23:58.244 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Request joining group due to: need to re-join with the given member-id: consumer-product-upload-group-1-09c8d678-609c-4a44-8cf4-ac5d4e6d45ce
+2026-02-02 11:23:58.246 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] (Re-)joining group
+2026-02-02 11:23:58.371 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Successfully joined group with generation Generation{generationId=69, memberId='consumer-product-upload-group-1-09c8d678-609c-4a44-8cf4-ac5d4e6d45ce', protocol='range'}
+2026-02-02 11:23:58.393 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Finished assignment for group at generation 69: {consumer-product-upload-group-1-09c8d678-609c-4a44-8cf4-ac5d4e6d45ce=Assignment(partitions=[product-bulk-upload-0])}
+2026-02-02 11:23:58.505 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Successfully synced group in generation Generation{generationId=69, memberId='consumer-product-upload-group-1-09c8d678-609c-4a44-8cf4-ac5d4e6d45ce', protocol='range'}
+2026-02-02 11:23:58.507 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Notifying assignor about the new Assignment(partitions=[product-bulk-upload-0])
+2026-02-02 11:23:58.515 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerRebalanceListenerInvoker - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Adding newly assigned partitions: product-bulk-upload-0
+2026-02-02 11:23:58.576 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.internals.ConsumerUtils - Setting offset for partition product-bulk-upload-0 to the committed offset FetchPosition{offset=7, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[NLKLLTP7204861.FPS.NIHILENT.com:9092 (id: 0 rack: null)], epoch=0}}
+2026-02-02 11:23:58.579 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.s.k.l.KafkaMessageListenerContainer - product-upload-group: partitions assigned: [product-bulk-upload-0]
+2026-02-02 11:23:58.680 [restartedMain] INFO  c.e.E.s.ProductElasticsearchService - Successfully synchronized 55 products to Elasticsearch.
+2026-02-02 11:23:58.693 [restartedMain] INFO  com.example.Ecomm.EcommApplication - Synchronization complete.
+2026-02-02 11:39:31.491 [http-nio-8081-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-02-02 11:39:31.491 [http-nio-8081-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-02-02 11:39:31.499 [http-nio-8081-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 8 ms
+2026-02-02 11:47:58.234 [http-nio-8081-exec-5] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required request parameter 'size' for method parameter type String is not present]
+2026-02-02 11:48:55.002 [http-nio-8081-exec-1] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required request parameter 'size' for method parameter type String is not present]
+2026-02-02 11:53:54.735 [http-nio-8081-exec-8] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required request parameter 'size' for method parameter type String is not present]
+2026-02-02 12:25:22.077 [http-nio-8081-exec-8] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required request parameter 'size' for method parameter type String is not present]
+2026-02-02 13:41:02.088 [http-nio-8081-exec-3] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [java.lang.IllegalArgumentException: Cannot place order with empty cart]
+2026-02-02 14:40:53.557 [kafka-coordinator-heartbeat-thread | product-upload-group] INFO  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Node 0 disconnected.
+2026-02-02 14:40:53.588 [kafka-coordinator-heartbeat-thread | product-upload-group] INFO  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Cancelled in-flight METADATA request with correlation id 21402 due to node 0 being disconnected (elapsed time since creation: 5ms, elapsed time since send: 5ms, throttle time: 0ms, request timeout: 30000ms)
+2026-02-02 14:40:53.647 [kafka-coordinator-heartbeat-thread | product-upload-group] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Group coordinator NLKLLTP7204861.FPS.NIHILENT.com:9092 (id: 2147483647 rack: null) is unavailable or invalid due to cause: session timed out without receiving a heartbeat response. isDisconnected: false. Rediscovery will be attempted.
+2026-02-02 14:40:53.674 [kafka-coordinator-heartbeat-thread | product-upload-group] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Requesting disconnect from last known coordinator NLKLLTP7204861.FPS.NIHILENT.com:9092 (id: 2147483647 rack: null)
+2026-02-02 14:40:53.851 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Discovered group coordinator NLKLLTP7204861.FPS.NIHILENT.com:9092 (id: 2147483647 rack: null)
+2026-02-02 14:40:54.262 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=41m58s637ms613µs400ns).
+2026-02-02 14:40:55.338 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Discovered group coordinator NLKLLTP7204861.FPS.NIHILENT.com:9092 (id: 2147483647 rack: null)
+2026-02-02 14:40:55.465 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Attempt to heartbeat with Generation{generationId=69, memberId='consumer-product-upload-group-1-09c8d678-609c-4a44-8cf4-ac5d4e6d45ce', protocol='range'} and group instance id Optional.empty failed due to UNKNOWN_MEMBER_ID, resetting generation
+2026-02-02 14:40:55.481 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Resetting generation and member id due to: encountered UNKNOWN_MEMBER_ID from HEARTBEAT response
+2026-02-02 14:40:55.503 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Request joining group due to: encountered UNKNOWN_MEMBER_ID from HEARTBEAT response
+2026-02-02 14:40:55.520 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Giving away all assigned partitions as lost since generation/memberID has been reset,indicating that consumer is in old state or no longer part of the group
+2026-02-02 14:40:55.535 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerRebalanceListenerInvoker - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Lost previously assigned partitions product-bulk-upload-0
+2026-02-02 14:40:55.617 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.s.k.l.KafkaMessageListenerContainer - product-upload-group: partitions lost: [product-bulk-upload-0]
+2026-02-02 14:40:55.682 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.s.k.l.KafkaMessageListenerContainer - product-upload-group: partitions revoked: [product-bulk-upload-0]
+2026-02-02 14:40:55.775 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] (Re-)joining group
+2026-02-02 14:40:55.988 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Request joining group due to: need to re-join with the given member-id: consumer-product-upload-group-1-af3bfd06-c918-4c99-887a-f86606107bc7
+2026-02-02 14:40:56.014 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] (Re-)joining group
+2026-02-02 14:40:56.265 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Successfully joined group with generation Generation{generationId=71, memberId='consumer-product-upload-group-1-af3bfd06-c918-4c99-887a-f86606107bc7', protocol='range'}
+2026-02-02 14:40:56.289 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Finished assignment for group at generation 71: {consumer-product-upload-group-1-af3bfd06-c918-4c99-887a-f86606107bc7=Assignment(partitions=[product-bulk-upload-0])}
+2026-02-02 14:40:56.433 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Successfully synced group in generation Generation{generationId=71, memberId='consumer-product-upload-group-1-af3bfd06-c918-4c99-887a-f86606107bc7', protocol='range'}
+2026-02-02 14:41:00.682 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Notifying assignor about the new Assignment(partitions=[product-bulk-upload-0])
+2026-02-02 14:41:00.737 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerRebalanceListenerInvoker - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Adding newly assigned partitions: product-bulk-upload-0
+2026-02-02 14:41:00.803 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.internals.ConsumerUtils - Setting offset for partition product-bulk-upload-0 to the committed offset FetchPosition{offset=7, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[NLKLLTP7204861.FPS.NIHILENT.com:9092 (id: 0 rack: null)], epoch=0}}
+2026-02-02 14:41:00.833 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.s.k.l.KafkaMessageListenerContainer - product-upload-group: partitions assigned: [product-bulk-upload-0]
+2026-02-02 14:56:33.821 [http-nio-8081-exec-2] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [java.lang.IllegalArgumentException: Cannot place order with empty cart]
+2026-02-02 16:07:56.640 [http-nio-8081-exec-3] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [java.lang.IllegalArgumentException: Cannot place order with empty cart]
+2026-02-02 16:08:20.533 [http-nio-8081-exec-4] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [java.lang.IllegalArgumentException: Cannot place order with empty cart]
+2026-02-02 16:09:02.378 [http-nio-8081-exec-8] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.example.Ecomm.exception.ResourceNotFoundException: CartItem not found with Product+Size :'10']
+2026-02-02 16:09:14.506 [http-nio-8081-exec-6] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [java.lang.IllegalArgumentException: Cannot place order with empty cart]
+2026-02-02 16:09:25.479 [http-nio-8081-exec-4] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.example.Ecomm.exception.ResourceNotFoundException: CartItem not found with Product+Size :'10']
+2026-02-02 18:35:14.564 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=9m17s625ms261µs100ns).
+2026-02-02 18:35:14.517 [kafka-coordinator-heartbeat-thread | product-upload-group] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Group coordinator NLKLLTP7204861.FPS.NIHILENT.com:9092 (id: 2147483647 rack: null) is unavailable or invalid due to cause: session timed out without receiving a heartbeat response. isDisconnected: false. Rediscovery will be attempted.
+2026-02-02 18:35:15.024 [kafka-coordinator-heartbeat-thread | product-upload-group] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Requesting disconnect from last known coordinator NLKLLTP7204861.FPS.NIHILENT.com:9092 (id: 2147483647 rack: null)
+2026-02-02 18:35:15.106 [kafka-coordinator-heartbeat-thread | product-upload-group] INFO  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Client requested disconnect from node 2147483647
+2026-02-02 18:35:15.236 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Disconnecting from node 0 due to request timeout.
+2026-02-02 18:35:15.854 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Cancelled in-flight METADATA request with correlation id 52578 due to node 0 being disconnected (elapsed time since creation: 719ms, elapsed time since send: 719ms, throttle time: 0ms, request timeout: 30000ms)
+2026-02-02 18:35:16.045 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Cancelled in-flight FIND_COORDINATOR request with correlation id 52579 due to node 0 being disconnected (elapsed time since creation: 0ms, elapsed time since send: 531601ms, throttle time: 0ms, request timeout: 30000ms)
+2026-02-02 18:35:18.326 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Discovered group coordinator NLKLLTP7204861.FPS.NIHILENT.com:9092 (id: 2147483647 rack: null)
+2026-02-02 18:35:18.469 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Attempt to heartbeat with Generation{generationId=71, memberId='consumer-product-upload-group-1-af3bfd06-c918-4c99-887a-f86606107bc7', protocol='range'} and group instance id Optional.empty failed due to UNKNOWN_MEMBER_ID, resetting generation
+2026-02-02 18:35:18.539 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Resetting generation and member id due to: encountered UNKNOWN_MEMBER_ID from HEARTBEAT response
+2026-02-02 18:35:18.589 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Request joining group due to: encountered UNKNOWN_MEMBER_ID from HEARTBEAT response
+2026-02-02 18:35:18.636 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Giving away all assigned partitions as lost since generation/memberID has been reset,indicating that consumer is in old state or no longer part of the group
+2026-02-02 18:35:18.679 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerRebalanceListenerInvoker - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Lost previously assigned partitions product-bulk-upload-0
+2026-02-02 18:35:18.703 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.s.k.l.KafkaMessageListenerContainer - product-upload-group: partitions lost: [product-bulk-upload-0]
+2026-02-02 18:35:18.728 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.s.k.l.KafkaMessageListenerContainer - product-upload-group: partitions revoked: [product-bulk-upload-0]
+2026-02-02 18:35:18.767 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] (Re-)joining group
+2026-02-02 18:35:19.098 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Request joining group due to: need to re-join with the given member-id: consumer-product-upload-group-1-aa691cb3-d2c5-4ebc-8c57-615afd5328d0
+2026-02-02 18:35:19.122 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] (Re-)joining group
+2026-02-02 18:35:19.330 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Successfully joined group with generation Generation{generationId=73, memberId='consumer-product-upload-group-1-aa691cb3-d2c5-4ebc-8c57-615afd5328d0', protocol='range'}
+2026-02-02 18:35:19.338 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Finished assignment for group at generation 73: {consumer-product-upload-group-1-aa691cb3-d2c5-4ebc-8c57-615afd5328d0=Assignment(partitions=[product-bulk-upload-0])}
+2026-02-02 18:35:19.371 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Successfully synced group in generation Generation{generationId=73, memberId='consumer-product-upload-group-1-aa691cb3-d2c5-4ebc-8c57-615afd5328d0', protocol='range'}
+2026-02-02 18:35:21.656 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Notifying assignor about the new Assignment(partitions=[product-bulk-upload-0])
+2026-02-02 18:35:21.658 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerRebalanceListenerInvoker - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Adding newly assigned partitions: product-bulk-upload-0
+2026-02-02 18:35:21.675 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.internals.ConsumerUtils - Setting offset for partition product-bulk-upload-0 to the committed offset FetchPosition{offset=7, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[NLKLLTP7204861.FPS.NIHILENT.com:9092 (id: 0 rack: null)], epoch=0}}
+2026-02-02 18:35:21.675 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.s.k.l.KafkaMessageListenerContainer - product-upload-group: partitions assigned: [product-bulk-upload-0]
+2026-02-02 18:40:42.885 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Node 0 disconnected.
+2026-02-02 18:40:42.887 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Cancelled in-flight FETCH request with correlation id 53329 due to node 0 being disconnected (elapsed time since creation: 350ms, elapsed time since send: 350ms, throttle time: 0ms, request timeout: 30000ms)
+2026-02-02 18:40:42.888 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.clients.FetchSessionHandler - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Error sending fetch request (sessionId=196104818, epoch=45439) to node 0:
+org.apache.kafka.common.errors.DisconnectException: null
+2026-02-02 18:40:42.983 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Node 0 disconnected.
+2026-02-02 18:40:42.984 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Cancelled in-flight API_VERSIONS request with correlation id 53331 due to node 0 being disconnected (elapsed time since creation: 21ms, elapsed time since send: 21ms, throttle time: 0ms, request timeout: 30000ms)
+2026-02-02 18:40:42.984 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.clients.FetchSessionHandler - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Error sending fetch request (sessionId=196104818, epoch=INITIAL) to node 0:
+org.apache.kafka.common.errors.DisconnectException: null
+2026-02-02 18:40:42.985 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Node 2147483647 disconnected.
+2026-02-02 18:40:42.986 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Group coordinator NLKLLTP7204861.FPS.NIHILENT.com:9092 (id: 2147483647 rack: null) is unavailable or invalid due to cause: coordinator unavailable. isDisconnected: true. Rediscovery will be attempted.
+2026-02-02 18:40:45.191 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Node 0 disconnected.
+2026-02-02 18:40:45.192 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] WARN  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Connection to node 0 (NLKLLTP7204861.FPS.NIHILENT.com/172.30.53.36:9092) could not be established. Node may not be available.
+2026-02-02 21:49:51.656 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2026-02-02 21:49:51.971 [restartedMain] INFO  com.example.Ecomm.EcommApplication - Starting EcommApplication using Java 23.0.2 with PID 12760 (C:\Users\jeevitha.g\Desktop\Ecomm-main\Ecomm-main\Ecomm_final_with_kafka\Ecomm\target\classes started by jeevitha.g in C:\Users\jeevitha.g\Desktop\Ecomm-main\Ecomm-main\Ecomm_final_with_kafka\Ecomm)
+2026-02-02 21:49:51.974 [restartedMain] INFO  com.example.Ecomm.EcommApplication - No active profile set, falling back to 1 default profile: "default"
+2026-02-02 21:49:52.265 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-02-02 21:49:52.267 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-02-02 21:49:58.427 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-02-02 21:49:58.427 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-02-02 21:49:58.631 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data JPA - Could not safely identify store assignment for repository candidate interface com.example.Ecomm.repository.elasticsearch.ProductElasticsearchRepository; If you want this repository to be a JPA repository, consider annotating your entities with one of these annotations: jakarta.persistence.Entity, jakarta.persistence.MappedSuperclass (preferred), or consider extending one of the following types with your repository: org.springframework.data.jpa.repository.JpaRepository
+2026-02-02 21:49:58.854 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 390 ms. Found 17 JPA repository interfaces.
+2026-02-02 21:49:58.861 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-02-02 21:49:58.869 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Elasticsearch repositories in DEFAULT mode.
+2026-02-02 21:49:58.894 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 17 ms. Found 1 Elasticsearch repository interface.
+2026-02-02 21:50:07.543 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2026-02-02 21:50:07.601 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2026-02-02 21:50:07.613 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-02-02 21:50:07.615 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2026-02-02 21:50:07.943 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-02-02 21:50:07.945 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 15674 ms
+2026-02-02 21:50:08.774 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-02-02 21:50:09.051 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.15.Final
+2026-02-02 21:50:09.197 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-02-02 21:50:11.215 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-02-02 21:50:11.375 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-02-02 21:50:13.777 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@6d8a135b
+2026-02-02 21:50:13.783 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-02-02 21:50:14.081 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0.41
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-02-02 21:50:17.420 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-02-02 21:50:18.064 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-02-02 21:50:18.830 [restartedMain] WARN  o.s.aop.framework.CglibAopProxy - Unable to proxy interface-implementing method [public final void org.springframework.web.filter.OncePerRequestFilter.doFilter(jakarta.servlet.ServletRequest,jakarta.servlet.ServletResponse,jakarta.servlet.FilterChain) throws jakarta.servlet.ServletException,java.io.IOException] because it is marked as final, consider using interface-based JDK proxies instead.
+2026-02-02 21:50:18.831 [restartedMain] WARN  o.s.aop.framework.CglibAopProxy - Unable to proxy interface-implementing method [public final void org.springframework.web.filter.GenericFilterBean.init(jakarta.servlet.FilterConfig) throws jakarta.servlet.ServletException] because it is marked as final, consider using interface-based JDK proxies instead.
+2026-02-02 21:50:20.219 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2026-02-02 21:50:21.835 [restartedMain] INFO  o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-02-02 21:50:21.836 [restartedMain] WARN  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2026-02-02 21:50:23.358 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-02-02 21:50:25.115 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+2026-02-02 21:50:25.145 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8081 (http) with context path '/'
+2026-02-02 21:50:25.262 [restartedMain] INFO  o.a.k.c.consumer.ConsumerConfig - ConsumerConfig values: 
+	allow.auto.create.topics = true
+	auto.commit.interval.ms = 5000
+	auto.include.jmx.reporter = true
+	auto.offset.reset = earliest
+	bootstrap.servers = [localhost:9092]
+	check.crcs = true
+	client.dns.lookup = use_all_dns_ips
+	client.id = consumer-product-upload-group-1
+	client.rack = 
+	connections.max.idle.ms = 540000
+	default.api.timeout.ms = 60000
+	enable.auto.commit = false
+	enable.metrics.push = true
+	exclude.internal.topics = true
+	fetch.max.bytes = 52428800
+	fetch.max.wait.ms = 500
+	fetch.min.bytes = 1
+	group.id = product-upload-group
+	group.instance.id = null
+	group.protocol = classic
+	group.remote.assignor = null
+	heartbeat.interval.ms = 3000
+	interceptor.classes = []
+	internal.leave.group.on.close = true
+	internal.throw.on.fetch.stable.offset.unsupported = false
+	isolation.level = read_uncommitted
+	key.deserializer = class org.apache.kafka.common.serialization.StringDeserializer
+	max.partition.fetch.bytes = 1048576
+	max.poll.interval.ms = 300000
+	max.poll.records = 500
+	metadata.max.age.ms = 300000
+	metadata.recovery.strategy = none
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partition.assignment.strategy = [class org.apache.kafka.clients.consumer.RangeAssignor, class org.apache.kafka.clients.consumer.CooperativeStickyAssignor]
+	receive.buffer.bytes = 65536
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.header.urlencode = false
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	session.timeout.ms = 45000
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	value.deserializer = class org.springframework.kafka.support.serializer.JsonDeserializer
+
+2026-02-02 21:50:25.431 [restartedMain] INFO  o.a.k.c.t.i.KafkaMetricsCollector - initializing Kafka metrics collector
+2026-02-02 21:50:25.940 [restartedMain] INFO  o.a.kafka.common.utils.AppInfoParser - Kafka version: 3.9.1
+2026-02-02 21:50:25.942 [restartedMain] INFO  o.a.kafka.common.utils.AppInfoParser - Kafka commitId: f745dfdcee2b9851
+2026-02-02 21:50:25.942 [restartedMain] INFO  o.a.kafka.common.utils.AppInfoParser - Kafka startTimeMs: 1770049225937
+2026-02-02 21:50:25.950 [restartedMain] INFO  o.a.k.c.c.i.ClassicKafkaConsumer - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Subscribed to topic(s): product-bulk-upload
+2026-02-02 21:50:25.995 [restartedMain] INFO  com.example.Ecomm.EcommApplication - Started EcommApplication in 37.645 seconds (process running for 40.994)
+2026-02-02 21:50:26.514 [restartedMain] INFO  com.example.Ecomm.EcommApplication - Starting synchronization of product data to Elasticsearch...
+2026-02-02 21:50:27.771 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  org.apache.kafka.clients.Metadata - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Cluster ID: Rs2i3KQ5S8miSOmETizU9A
+2026-02-02 21:50:27.775 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Discovered group coordinator NLKLLTP7204861.FPS.NIHILENT.com:9092 (id: 2147483647 rack: null)
+2026-02-02 21:50:27.786 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] (Re-)joining group
+2026-02-02 21:50:27.968 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Request joining group due to: need to re-join with the given member-id: consumer-product-upload-group-1-51a8b86e-acf9-412a-ad9a-66f0aab540f0
+2026-02-02 21:50:27.997 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] (Re-)joining group
+2026-02-02 21:50:28.109 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Successfully joined group with generation Generation{generationId=75, memberId='consumer-product-upload-group-1-51a8b86e-acf9-412a-ad9a-66f0aab540f0', protocol='range'}
+2026-02-02 21:50:28.138 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Finished assignment for group at generation 75: {consumer-product-upload-group-1-51a8b86e-acf9-412a-ad9a-66f0aab540f0=Assignment(partitions=[product-bulk-upload-0])}
+2026-02-02 21:50:28.297 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Successfully synced group in generation Generation{generationId=75, memberId='consumer-product-upload-group-1-51a8b86e-acf9-412a-ad9a-66f0aab540f0', protocol='range'}
+2026-02-02 21:50:28.305 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Notifying assignor about the new Assignment(partitions=[product-bulk-upload-0])
+2026-02-02 21:50:28.318 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerRebalanceListenerInvoker - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Adding newly assigned partitions: product-bulk-upload-0
+2026-02-02 21:50:28.366 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.internals.ConsumerUtils - Setting offset for partition product-bulk-upload-0 to the committed offset FetchPosition{offset=7, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[NLKLLTP7204861.FPS.NIHILENT.com:9092 (id: 0 rack: null)], epoch=0}}
+2026-02-02 21:50:28.370 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.s.k.l.KafkaMessageListenerContainer - product-upload-group: partitions assigned: [product-bulk-upload-0]
+2026-02-02 21:50:28.638 [restartedMain] INFO  c.e.E.s.ProductElasticsearchService - Successfully synchronized 55 products to Elasticsearch.
+2026-02-02 21:50:28.650 [restartedMain] INFO  com.example.Ecomm.EcommApplication - Synchronization complete.
+2026-02-02 22:29:36.527 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Node 0 disconnected.
+2026-02-02 22:29:36.555 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Cancelled in-flight FETCH request with correlation id 2455 due to node 0 being disconnected (elapsed time since creation: 1282151ms, elapsed time since send: 1282151ms, throttle time: 0ms, request timeout: 30000ms)
+2026-02-02 22:29:36.576 [kafka-coordinator-heartbeat-thread | product-upload-group] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Group coordinator NLKLLTP7204861.FPS.NIHILENT.com:9092 (id: 2147483647 rack: null) is unavailable or invalid due to cause: coordinator unavailable. isDisconnected: true. Rediscovery will be attempted.
+2026-02-02 22:29:36.575 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.clients.FetchSessionHandler - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Error sending fetch request (sessionId=155503419, epoch=2084) to node 0:
+org.apache.kafka.common.errors.DisconnectException: null
+2026-02-02 22:29:37.154 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Discovered group coordinator NLKLLTP7204861.FPS.NIHILENT.com:9092 (id: 2147483647 rack: null)
+2026-02-02 22:29:37.180 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Discovered group coordinator NLKLLTP7204861.FPS.NIHILENT.com:9092 (id: 2147483647 rack: null)
+2026-02-02 22:29:37.683 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Attempt to heartbeat with Generation{generationId=75, memberId='consumer-product-upload-group-1-51a8b86e-acf9-412a-ad9a-66f0aab540f0', protocol='range'} and group instance id Optional.empty failed due to UNKNOWN_MEMBER_ID, resetting generation
+2026-02-02 22:29:37.797 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Resetting generation and member id due to: encountered UNKNOWN_MEMBER_ID from HEARTBEAT response
+2026-02-02 22:29:37.851 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Request joining group due to: encountered UNKNOWN_MEMBER_ID from HEARTBEAT response
+2026-02-02 22:29:37.880 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Giving away all assigned partitions as lost since generation/memberID has been reset,indicating that consumer is in old state or no longer part of the group
+2026-02-02 22:29:37.920 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerRebalanceListenerInvoker - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Lost previously assigned partitions product-bulk-upload-0
+2026-02-02 22:29:38.055 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.s.k.l.KafkaMessageListenerContainer - product-upload-group: partitions lost: [product-bulk-upload-0]
+2026-02-02 22:29:38.108 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.s.k.l.KafkaMessageListenerContainer - product-upload-group: partitions revoked: [product-bulk-upload-0]
+2026-02-02 22:29:38.158 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] (Re-)joining group
+2026-02-02 22:29:38.524 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Request joining group due to: need to re-join with the given member-id: consumer-product-upload-group-1-fb6793e6-dbfd-4cbc-ab51-1fda94b33869
+2026-02-02 22:29:38.568 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] (Re-)joining group
+2026-02-02 22:29:38.903 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Successfully joined group with generation Generation{generationId=77, memberId='consumer-product-upload-group-1-fb6793e6-dbfd-4cbc-ab51-1fda94b33869', protocol='range'}
+2026-02-02 22:29:38.941 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Finished assignment for group at generation 77: {consumer-product-upload-group-1-fb6793e6-dbfd-4cbc-ab51-1fda94b33869=Assignment(partitions=[product-bulk-upload-0])}
+2026-02-02 22:29:39.144 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Successfully synced group in generation Generation{generationId=77, memberId='consumer-product-upload-group-1-fb6793e6-dbfd-4cbc-ab51-1fda94b33869', protocol='range'}
+2026-02-02 22:29:39.188 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Notifying assignor about the new Assignment(partitions=[product-bulk-upload-0])
+2026-02-02 22:29:39.237 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerRebalanceListenerInvoker - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Adding newly assigned partitions: product-bulk-upload-0
+2026-02-02 22:29:39.542 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=21m25s453ms18µs800ns).
+2026-02-02 22:29:46.204 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.internals.ConsumerUtils - Setting offset for partition product-bulk-upload-0 to the committed offset FetchPosition{offset=7, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[NLKLLTP7204861.FPS.NIHILENT.com:9092 (id: 0 rack: null)], epoch=0}}
+2026-02-02 22:29:46.292 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.s.k.l.KafkaMessageListenerContainer - product-upload-group: partitions assigned: [product-bulk-upload-0]
+2026-02-02 22:30:24.560 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Node 0 disconnected.
+2026-02-02 22:30:24.629 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Cancelled in-flight FETCH request with correlation id 2555 due to node 0 being disconnected (elapsed time since creation: 481ms, elapsed time since send: 481ms, throttle time: 0ms, request timeout: 30000ms)
+2026-02-02 22:30:24.676 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Node 2147483647 disconnected.
+2026-02-02 22:30:24.717 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.clients.FetchSessionHandler - [Consumer clientId=consumer-product-upload-group-1, groupId=product-upload-group] Error sending fetch request (sessionId=454230498, epoch=74) to node 0:
+org.apache.kafka.common.errors.DisconnectException: null

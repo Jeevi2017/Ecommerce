@@ -1,0 +1,125 @@
+<div class="signup-page-wrapper py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-9">
+        <div class="card glass-main-card shadow-lg overflow-hidden">
+          <div class="card-header brand-glass-panel text-white text-center py-5">
+            <h2 class="fw-bold mb-1">Create Your Account</h2>
+          </div>
+
+          <div class="card-body p-4 p-md-5 bg-glass-form">
+            <form [formGroup]="signupForm" (ngSubmit)="onSignup()">
+              
+              @if (errorMessage()) {
+                <div class="alert alert-danger mb-4 d-flex align-items-center">
+                  <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                  {{ errorMessage() }}
+                </div>
+              }
+
+              <div formGroupName="userDetails">
+                <div class="row g-4 mb-5">
+                  <div class="col-md-6">
+                    <label class="glass-label">Username</label>
+                    <input type="text" class="form-control" formControlName="username" 
+                      [class.is-invalid]="userF['username'].touched && userF['username'].invalid">
+                    <div class="invalid-feedback">Username must be at least 3 characters.</div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label class="glass-label">Email</label>
+                    <input type="email" class="form-control" formControlName="email"
+                      [class.is-invalid]="userF['email'].touched && userF['email'].invalid">
+                    <div class="invalid-feedback">Please enter a valid email address.</div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label class="glass-label">Password</label>
+                    <input type="password" class="form-control" formControlName="password"
+                      [class.is-invalid]="userF['password'].touched && userF['password'].invalid">
+                    
+                    <div class="progress mt-2" style="height: 5px;">
+                      <div class="progress-bar" [ngClass]="passwordStrengthColor()" [style.width.%]="passwordStrength()"></div>
+                    </div>
+                    <div class="invalid-feedback">Password must be at least 6 characters.</div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label class="glass-label">Confirm Password</label>
+                    <input type="password" class="form-control" formControlName="confirmPassword"
+                      [class.is-invalid]="(userF['confirmPassword'].touched || userF['password'].dirty) && signupForm.get('userDetails')?.hasError('mismatch')">
+                    <div class="invalid-feedback">Passwords do not match.</div>
+                  </div>
+
+                  <div class="col-12">
+                    <label class="glass-label">Phone Number</label>
+                    <input type="tel" class="form-control" formControlName="phoneNumber"
+                      placeholder="+1234567890"
+                      [class.is-invalid]="userF['phoneNumber'].touched && userF['phoneNumber'].invalid">
+                    <div class="invalid-feedback">Enter a valid phone number (10-15 digits).</div>
+                  </div>
+                </div>
+              </div>
+
+              <div formGroupName="profileDetails">
+                <div class="row g-4 p-4 rounded-4 mx-0" style="background: rgba(255,255,255,0.05);">
+                  <div class="col-md-6">
+                    <label class="glass-label-sm" style="color:white">First Name</label>
+                    <input type="text" class="form-control" formControlName="firstName"
+                      [class.is-invalid]="profileF['firstName'].touched && profileF['firstName'].invalid">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="glass-label-sm" style="color:white">Last Name</label>
+                    <input type="text" class="form-control" formControlName="lastName"
+                      [class.is-invalid]="profileF['lastName'].touched && profileF['lastName'].invalid">
+                  </div>
+
+                  <div formGroupName="address" class="col-12 mt-4 pt-3 border-top border-white border-opacity-10">
+                    <div class="row g-3">
+                      <div class="col-12">
+                        <label style="color:white">Street</label>
+                        <input class="form-control" formControlName="street"
+                          [class.is-invalid]="addrF['street'].touched && addrF['street'].invalid">
+                      </div>
+                      <div class="col-md-4">
+                        <label style="color:white">City</label>
+                        <input class="form-control" formControlName="city"
+                          [class.is-invalid]="addrF['city'].touched && addrF['city'].invalid">
+                      </div>
+                      <div class="col-md-4">
+                        <label style="color:white">State</label>
+                        <input class="form-control" formControlName="state"
+                          [class.is-invalid]="addrF['state'].touched && addrF['state'].invalid">
+                      </div>
+                      <div class="col-md-4">
+                        <label style="color:white">Zip</label>
+                        <input class="form-control" formControlName="postalCode"
+                          [class.is-invalid]="addrF['postalCode'].touched && addrF['postalCode'].invalid">
+                      </div>
+                      <div class="col-12">
+                        <label style="color:white">Country</label>
+                        <input class="form-control" formControlName="country"
+                          [class.is-invalid]="addrF['country'].touched && addrF['country'].invalid">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-5">
+                <button type="submit" class="btn btn-primary w-100 py-3 fw-bold" [disabled]="loading()">
+                  @if (loading()) {
+                    <span class="spinner-border spinner-border-sm me-2"></span>
+                    VERIFYING...
+                  } @else {
+                    CREATE ACCOUNT
+                  }
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

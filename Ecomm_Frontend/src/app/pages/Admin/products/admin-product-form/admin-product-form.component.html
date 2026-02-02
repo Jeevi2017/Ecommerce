@@ -1,0 +1,173 @@
+<div class="container mt-4">
+  <div class="card shadow-sm rounded-3">
+    <div class="card-header bg-dark text-white py-3">
+      <h3 class="mb-0">
+        {{ isEditMode ? "Edit Product" : "Add New Product" }}
+      </h3>
+    </div>
+
+    <div class="card-body p-4">
+      <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+
+        <!-- PRODUCT NAME -->
+        <div class="mb-3">
+          <label class="form-label">Product Name</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="name"
+            [class.is-invalid]="productForm.get('name')?.invalid && productForm.get('name')?.touched"
+          />
+          <div class="invalid-feedback">Product name is required.</div>
+        </div>
+
+        <!-- DESCRIPTION -->
+        <div class="mb-3">
+          <label class="form-label">Description</label>
+          <textarea
+            rows="3"
+            class="form-control"
+            formControlName="description"
+            [class.is-invalid]="productForm.get('description')?.invalid && productForm.get('description')?.touched"
+          ></textarea>
+          <div class="invalid-feedback">Description is required.</div>
+        </div>
+
+        <!-- PRICE -->
+        <div class="mb-3">
+          <label class="form-label">Price</label>
+          <input
+            type="number"
+            step="0.01"
+            class="form-control"
+            formControlName="price"
+            [class.is-invalid]="productForm.get('price')?.invalid && productForm.get('price')?.touched"
+          />
+          <div class="invalid-feedback">Valid price is required.</div>
+        </div>
+
+        <!-- CATEGORY -->
+        <!-- <div class="mb-3">
+          <label class="form-label">Category</label>
+          <select
+            class="form-select"
+            formControlName="categoryId"
+            [class.is-invalid]="productForm.get('categoryId')?.invalid && productForm.get('categoryId')?.touched"
+          >
+            <option [value]="null" disabled>Select a Category</option>
+            <option *ngFor="let category of categories" [value]="category.id">
+              {{ category.name }}
+            </option>
+          </select>
+          <div class="invalid-feedback">Category is required.</div>
+        </div> -->
+
+      <!-- CATEGORY -->
+<div class="mb-3">
+  <div class="d-flex align-items-center justify-content-between">
+    <label class="form-label mb-0">Category</label>
+
+    <button
+      type="button"
+      class="btn btn-sm btn-primary"
+      (click)="openAddCategoryPopup()"
+    >
+      + Add Category
+    </button>
+  </div>
+
+  <select
+    class="form-select mt-2"
+    formControlName="categoryId"
+    [class.is-invalid]="
+      productForm.get('categoryId')?.invalid &&
+      productForm.get('categoryId')?.touched
+    "
+  >
+    <option [ngValue]="null" disabled>Select a Category</option>
+    <option *ngFor="let category of categories" [ngValue]="category.id">
+      {{ category.name }}
+    </option>
+  </select>
+
+  <div class="invalid-feedback">Category is required.</div>
+</div>
+
+        
+        <!-- STOCK -->
+        <div class="mb-3">
+          <label class="form-label">Stock Quantity</label>
+          <input
+            type="number"
+            class="form-control"
+            formControlName="stockQuantity"
+            [class.is-invalid]="productForm.get('stockQuantity')?.invalid && productForm.get('stockQuantity')?.touched"
+          />
+          <div class="invalid-feedback">Stock quantity is required.</div>
+        </div>
+
+        <!-- ================= SIZE SELECTION ================= -->
+        <div class="mb-3">
+          <label class="form-label fw-bold">Available Sizes</label>
+
+          <div class="d-flex flex-wrap gap-3 mt-2">
+            <div class="form-check" *ngFor="let size of availableSizes">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                [value]="size"
+                (change)="onSizeChange($event)"
+                [checked]="productForm.get('sizes')?.value?.includes(size)"
+              />
+              <label class="form-check-label">{{ size }}</label>
+            </div>
+          </div>
+
+          <div
+            *ngIf="productForm.get('sizes')?.invalid && productForm.get('sizes')?.touched"
+            class="text-danger small mt-1"
+          >
+            Please select at least one size
+          </div>
+        </div>
+
+        <!-- IMAGES -->
+        <div class="mb-3">
+          <label class="form-label">Image URLs (comma-separated)</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="e.g., url1.jpg, url2.png"
+            formControlName="images"
+            [class.is-invalid]="productForm.get('images')?.invalid && productForm.get('images')?.touched"
+          />
+          <div class="invalid-feedback">At least one image URL is required.</div>
+        </div>
+
+        <!-- ACTION BUTTONS -->
+        <div class="d-flex justify-content-end mt-4">
+          <button
+            type="button"
+            class="btn btn-secondary me-2"
+            (click)="cancel()"
+          >
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="submitting || productForm.invalid"
+          >
+            <span
+              *ngIf="submitting"
+              class="spinner-border spinner-border-sm me-2"
+            ></span>
+            {{ isEditMode ? "Update Product" : "Add Product" }}
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

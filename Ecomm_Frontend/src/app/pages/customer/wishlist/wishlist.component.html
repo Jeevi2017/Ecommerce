@@ -1,0 +1,81 @@
+<div class="container my-5">
+  <div class="card shadow-lg border-0 rounded-xl">
+    <div class="card-header bg-white border-bottom p-4">
+      <h2 class="h3 mb-0 text-gray-800 d-flex align-items-center">
+        <i class="bi bi-heart-fill me-2 text-danger"></i> Your Wishlist
+      </h2>
+    </div>
+
+    <div class="card-body p-4">
+      <!-- Loading State -->
+      <div *ngIf="isLoading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-2 text-muted">Loading your favorite items...</p>
+      </div>
+
+      <!-- Error State -->
+      <div *ngIf="errorMessage" class="alert alert-danger text-center" role="alert">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Empty Wishlist State -->
+      <div *ngIf="!isLoading && wishlist.length === 0" class="text-center py-5">
+        <i class="bi bi-emoji-heart-eyes" style="font-size: 3rem; color: #ced4da;"></i>
+        <h4 class="mt-3 text-muted">Your Wishlist is Empty!</h4>
+        <p class="text-secondary">Add products you love to save them for later.</p>
+        <a routerLink="/products" class="btn btn-primary mt-3 shadow-sm rounded-pill">Start Shopping</a>
+      </div>
+
+      <!-- Wishlist Items -->
+      <!-- Iterating over WishlistItemDTO[] -->
+      <div *ngIf="!isLoading && wishlist.length > 0" class="list-group list-group-flush">
+        <div *ngFor="let item of wishlist" class="list-group-item p-3 border-bottom d-flex align-items-center">
+          
+          <!-- Product Image & Details (Image is placeholder since DTO doesn't provide URL) -->
+          <div class="flex-shrink-0 me-3">
+            <img
+                        [src]="item.productImageUrl || 'https://placehold.co/50x50/CCCCCC/333333?text=No+Img'"
+                        alt="{{ item.productName }}"
+                        class="img-thumbnail me-3"
+                        style="width: 50px; height: 50px; object-fit: cover"
+                      />
+          </div>
+          
+          <div class="flex-grow-1">
+            <h5 class="mb-1 fw-bold text-truncate" style="max-width: 300px;">
+              <!-- Linking to the product using productId -->
+              <a [routerLink]="['/products', item.productId]" class="text-decoration-none text-dark hover-link">{{ item.productName }}</a>
+            </h5>
+            
+            <!-- Displaying product price and added date from the DTO -->
+            <span class="fw-bold text-danger fs-5 me-3">Rs.{{ item.productPrice | number:'1.2-2' }}</span>
+            <span class="badge bg-light text-secondary">
+                Added: {{ item.addedAt | date:'mediumDate' }}
+            </span>
+          </div>
+
+          <!-- Actions -->
+          <div class="flex-shrink-0 ms-4 d-flex flex-column flex-md-row gap-2">
+            <button 
+              (click)="moveToCart(item)"
+              class="btn btn-sm btn-outline-success rounded-pill fw-bold"
+              title="Move to Cart"
+            >
+              <i class="bi bi-cart-plus me-1"></i> Add to Cart
+            </button>
+            <button 
+              (click)="removeItem(item.productId)" 
+              class="btn btn-sm btn-outline-danger rounded-pill"
+              title="Remove from Wishlist"
+            >
+              <i class="bi bi-x-lg"></i> Remove
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

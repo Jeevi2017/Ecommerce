@@ -1,0 +1,171 @@
+/* =====================================
+   LUXURY WISHLIST – STYLE ONLY
+===================================== */
+
+/* Main Card */
+.card {
+  background: linear-gradient(
+    145deg,
+    rgba(22, 22, 22, 0.95),
+    rgba(12, 12, 12, 0.98)
+  );
+  border-radius: 1.6rem !important;
+  border: 1px solid rgba(255, 215, 160, 0.15);
+  box-shadow:
+    0 35px 70px rgba(0, 0, 0, 0.65),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+  color: #f5f5f5;
+  overflow: hidden;
+}
+
+/* Card Header */
+.card-header {
+  background: linear-gradient(135deg, #1c1c1c, #2a2a2a);
+  border-bottom: 1px solid rgba(255, 215, 160, 0.25) !important;
+  color: #f5e6c8;
+  letter-spacing: 0.6px;
+}
+
+/* Wishlist icon */
+.card-header i {
+  color: #f5c27a !important;
+}
+
+/* Body */
+.card-body {
+  background: transparent;
+}
+
+/* List group */
+.list-group-item {
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #eaeaea;
+  transition: all 0.35s ease;
+}
+
+/* Hover effect */
+.list-group-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  transform: translateX(6px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.45);
+}
+
+/* Product image */
+.img-thumbnail {
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 215, 160, 0.3);
+  background: #111;
+  padding: 0;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.list-group-item:hover .img-thumbnail {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(245, 194, 122, 0.4);
+}
+
+/* Product name */
+.hover-link {
+  color: #f5f5f5;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  transition: color 0.25s ease;
+}
+
+.hover-link:hover {
+  color: #f5c27a;
+}
+
+/* Price */
+.text-danger {
+  color: #f5c27a !important;
+}
+
+/* Date badge */
+.badge.bg-light {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: rgba(255, 255, 255, 0.7);
+  border-radius: 999px;
+  padding: 0.45rem 0.75rem;
+}
+
+/* Buttons – Add to Cart */
+.btn-outline-success {
+  border: 1px solid #9fe2bf;
+  color: #9fe2bf;
+  background: transparent;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-success:hover {
+  background: linear-gradient(135deg, #9fe2bf, #22c55e);
+  color: #0f172a;
+  box-shadow: 0 10px 25px rgba(159, 226, 191, 0.45);
+  transform: translateY(-2px);
+}
+
+/* Buttons – Remove */
+.btn-outline-danger {
+  border: 1px solid #f87171;
+  color: #f87171;
+  background: transparent;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-danger:hover {
+  background: linear-gradient(135deg, #f87171, #ef4444);
+  color: #fff;
+  box-shadow: 0 10px 25px rgba(248, 113, 113, 0.45);
+  transform: translateY(-2px);
+}
+
+/* Empty wishlist state */
+.text-muted,
+.text-secondary {
+  color: rgba(255, 255, 255, 0.55) !important;
+}
+
+/* Empty icon */
+.bi-emoji-heart-eyes {
+  color: rgba(255, 215, 160, 0.4) !important;
+}
+
+/* Primary CTA */
+.btn-primary {
+  background: linear-gradient(135deg, #f5c27a, #d9a441);
+  border: none;
+  color: #1a1a1a;
+  font-weight: 700;
+  border-radius: 999px;
+  letter-spacing: 0.6px;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #ffd89b, #e0b45c);
+  box-shadow: 0 12px 30px rgba(245, 194, 122, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Loading spinner */
+.spinner-border {
+  color: #f5c27a;
+}
+
+/* Mobile luxury spacing */
+@media (max-width: 768px) {
+  .list-group-item {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+
+  .flex-md-row {
+    flex-direction: column !important;
+    width: 100%;
+  }
+
+  .flex-md-row button {
+    width: 100%;
+  }
+}

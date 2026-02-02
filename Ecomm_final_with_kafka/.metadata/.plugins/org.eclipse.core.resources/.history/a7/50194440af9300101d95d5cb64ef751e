@@ -1,0 +1,72 @@
+{"properties": [
+  {
+    "name": "jwt.secret",
+    "type": "java.lang.String",
+    "description": "A description for 'jwt.secret'"
+  },
+  {
+    "name": "jwt.expiration.minutes",
+    "type": "java.lang.String",
+    "description": "A description for 'jwt.expiration.minutes'"
+  },
+  {
+    "name": "application.security.jwt.refresh-token.expiration",
+    "type": "java.lang.String",
+    "description": "A description for 'application.security.jwt.refresh-token.expiration'"
+  },
+  {
+    "name": "razorpay.key.id",
+    "type": "java.lang.String",
+    "description": "A description for 'razorpay.key.id'"
+  },
+  {
+    "name": "razorpay.key.secret",
+    "type": "java.lang.String",
+    "description": "A description for 'razorpay.key.secret'"
+  },
+  {
+    "name": "mailtrap.api.token",
+    "type": "java.lang.String",
+    "description": "A description for 'mailtrap.api.token'"
+  },
+  {
+    "name": "mailtrap.api.url",
+    "type": "java.lang.String",
+    "description": "A description for 'mailtrap.api.url'"
+  },
+  {
+    "name": "mailtrap.from.name",
+    "type": "java.lang.String",
+    "description": "A description for 'mailtrap.from.name'"
+  },
+  {
+    "name": "mailtrap.from.email",
+    "type": "java.lang.String",
+    "description": "A description for 'mailtrap.from.email'"
+  },
+  {
+    "name": "spring.data.elasticsearch.client.reactive.endpoints",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.data.elasticsearch.client.reactive.endpoints'"
+  },
+  {
+    "name": "kafka.topic.product-upload",
+    "type": "java.lang.String",
+    "description": "A description for 'kafka.topic.product-upload'"
+  },
+  {
+    "name": "spring.elasticsearch.rest.uris",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.elasticsearch.rest.uris'"
+  },
+  {
+    "name": "razorpay.vpa",
+    "type": "java.lang.String",
+    "description": "A description for 'razorpay.vpa'"
+  },
+  {
+    "name": "razorpay.webhook.secret",
+    "type": "java.lang.String",
+    "description": "A description for 'razorpay.webhook.secret'"
+  }
+]}
