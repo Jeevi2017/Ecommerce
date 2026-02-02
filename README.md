@@ -1,62 +1,87 @@
-#  E-Commerce POC (Angular + Spring Boot)
+🛍️ E-Commerce Proof of Concept
 
-A full-stack Proof of Concept (POC) for a scalable e-commerce platform built using **Angular**, **Spring Boot**, **MySQL**, **Kafka**, and **ElasticSearch**.
+(Angular • Spring Boot)
 
-##  Features
+This repository contains a full-stack Proof of Concept (POC) for an enterprise-ready e-commerce system. The application demonstrates a modular, scalable architecture using Angular on the frontend and Spring Boot on the backend, integrated with MySQL, Apache Kafka, and ElasticSearch.
 
-- **Dynamic Product Catalog & Wishlist** 
-- **Shopping Cart & Checkout Flow**   
-- **Scalable Backend API**   
-- **Asynchronous Processing** — Kafka   
-- **High-Speed Search** - ElasticSearch
+✨ Core Capabilities
 
+Product Management & Wishlist Handling
 
----
+End-to-End Cart and Order Processing
 
-# Project Setup Guide
+REST-based Backend Services with High Scalability
 
-Follow the steps below to run the application locally.
+Event-Driven Communication via Kafka
 
----
-1.Clone the repository 
+Optimized Product Search using ElasticSearch
 
-    git clone https://github.com/RUSHIMONARIGELA/Ecomm.git
+⚙️ Local Setup Instructions
 
-    
-    2.Open MySQL and create a database
-     CREATE DATABASE ecommerce_db;
-     
+Follow the steps below to run the application on your local machine.
 
+1️⃣ Clone the Repository
+git clone https://github.com/Jeevi2017/Ecommerce.git
 
-##  Prerequisites
+2️⃣ Database Configuration
 
-Ensure the following tools are installed:
+Start MySQL and create the required database:
 
-- **Node.js & npm** — LTS 18+  
-- **Angular CLI**  
-  ```bash
-  npm install -g @angular/cli
-- **Java Development Kit (JDK)**: (Version 17+)
-- **Maven:** (For building the backend server)
-- **Infrastructure Services:** Running instances of **MySQL, Kafka,** and **ElasticSearch**.
-## Database Schema
- 
-Tables:
- 
-- User
-- address
-- profile
-- customer_order
-- cart
-- cart_items
-- discounts
-- order_item
-- paymemts
-- product
-- product_categories
-- product_images
-- reviews
-- wishlist
+CREATE DATABASE ecomdb;
+
+🧰 System Requirements
+
+Ensure the following dependencies are installed before running the project:
+
+Node.js & npm (LTS version 18 or higher)
+
+Angular CLI
+
+npm install -g @angular/cli
 
 
+Java JDK — version 17 or above
 
+Apache Maven — for backend build and execution
+
+Supporting Services (must be running):
+
+MySQL
+
+Apache Kafka
+
+ElasticSearch
+
+🗂️ Database Structure
+
+The application uses the following core tables:
+
+User
+
+Address
+
+Profile
+
+Customer_Order
+
+Cart
+
+Cart_Items
+
+Discounts
+
+Order_Item
+
+Payments
+
+Product
+
+Product_Categories
+
+Product_Images
+
+Product_sizes
+
+Reviews
+
+Wishlist
