@@ -11,7 +11,7 @@ import java.util.Optional;
 import com.example.Ecomm.dto.AddressDTO;
 import com.example.Ecomm.entitiy.Address;
 import com.example.Ecomm.entitiy.Profile;
-import com.example.Ecomm.exception.ResourceNotFoundException;
+
 import com.example.Ecomm.repository.AddressRepository;
 import com.example.Ecomm.repository.ProfileRepository;
 

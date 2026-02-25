@@ -2,6 +2,10 @@ package com.example.Ecomm.controller;
 
 import com.example.Ecomm.config.SecurityConstants;
 import com.example.Ecomm.service.InvoiceService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,37 +19,52 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
-
 @RestController
 @RequestMapping("/api/invoices")
 public class InvoiceController {
 
-	private final InvoiceService invoiceService;
+    private static final Logger logger = LoggerFactory.getLogger(InvoiceController.class);
+
+    private final InvoiceService invoiceService;
 
     @Autowired
     public InvoiceController(InvoiceService invoiceService) {
         this.invoiceService = invoiceService;
     }
 
-    
     @GetMapping(value = "/generate/{orderId}", produces = MediaType.APPLICATION_PDF_VALUE)
-    @PreAuthorize("hasAuthority('" + SecurityConstants.ROLE_ADMIN + "') or hasAuthority('" + SecurityConstants.ROLE_CUSTOMER + "')")
+    @PreAuthorize(
+            "hasAuthority('" + SecurityConstants.ROLE_ADMIN + "') " +
+                    "or hasAuthority('" + SecurityConstants.ROLE_CUSTOMER + "')"
+    )
     public ResponseEntity<byte[]> generateInvoice(@PathVariable Long orderId) {
         try {
             byte[] pdfBytes = invoiceService.generateInvoicePdf(orderId);
 
             HttpHeaders headers = new HttpHeaders();
-            headers.setContentDispositionFormData("attachment", "invoice-" + orderId + ".pdf");
+            headers.setContentDispositionFormData(
+                    "attachment",
+                    "invoice-" + orderId + ".pdf"
+            );
             headers.setContentType(MediaType.APPLICATION_PDF);
 
             return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
+
         } catch (IOException e) {
-            System.err.println("Error generating PDF for order ID " + orderId + ": " + e.getMessage());
+            logger.error(
+                    "Error generating PDF for orderId={}",
+                    orderId,
+                    e
+            );
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
         } catch (RuntimeException e) {
-            System.err.println("Order not found for ID " + orderId + ": " + e.getMessage());
+            logger.error(
+                    "Order not found or invalid for orderId={}",
+                    orderId,
+                    e
+            );
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 }
-

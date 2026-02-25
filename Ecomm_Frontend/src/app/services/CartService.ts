@@ -103,20 +103,27 @@ export class CartService {
       .pipe(tap(cart => this.persistCart(cart)));
   }
 
-  updateProductQuantityInCart(
-    customerId: number,
-    productId: number,
-    size: string,
-    quantity: number
-  ): Observable<CartDTO> {
-    return this.http
-      .put<CartDTO>(
-        `${this.baseUrl}/customer/${customerId}/items/${productId}`,
-        { size, quantity },
-        { headers: this.getAuthHeaders() }
-      )
-      .pipe(tap(cart => this.persistCart(cart)));
-  }
+ updateProductQuantityInCart(
+  customerId: number,
+  productId: number,
+  size: string,
+  newQuantity: number
+): Observable<CartDTO> {
+  return this.http
+    .put<CartDTO>(
+      `${this.baseUrl}/customer/${customerId}/items/${productId}`,
+      null, // ✅ BODY MUST BE NULL
+      {
+        headers: this.getAuthHeaders(),
+        params: {
+          size: size,
+          newQuantity: newQuantity.toString()
+        }
+      }
+    )
+    .pipe(tap(cart => this.persistCart(cart)));
+}
+
 
   removeProductFromCart(
     customerId: number,

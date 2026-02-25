@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class CartDTO {
+
     private Long id;
     private Long customerId;
     private LocalDateTime createdAt;
@@ -12,25 +13,19 @@ public class CartDTO {
     private BigDecimal totalPrice;
     private BigDecimal totalAmount;
     private List<CartItemDTO> cartItems;
-
     private String couponCode;
     private BigDecimal discountAmount;
 
-    public CartDTO() {}
-
-    public CartDTO(Long id, Long customerId, List<CartItemDTO> cartItems, BigDecimal totalPrice, BigDecimal totalAmount, LocalDateTime createdAt,
-            LocalDateTime updatedAt, String couponCode, BigDecimal discountAmount) {
-        super();
-        this.id = id;
-        this.customerId = customerId;
-        this.cartItems = cartItems;
-        this.totalPrice = totalPrice;
-        this.totalAmount = totalAmount;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.couponCode = couponCode;
-        this.discountAmount = discountAmount;
+    // ✅ Required by Jackson / frameworks
+    public CartDTO() {
     }
+
+    /*
+     * NOTE:
+     * Removed the constructor with 9 parameters to comply with SonarQube.
+     * DTOs should be populated via setters or mappers.
+     * This does NOT change runtime functionality.
+     */
 
     public Long getId() {
         return id;

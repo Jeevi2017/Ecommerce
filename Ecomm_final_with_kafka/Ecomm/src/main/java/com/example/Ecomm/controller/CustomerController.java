@@ -2,33 +2,20 @@ package com.example.Ecomm.controller;
 
 import java.util.List;
 
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.Ecomm.config.SecurityConstants;
-import com.example.Ecomm.dto.AddressDTO;
 import com.example.Ecomm.dto.CustomerDTO;
 import com.example.Ecomm.dto.ProfileDTO;
 import com.example.Ecomm.dto.UserDTO;
 import com.example.Ecomm.exception.CustomerHasActiveOrdersException;
 import com.example.Ecomm.exception.ResourceNotFoundException;
-import com.example.Ecomm.service.AddressService;
 import com.example.Ecomm.service.CustomerService;
 import com.example.Ecomm.service.ProfileService;
 import com.example.Ecomm.service.UserService;
@@ -38,14 +25,18 @@ import com.example.Ecomm.service.UserService;
 @CrossOrigin(origins = "http://localhost:4200")
 public class CustomerController {
 
-    @Autowired
-    private CustomerService customerService;
+    private final CustomerService customerService;
+    private final ProfileService profileService;
+    private final UserService userService;
 
-    @Autowired
-    private ProfileService profileService;
-
-    @Autowired
-    private UserService userService;
+    // ✅ Constructor Injection (SonarQube compliant)
+    public CustomerController(CustomerService customerService,
+                              ProfileService profileService,
+                              UserService userService) {
+        this.customerService = customerService;
+        this.profileService = profileService;
+        this.userService = userService;
+    }
 
     public Long getAuthenticatedCustomerId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -62,7 +53,6 @@ public class CustomerController {
         throw new ResourceNotFoundException("Profile", "Id", profileId);
     }
 
-
     @GetMapping
     @PreAuthorize("hasAuthority('" + SecurityConstants.ROLE_ADMIN + "')")
     public ResponseEntity<List<CustomerDTO>> getAllCustomers() {
@@ -71,7 +61,9 @@ public class CustomerController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<CustomerDTO> registerCustomer(@Validated @RequestBody CustomerDTO customerDto) {
+    public ResponseEntity<CustomerDTO> registerCustomer(
+            @Validated @RequestBody CustomerDTO customerDto) {
+
         CustomerDTO savedCustomerDTO = customerService.saveCustomer(customerDto);
         return new ResponseEntity<>(savedCustomerDTO, HttpStatus.CREATED);
     }
@@ -93,9 +85,12 @@ public class CustomerController {
     @PutMapping("/{customerId}")
     @PreAuthorize("hasAuthority('" + SecurityConstants.ROLE_ADMIN + "') or #customerId == @customerController.getAuthenticatedCustomerId()")
     public ResponseEntity<CustomerDTO> updateCustomer(
-                @PathVariable Long customerId,
-                @Validated @RequestBody CustomerDTO customerDTO) {
-        CustomerDTO updatedCustomer = customerService.updateCustomer(customerId, customerDTO);
+            @PathVariable Long customerId,
+            @Validated @RequestBody CustomerDTO customerDTO) {
+
+        CustomerDTO updatedCustomer =
+                customerService.updateCustomer(customerId, customerDTO);
+
         return new ResponseEntity<>(updatedCustomer, HttpStatus.OK);
     }
 
@@ -118,12 +113,17 @@ public class CustomerController {
     public ResponseEntity<ProfileDTO> createOrUpdateCustomerProfile(
             @PathVariable Long customerId,
             @Validated @RequestBody ProfileDTO profileDTO) {
-        ProfileDTO savedProfile = customerService.createOrUpdateCustomerProfile(customerId, profileDTO);
+
+        ProfileDTO savedProfile =
+                customerService.createOrUpdateCustomerProfile(customerId, profileDTO);
+
         return new ResponseEntity<>(savedProfile, HttpStatus.CREATED);
     }
 
     @ExceptionHandler(CustomerHasActiveOrdersException.class)
-    public ResponseEntity<String> handleCustomerHasActiveOrdersException(CustomerHasActiveOrdersException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT); 
+    public ResponseEntity<String> handleCustomerHasActiveOrdersException(
+            CustomerHasActiveOrdersException ex) {
+
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
     }
 }

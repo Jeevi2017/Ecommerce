@@ -1,255 +1,212 @@
 /* ================================
-    Container Styling
-================================= */
+   REVIEWS CONTAINER – LUXURY
+================================ */
 .reviews-container {
-    font-family: 'Arial', sans-serif;
-    margin-top: 2rem;
-    padding: 1.5rem 5vw; 
-    max-width: 1000px; 
-    margin-left: auto;
-    margin-right: auto;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  margin-top: 3rem;
+  padding: 2.5rem 4vw;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
 }
 
 .reviews-container h3 {
-    color: #333;
-    border-bottom: 2px solid #ddd;
-    padding-bottom: 0.5rem;
-    margin-bottom: 1rem;
-    font-size: clamp(1.5rem, 4vw, 2rem); 
+  color: #111;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 0.75rem;
+  margin-bottom: 2rem;
+  font-size: clamp(1.6rem, 4vw, 2.1rem);
+  font-weight: 600;
+  letter-spacing: 0.03em;
 }
 
 /* ================================
-    Review Form Styling
-================================= */
+   REVIEW FORM – PREMIUM CARD
+================================ */
 .review-form {
-    padding: 1rem;
-    background-color: #fff;
-    border-radius: 8px;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+  padding: 2rem;
+  background-color: #fafafa;
+  border-radius: 16px;
+  margin-bottom: 2.5rem;
+  box-shadow: inset 0 0 0 1px #e5e7eb;
 }
 
 .review-form h4 {
-    margin-bottom: 1rem;
-    color: #555;
-    font-size: clamp(1.2rem, 3.5vw, 1.6rem); 
+  margin-bottom: 1.5rem;
+  color: #111;
+  font-size: clamp(1.25rem, 3.5vw, 1.6rem);
+  font-weight: 500;
 }
 
 /* ================================
-    Star Rating Styling
-================================= */
+   STAR RATING – LUXURY GOLD
+================================ */
 .rating-stars {
-    font-size: clamp(1.2rem, 3vw, 2rem); 
-    display: flex;
-    gap: clamp(0.1rem, 0.5vw, 0.5rem); 
-    margin-bottom: 1rem;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  display: flex;
+  gap: 0.35rem;
+  margin-bottom: 1.5rem;
 }
-
 
 .rating-stars .star {
-    color: #e0e0e0; 
-    cursor: pointer;
-    transition: color 0.2s ease-in-out;
-}
-
-
-.rating-stars .star.filled {
-    color: #ffc107; 
-}
-
-
-.rating-stars .star:hover,
-.rating-stars .star:hover ~ .star { 
-    color: #ffdd57; 
-}
-
-
-.rating-stars:hover .star {
-  color: #ffdd57; 
-}
-.rating-stars .star:hover ~ .star {
-  color: #e0e0e0; 
-}
-.rating-stars .star.filled {
-    color: #ffc107; 
-}
-
-.rating-stars:not(:hover) .star.filled {
-    color: #ffc107;
-}
-
-
-.rating-stars .star {
-    color: #e0e0e0; 
-    cursor: pointer;
-    transition: color 0.2s ease-in-out;
+  color: #d1d5db;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .rating-stars .star.filled {
-    color: #ffc107; 
-}
-
-
-.rating-stars .star {
-    color: #e0e0e0; /* Graded out / Empty */
-    cursor: pointer;
-    transition: color 0.2s ease-in-out;
-}
-
-.rating-stars .star.filled {
-    color: #ffc107; /* Filled / Highlighted */
+  color: #f5b301; /* luxury gold */
 }
 
 .rating-stars .star:hover {
-    color: #ffdd57; /* Lighter gold on hover for a single star */
+  color: #facc15;
+  transform: scale(1.1);
 }
 
-.review-rating .star {
-    color: #e0e0e0; /* Graded out / Empty */
+.rating-stars:hover .star {
+  color: #facc15;
 }
 
-.review-rating .star.filled {
-    color: #ffc107; /* Filled / Highlighted */
+.rating-stars .star:hover ~ .star {
+  color: #d1d5db;
 }
 
 /* ================================
-    Form Inputs
-================================= */
+   FORM INPUTS – LUXURY
+================================ */
 .form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: #555;
-    font-size: clamp(0.9rem, 2.5vw, 1rem); /* Responsive font size */
+  display: block;
+  margin-bottom: 0.6rem;
+  color: #444;
+  font-size: 0.95rem;
+  font-weight: 500;
 }
 
 .form-group textarea {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    resize: vertical;
-    font-family: inherit;
-    font-size: clamp(0.9rem, 2.5vw, 1rem); /* Responsive font size */
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  resize: vertical;
+  font-family: inherit;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  background: #ffffff;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.form-group textarea:focus {
+  outline: none;
+  border-color: #111;
+  box-shadow: 0 0 0 0.15rem rgba(17, 17, 17, 0.12);
 }
 
 /* ================================
-    Submit Button
-================================= */
+   SUBMIT BUTTON – LUXURY BLACK
+================================ */
 .submit-button {
-    display: inline-block;
-    padding: 0.75rem 1.5rem;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: clamp(0.9rem, 2.5vw, 1rem); /* Responsive font size */
-    transition: background-color 0.2s;
-    width: 100%; /* Full width on small screens */
-    max-width: 200px; /* Limit width on larger screens */
-    margin-top: 1rem;
+  display: inline-block;
+  padding: 0.85rem 2.2rem;
+  background-color: #111;
+  color: #ffffff;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  transition: all 0.3s ease;
+  width: auto;
+  margin-top: 1.5rem;
 }
 
 .submit-button:hover {
-    background-color: #0056b3;
+  background-color: #000;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
 }
 
 /* ================================
-    Review List Styling
-================================= */
+   REVIEW LIST – PREMIUM CARDS
+================================ */
 .review-list {
-    padding: 0;
-    list-style: none;
+  padding: 0;
+  list-style: none;
 }
 
 .review-item {
-    background-color: #fff;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    border-radius: 8px;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+  background-color: #ffffff;
+  padding: 1.75rem 2rem;
+  margin-bottom: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
 }
 
 .review-header {
-    display: flex;
-    flex-direction: column; /* Stack on small screens */
-    align-items: flex-start; /* Align items to start when stacked */
-    justify-content: space-between;
-    margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
 }
 
-/* For the review list display, these stars are not interactive */
+/* Non-interactive stars */
 .review-rating {
-    font-size: clamp(1rem, 2.8vw, 1.2rem); /* Responsive font size */
-    color: #ffc107; /* Already gold, but we ensure filled status is handled by .filled */
-    margin-bottom: 0.25rem; /* Space when stacked */
+  font-size: 1.1rem;
+}
+
+.review-rating .star {
+  color: #f5b301;
 }
 
 .review-user {
-    font-weight: bold;
-    color: #333;
-    font-size: clamp(0.9rem, 2.5vw, 1rem); /* Responsive font size */
+  font-weight: 600;
+  color: #111;
+  font-size: 0.95rem;
 }
 
 .review-date {
-    font-size: clamp(0.7rem, 2vw, 0.8rem); /* Responsive font size */
-    color: #999;
-    text-align: left; /* Align left when stacked */
-    margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: #9ca3af;
 }
 
+/* Review text */
 .review-text p {
-    margin: 0;
-    color: #444;
-    line-height: 1.5;
-    font-size: clamp(0.9rem, 2.5vw, 1rem); /* Responsive font size */
+  margin: 0.5rem 0 0;
+  color: #444;
+  line-height: 1.7;
+  font-size: 0.95rem;
 }
 
-
+/* ================================
+   EMPTY STATE
+================================ */
 .no-reviews {
+  text-align: center;
+  color: #6b7280;
+  font-style: italic;
+  padding: 3rem 1rem;
+  font-size: 1.05rem;
+}
+
+/* ================================
+   RESPONSIVE
+================================ */
+@media (max-width: 768px) {
+  .reviews-container {
+    padding: 2rem 5vw;
+  }
+
+  .review-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+
+  .submit-button {
+    width: 100%;
     text-align: center;
-    color: #777;
-    font-style: italic;
-    padding: 2rem;
-    font-size: clamp(1rem, 3vw, 1.1rem); /* Responsive font size */
-}
-
-/* Media Queries for finer control on specific breakpoints */
-
-/* Tablets and larger phones */
-@media (min-width: 481px) and (max-width: 768px) {
-    .reviews-container {
-        padding: 1.5rem 3vw;
-    }
-    .review-header {
-        flex-direction: row; /* Keep side-by-side on tablets */
-        align-items: center;
-    }
-    .review-rating {
-        margin-bottom: 0;
-    }
-    .review-date {
-        text-align: right;
-    }
-    .submit-button {
-        width: auto; /* Auto width on tablets */
-        max-width: none;
-    }
-}
-
-/* Larger screens - reset some elements to original behavior */
-@media (min-width: 769px) {
-    .review-header {
-        flex-direction: row;
-        align-items: center;
-    }
-    .review-rating {
-        margin-bottom: 0;
-    }
-    .review-date {
-        text-align: right;
-    }
+  }
 }

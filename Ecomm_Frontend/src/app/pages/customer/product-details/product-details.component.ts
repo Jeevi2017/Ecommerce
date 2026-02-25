@@ -24,8 +24,12 @@ export class ProductDetailsComponent implements OnInit {
   isLoading = false;
   quantity = 1;
 
-  // ✅ SIZE
+  // ================= SIZE =================
   selectedSize: string | null = null;
+
+  // ✅ FIXED SIZE ORDER (UI CONTROL)
+  private readonly sizeOrder: string[] = ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
+
   currentImageIndex = 0;
 
   private route = inject(ActivatedRoute);
@@ -71,6 +75,15 @@ export class ProductDetailsComponent implements OnInit {
     this.selectedSize = size;
   }
 
+  // ✅ SORTED SIZES FOR USER UI
+  getSortedSizes(): string[] {
+    if (!this.product?.availableSizes) return [];
+
+    return [...this.product.availableSizes].sort(
+      (a, b) => this.sizeOrder.indexOf(a) - this.sizeOrder.indexOf(b)
+    );
+  }
+
   // ================= ADD TO CART =================
 
   addToCart(): void {
@@ -103,7 +116,7 @@ export class ProductDetailsComponent implements OnInit {
     });
   }
 
-  // ================= ADD TO WISHLIST ✅ FIX =================
+  // ================= ADD TO WISHLIST =================
 
   addToWishlist(productId: number | undefined): void {
     if (!productId) return;

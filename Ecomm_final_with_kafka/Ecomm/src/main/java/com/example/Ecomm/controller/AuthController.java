@@ -1,9 +1,11 @@
 package com.example.Ecomm.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,12 +18,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import com.example.Ecomm.config.JwtUtil;
 import com.example.Ecomm.config.SecurityConstants;
 import com.example.Ecomm.dto.AdminRegisterRequest;
@@ -37,190 +35,270 @@ import com.example.Ecomm.service.CustomerService;
 import com.example.Ecomm.service.RefreshTokenService;
 import com.example.Ecomm.service.UserService;
 
-
-
-
 @RestController
 @RequestMapping("/api/auth")
 @CrossOrigin(origins = "http://localhost:4200")
 public class AuthController {
 
-	@Autowired
-	private AuthenticationManager authenticationManager;
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
+    private static final String USERNAME_KEY = "username";
 
-	@Autowired
-	private JwtUtil jwtUtil;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
+    private final UserService userService;
+    private final CustomerService customerService;
+    private final RefreshTokenService refreshTokenService;
+    private final UserRepository userRepository;
 
-	@Autowired
-	private UserService userService;
+    public AuthController(AuthenticationManager authenticationManager,
+                          JwtUtil jwtUtil,
+                          UserService userService,
+                          CustomerService customerService,
+                          RefreshTokenService refreshTokenService,
+                          UserRepository userRepository) {
+        this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
+        this.userService = userService;
+        this.customerService = customerService;
+        this.refreshTokenService = refreshTokenService;
+        this.userRepository = userRepository;
+    }
 
-	@Autowired
-	private CustomerService customerService;
+    @PostMapping("/register")
+    public ResponseEntity<Object> registerFullUser(
+            @Validated @RequestBody CustomerDTO customerDto) {
 
-	@Autowired
-	private RefreshTokenService refreshTokenService;
+        try {
+            if (customerDto.getUserDetails() != null) {
+                customerDto.getUserDetails().setIs2faEnabled(false);
+            }
 
-	@Autowired
-	private UserRepository userRepository;
+            CustomerDTO registeredCustomer = customerService.saveCustomer(customerDto);
 
-	@PostMapping("/register")
-	public ResponseEntity<?> registerFullUser(@Validated @RequestBody CustomerDTO customerDto) {
-		try {
-			if (customerDto.getUserDetails() != null) {
-				customerDto.getUserDetails().setIs2faEnabled(false);
-			}
-			CustomerDTO registeredCustomer = customerService.saveCustomer(customerDto);
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "User registered successfully.");
+            response.put("userId", registeredCustomer.getId());
+            response.put(USERNAME_KEY, registeredCustomer.getUserDetails().getUsername());
+            response.put("email", registeredCustomer.getUserDetails().getEmail());
 
-			Map<String, Object> response = new HashMap<>();
-			response.put("message", "User registered successfully.");
-			response.put("userId", registeredCustomer.getId());
-			response.put("username", registeredCustomer.getUserDetails().getUsername());
-			response.put("email", registeredCustomer.getUserDetails().getEmail());
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
 
-			return new ResponseEntity<>(response, HttpStatus.CREATED);
-		} catch (DataIntegrityViolationException e) {
-			return new ResponseEntity<>("Registration failed: Username or email already exists.", HttpStatus.CONFLICT);
-		} catch (IllegalArgumentException e) {
-			return new ResponseEntity<>("Registration failed: " + e.getMessage(), HttpStatus.BAD_REQUEST);
-		} catch (Exception e) {
-			System.err.println("Error during user registration: " + e.getMessage());
-			return new ResponseEntity<>("Registration failed due to an unexpected error.",
-					HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
+        } catch (DataIntegrityViolationException e) {
+            return new ResponseEntity<>(
+                    "Registration failed: Username or email already exists.",
+                    HttpStatus.CONFLICT);
 
-	@PostMapping("/register-admin")
-	public ResponseEntity<?> registerAdmin(@Validated @RequestBody AdminRegisterRequest adminRegisterRequest) {
-		try {
-			UserDTO registeredAdmin = userService.registerAdmin(adminRegisterRequest);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(
+                    "Registration failed: " + e.getMessage(),
+                    HttpStatus.BAD_REQUEST);
 
-			Map<String, Object> response = new HashMap<>();
-			response.put("message", "Admin registered successfully.");
-			response.put("userId", registeredAdmin.getId());
-			response.put("username", registeredAdmin.getUsername());
-			response.put("email", registeredAdmin.getEmail());
+        } catch (Exception e) {
+            logger.error("Error during user registration", e);
+            return new ResponseEntity<>(
+                    "Registration failed due to an unexpected error.",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
-			return new ResponseEntity<>(response, HttpStatus.CREATED);
-		} catch (DataIntegrityViolationException e) {
-			return new ResponseEntity<>("Admin registration failed: Username or email already exists.",
-					HttpStatus.CONFLICT);
-		} catch (UsernameNotFoundException e) {
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-		} catch (IllegalArgumentException e) {
-			return new ResponseEntity<>("Admin registration failed: " + e.getMessage(), HttpStatus.BAD_REQUEST);
-		} catch (Exception e) {
-			System.err.println("Error during admin registration: " + e.getMessage());
-			return new ResponseEntity<>("Admin registration failed due to an unexpected error.",
-					HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
+    @PostMapping("/register-admin")
+    public ResponseEntity<Object> registerAdmin(
+            @Validated @RequestBody AdminRegisterRequest adminRegisterRequest) {
 
-	@PostMapping("/login")
-	public ResponseEntity<?> loginUser(@Validated @RequestBody AuthRequestDTO authRequestDTO)
-			throws UsernameNotFoundException {
-		try {
-			Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-					authRequestDTO.getUsername(), authRequestDTO.getPassword()));
+        try {
+            UserDTO registeredAdmin = userService.registerAdmin(adminRegisterRequest);
 
-			User user = userRepository.findByUsername(authentication.getName())
-					.orElseThrow(() -> new UsernameNotFoundException("User not found after authentication."));
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "Admin registered successfully.");
+            response.put("userId", registeredAdmin.getId());
+            response.put(USERNAME_KEY, registeredAdmin.getUsername());
+            response.put("email", registeredAdmin.getEmail());
 
-			if (user.isIs2faEnabled()) {
-				userService.generateAndSend2FACode(user.getUsername());
-				Map<String, String> response = new HashMap<>();
-				response.put("message", "2FA required. A verification code has been sent to your email.");
-				response.put("username", user.getUsername());
-				return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
-			} else {
-				SecurityContextHolder.getContext().setAuthentication(authentication);
-				UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-				String accessToken = jwtUtil.generateToken(userDetails);
-				RefreshToken refreshToken = refreshTokenService.createRefreshToken(user);
-				return new ResponseEntity<>(
-						new AuthResponseDTO(accessToken, refreshToken.getToken(), "Login successful!"), HttpStatus.OK);
-			}
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
 
-		} catch (AuthenticationException e) {
-			return new ResponseEntity<>("Invalid username or password.", HttpStatus.UNAUTHORIZED);
-		} catch (IllegalStateException e) {
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-		} catch (Exception e) {
-			System.err.println("Error during user login: " + e.getMessage());
-			return new ResponseEntity<>("An internal error occurred during login.", HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
+        } catch (DataIntegrityViolationException e) {
+            return new ResponseEntity<>(
+                    "Admin registration failed: Username or email already exists.",
+                    HttpStatus.CONFLICT);
 
-	@PostMapping("/verify-2fa")
-	public ResponseEntity<?> verifyTwoFactorAuth(
-			@Validated @RequestBody TwoFactorAuthRequestDTO twoFactorAuthRequestDTO) {
-		try {
-			boolean isCodeValid = userService.verify2FACode(twoFactorAuthRequestDTO.getUsername(),
-					twoFactorAuthRequestDTO.getTwoFactorCode());
+        } catch (UsernameNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 
-			if (isCodeValid) {
-				User user = userRepository.findByUsername(twoFactorAuthRequestDTO.getUsername())
-						.orElseThrow(() -> new UsernameNotFoundException("User not found during 2FA verification."));
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(
+                    "Admin registration failed: " + e.getMessage(),
+                    HttpStatus.BAD_REQUEST);
 
-				Authentication authentication = new UsernamePasswordAuthenticationToken(user.getUsername(),
-						user.getPassword(), user.getAuthorities());
-				SecurityContextHolder.getContext().setAuthentication(authentication);
+        } catch (Exception e) {
+            logger.error("Error during admin registration", e);
+            return new ResponseEntity<>(
+                    "Admin registration failed due to an unexpected error.",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
-				String accessToken = jwtUtil.generateToken(user);
-				RefreshToken refreshToken = refreshTokenService.createRefreshToken(user);
+    @PostMapping("/login")
+    public ResponseEntity<Object> loginUser(
+            @Validated @RequestBody AuthRequestDTO authRequestDTO) {
 
-				return new ResponseEntity<>(
-						new AuthResponseDTO(accessToken, refreshToken.getToken(), "2FA verification successful!"),
-						HttpStatus.OK);
-			} else {
-				return new ResponseEntity<>("Invalid or expired 2FA code.", HttpStatus.UNAUTHORIZED);
-			}
-		} catch (UsernameNotFoundException e) {
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-		} catch (Exception e) {
-			System.err.println("Error during 2FA verification: " + e.getMessage());
-			return new ResponseEntity<>("An internal error occurred during 2FA verification.",
-					HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
+        try {
+            Authentication authentication =
+                    authenticationManager.authenticate(
+                            new UsernamePasswordAuthenticationToken(
+                                    authRequestDTO.getUsername(),
+                                    authRequestDTO.getPassword()));
 
-	@PostMapping("/refresh-token")
-	public ResponseEntity<?> refreshToken(@RequestBody Map<String, String> request) {
-		String requestRefreshToken = request.get("refreshToken");
+            User user = userRepository.findByUsername(authentication.getName())
+                    .orElseThrow(() ->
+                            new UsernameNotFoundException("User not found after authentication."));
 
-		if (requestRefreshToken == null || requestRefreshToken.isEmpty()) {
-			return new ResponseEntity<>("Refresh token is missing from request body.", HttpStatus.BAD_REQUEST);
-		}
+            if (user.isIs2faEnabled()) {
+                userService.generateAndSend2FACode(user.getUsername());
 
-		return refreshTokenService.findByToken(requestRefreshToken).map(refreshTokenService::verifyExpiration)
-				.map(refreshToken -> {
-					User user = refreshToken.getUser();
-					UserDetails userDetails = userService.loadUserByUsername(user.getUsername());
-					String newAccessToken = jwtUtil.generateToken(userDetails);
+                Map<String, String> response = new HashMap<>();
+                response.put("message",
+                        "2FA required. A verification code has been sent to your email.");
+                response.put(USERNAME_KEY, user.getUsername());
 
-					refreshTokenService.deleteRefreshToken(refreshToken);
-					RefreshToken newRefreshToken = refreshTokenService.createRefreshToken(user);
+                return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+            }
 
-					return new ResponseEntity<>(new AuthResponseDTO(newAccessToken, newRefreshToken.getToken(),
-							"Token refreshed successfully!"), HttpStatus.OK);
-				}).orElseThrow(() -> new RuntimeException("Refresh token not found or invalid. Please re-login."));
-	}
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-	@GetMapping("/admin/welcome")
-	@PreAuthorize("hasAuthority('" + SecurityConstants.ROLE_ADMIN + "')")
-	public ResponseEntity<String> welcomeAdmin() {
-		return new ResponseEntity<>("Welcome, Admin! You have access to administrative resources.", HttpStatus.OK);
-	}
+            String accessToken = jwtUtil.generateToken(userDetails);
+            RefreshToken refreshToken = refreshTokenService.createRefreshToken(user);
 
-	@GetMapping("/customer/welcome")
-	@PreAuthorize("hasAuthority('" + SecurityConstants.ROLE_CUSTOMER + "')")
-	public ResponseEntity<String> welcomeUser() {
-		return new ResponseEntity<>("Welcome, User! You have access to general user resources.", HttpStatus.OK);
-	}
+            return new ResponseEntity<>(
+                    new AuthResponseDTO(
+                            accessToken,
+                            refreshToken.getToken(),
+                            "Login successful!"),
+                    HttpStatus.OK);
 
-	@GetMapping("/super-admin/welcome")
-	@PreAuthorize("hasAuthority('" + SecurityConstants.ROLE_SUPER_ADMIN + "')")
-	public ResponseEntity<String> welcomeSuperAdmin() {
-		return new ResponseEntity<>("Welcome, Super Admin! You have access to super administrative resources.",
-				HttpStatus.OK);
-	}
+        } catch (AuthenticationException e) {
+            return new ResponseEntity<>(
+                    "Invalid username or password.",
+                    HttpStatus.UNAUTHORIZED);
+
+        } catch (Exception e) {
+            logger.error("Error during user login", e);
+            return new ResponseEntity<>(
+                    "An internal error occurred during login.",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/verify-2fa")
+    public ResponseEntity<Object> verifyTwoFactorAuth(
+            @Validated @RequestBody TwoFactorAuthRequestDTO twoFactorAuthRequestDTO) {
+
+        try {
+            boolean isCodeValid = userService.verify2FACode(
+                    twoFactorAuthRequestDTO.getUsername(),
+                    twoFactorAuthRequestDTO.getTwoFactorCode());
+
+            if (!isCodeValid) {
+                return new ResponseEntity<>(
+                        "Invalid or expired 2FA code.",
+                        HttpStatus.UNAUTHORIZED);
+            }
+
+            User user = userRepository
+                    .findByUsername(twoFactorAuthRequestDTO.getUsername())
+                    .orElseThrow(() ->
+                            new UsernameNotFoundException(
+                                    "User not found during 2FA verification."));
+
+            Authentication authentication =
+                    new UsernamePasswordAuthenticationToken(
+                            user.getUsername(),
+                            user.getPassword(),
+                            user.getAuthorities());
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            String accessToken = jwtUtil.generateToken(user);
+            RefreshToken refreshToken = refreshTokenService.createRefreshToken(user);
+
+            return new ResponseEntity<>(
+                    new AuthResponseDTO(
+                            accessToken,
+                            refreshToken.getToken(),
+                            "2FA verification successful!"),
+                    HttpStatus.OK);
+
+        } catch (UsernameNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+
+        } catch (Exception e) {
+            logger.error("Error during 2FA verification", e);
+            return new ResponseEntity<>(
+                    "An internal error occurred during 2FA verification.",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/refresh-token")
+    public ResponseEntity<Object> refreshToken(
+            @RequestBody Map<String, String> request) {
+
+        String requestRefreshToken = request.get("refreshToken");
+
+        if (requestRefreshToken == null || requestRefreshToken.isEmpty()) {
+            return new ResponseEntity<>(
+                    "Refresh token is missing from request body.",
+                    HttpStatus.BAD_REQUEST);
+        }
+
+        return refreshTokenService.findByToken(requestRefreshToken)
+                .map(refreshTokenService::verifyExpiration)
+                .map(refreshToken -> {
+                    User user = refreshToken.getUser();
+                    UserDetails userDetails =
+                            userService.loadUserByUsername(user.getUsername());
+
+                    String newAccessToken =
+                            jwtUtil.generateToken(userDetails);
+
+                    refreshTokenService.deleteRefreshToken(refreshToken);
+                    RefreshToken newRefreshToken =
+                            refreshTokenService.createRefreshToken(user);
+
+                    // ✅ Explicit generic fixes the compilation error
+                    return ResponseEntity.<Object>ok(
+                            new AuthResponseDTO(
+                                    newAccessToken,
+                                    newRefreshToken.getToken(),
+                                    "Token refreshed successfully!")
+                    );
+                })
+                .orElseThrow(() ->
+                        new RuntimeException(
+                                "Refresh token not found or invalid. Please re-login."));
+    }
+
+    @GetMapping("/admin/welcome")
+    @PreAuthorize("hasAuthority('" + SecurityConstants.ROLE_ADMIN + "')")
+    public ResponseEntity<String> welcomeAdmin() {
+        return new ResponseEntity<>(
+                "Welcome, Admin! You have access to administrative resources.",
+                HttpStatus.OK);
+    }
+
+    @GetMapping("/customer/welcome")
+    @PreAuthorize("hasAuthority('" + SecurityConstants.ROLE_CUSTOMER + "')")
+    public ResponseEntity<String> welcomeUser() {
+        return new ResponseEntity<>(
+                "Welcome, User! You have access to general user resources.",
+                HttpStatus.OK);
+    }
+
+    @GetMapping("/super-admin/welcome")
+    @PreAuthorize("hasAuthority('" + SecurityConstants.ROLE_SUPER_ADMIN + "')")
+    public ResponseEntity<String> welcomeSuperAdmin() {
+        return new ResponseEntity<>(
+                "Welcome, Super Admin! You have access to super administrative resources.",
+                HttpStatus.OK);
+    }
 }

@@ -1,141 +1,230 @@
-/*
-  This CSS file styles the side-scrolling product carousel.
-  It enables horizontal scrolling, hides the scrollbar, and styles
-  the navigation buttons.
-*/
+/* ================= PAGE ================= */
 
-/* General component styling to provide a clean and responsive base */
-.container {
-  padding-bottom: 2rem;
+.container{
+  padding-bottom:2rem;
 }
 
-/* --- Product Carousel Styling --- */
-.product-carousel-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-  margin-top: 1rem;
-  margin-bottom: 2rem;
+/* ================= SEARCH BAR ================= */
+
+.ultra-search-container{
+  display:flex;
+  justify-content:center;
+  margin:24px 0 10px;
+  position:relative;
+  z-index:9999;
 }
 
-.product-carousel {
-  display: flex;
-  overflow-x: auto;
-  gap: 1.5rem; /* Space between product cards */
-  padding: 1rem 1rem;
-  scroll-behavior: smooth; /* Smooth scrolling animation */
-  -webkit-overflow-scrolling: touch; /* iOS smooth scrolling */
-  scrollbar-width: none; /* Hide scrollbar for Firefox */
-  width: 100%; /* Ensure it takes up full width */
+.ultra-search-wrapper{
+  position:relative;
+  width:100%;
+  max-width:560px;
 }
 
-/* Hide scrollbar for WebKit browsers (Chrome, Safari, Edge) */
-.product-carousel::-webkit-scrollbar {
-  display: none;
+/* INPUT */
+.ultra-search-input{
+  width:100%;
+  height:44px;
+  border-radius:30px;
+  border:none;
+  padding:0 18px 0 44px;
+  font-size:13.5px;
+  font-weight:500;
+  background:#ffffff;
+
+  box-shadow:0 6px 18px rgba(0,0,0,0.12);
+  transition:all .2s ease;
 }
 
-/* Card container to ensure proper spacing and sizing */
-.product-card-container {
-  flex: 0 0 auto; /* Prevent card from growing or shrinking, only takes up its content size */
-  width: 250px; /* Fixed width for each card */
-  min-width: 250px;
+.ultra-search-input:focus{
+  outline:none;
+  box-shadow:0 10px 26px rgba(0,0,0,0.18);
 }
 
-/* --- Carousel Navigation Buttons --- */
-.carousel-control {
-  font-size: 1.5rem;
-  font-weight: bold;
-  height: 50px;
-  width: 50px;
-  border-radius: 50%;
-  position: absolute;
-  z-index: 10;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: rgba(255, 255, 255, 0.9);
-  border: 1px solid #ccc;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
+/* ICON */
+.ultra-search-icon{
+  position:absolute;
+  left:14px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:15px;
+  color:#ff2e7a;
+  z-index:5;
 }
 
-.carousel-control:hover {
-  background-color: #007bff;
-  color: #fff;
-  border-color: #007bff;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+/* soft ring */
+.ultra-search-glow{
+  position:absolute;
+  inset:0;
+  border-radius:30px;
+  padding:2px;
+  background:linear-gradient(120deg,#ff2e7a,#7b2cff,#2b7bff);
+  opacity:.10;
+  z-index:-1;
 }
 
-.carousel-control:first-of-type {
-  left: 0; /* Position left button at the edge of the container */
-  transform: translateY(-50%) translateX(-50%);
+/* ================= MICRO AUTOCOMPLETE ================= */
+
+.ultra-suggestion-box{
+  position:absolute;
+  top:46px;
+  left:0;
+  width:100%;
+  background:#ffffff;
+  border-radius:14px;
+  box-shadow:0 18px 50px rgba(0,0,0,0.25);
+  padding:4px 0;
+  z-index:10000;
+
+  max-height:220px;
+  overflow-y:auto;
 }
 
-.carousel-control:last-of-type {
-  right: 0; /* Position right button at the edge of the container */
-  transform: translateY(-50%) translateX(50%);
+/* scrollbar */
+.ultra-suggestion-box::-webkit-scrollbar{
+  width:4px;
+}
+.ultra-suggestion-box::-webkit-scrollbar-thumb{
+  background:#d7d7d7;
+  border-radius:10px;
 }
 
-/* --- Responsive adjustments for different screen sizes --- */
-@media (max-width: 768px) {
-  .product-card-container {
-    width: 200px;
-    min-width: 200px;
-  }
+/* ================= PRODUCT ITEM (VERY SMALL) ================= */
+
+.ultra-suggestion-product{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 10px;
+  cursor:pointer;
+  transition:background .15s;
 }
 
-@media (max-width: 576px) {
-  .carousel-control {
-    font-size: 1.25rem;
-    height: 40px;
-    width: 40px;
-  }
-  
-  .product-carousel-wrapper {
-    margin-left: 1rem;
-    margin-right: 1rem;
-  }
-  
-  .carousel-control:first-of-type {
-    left: 0;
-    transform: translateY(-50%) translateX(-50%);
-  }
-  
-  .carousel-control:last-of-type {
-    right: 0;
-    transform: translateY(-50%) translateX(50%);
-  }
+.ultra-suggestion-product:hover{
+  background:#f5f7fa;
 }
 
-/* --- Product Card Styling --- */
-.card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border-radius: 1rem !important;
+/* IMAGE */
+.suggestion-img{
+  width:26px;
+  height:26px;
+  border-radius:6px;
+  object-fit:cover;
+  border:1px solid #eee;
 }
 
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+/* TEXT */
+.suggestion-info{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
 }
 
-.card-img-top {
-  border-bottom: 1px solid #eee;
-  object-fit: cover;
-  border-top-left-radius: 1rem;
-  border-top-right-radius: 1rem;
+/* NAME */
+.suggestion-name{
+  font-size:12px;
+  font-weight:600;
+  color:#222;
+  line-height:1.05;
 }
 
-.card-title {
-  margin-bottom: 0.5rem;
-  font-size: 1.25rem;
+/* PRICE */
+.suggestion-price{
+  font-size:11px;
+  color:#0a8a43;
+  font-weight:600;
 }
 
-.card-text {
-  font-size: 0.9rem;
-  line-height: 1.4;
+/* divider */
+.ultra-suggestion-product:not(:last-child){
+  border-bottom:1px solid #f1f1f1;
 }
 
-.spinner-border {
-  vertical-align: middle;
-  margin-right: 8px;
+/* ================= HISTORY ================= */
+
+.ultra-suggestion-item{
+  padding:6px 10px;
+  font-size:12px;
+  color:#555;
+  cursor:pointer;
+}
+
+.ultra-suggestion-item:hover{
+  background:#f2f2f2;
+}
+
+.ultra-suggestion-clear{
+  padding:6px 10px;
+  font-size:11px;
+  color:#e63946;
+  text-align:right;
+  cursor:pointer;
+}
+
+.ultra-suggestion-clear:hover{
+  text-decoration:underline;
+}
+
+/* ================= PRODUCT CAROUSEL ================= */
+
+.product-carousel-wrapper{
+  position:relative;
+  z-index:1;
+  display:flex;
+  align-items:center;
+  margin-top:1rem;
+  margin-bottom:2rem;
+}
+
+.product-carousel{
+  display:flex;
+  overflow-x:auto;
+  gap:1.4rem;
+  padding:1rem;
+  scroll-behavior:smooth;
+  scrollbar-width:none;
+  width:100%;
+}
+
+.product-carousel::-webkit-scrollbar{
+  display:none;
+}
+
+.product-card-container{
+  flex:0 0 auto;
+  width:250px;
+  min-width:250px;
+}
+
+/* buttons */
+.carousel-control{
+  font-size:1.2rem;
+  height:42px;
+  width:42px;
+  border-radius:50%;
+  position:absolute;
+  z-index:5;
+  top:50%;
+  transform:translateY(-50%);
+  background:#fff;
+  border:1px solid #ddd;
+  box-shadow:0 4px 12px rgba(0,0,0,.18);
+}
+
+.carousel-control:first-of-type{ left:-10px; }
+.carousel-control:last-of-type{ right:-10px; }
+
+/* cards */
+.card{
+  transition:transform .25s, box-shadow .25s;
+  border-radius:16px !important;
+}
+
+.card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 16px 36px rgba(0,0,0,.20);
+}
+
+.card-img-top{
+  border-top-left-radius:16px;
+  border-top-right-radius:16px;
 }

@@ -1,16 +1,12 @@
 package com.example.Ecomm.serviceImpl;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,69 +27,76 @@ import com.example.Ecomm.entitiy.Role;
 import com.example.Ecomm.entitiy.User;
 import com.example.Ecomm.exception.CustomerHasActiveOrdersException;
 import com.example.Ecomm.exception.ResourceNotFoundException;
-import com.example.Ecomm.repository.CartRepository;
 import com.example.Ecomm.repository.CartItemRepository;
+import com.example.Ecomm.repository.CartRepository;
 import com.example.Ecomm.repository.CustomerRepository;
 import com.example.Ecomm.repository.OrderRepository;
 import com.example.Ecomm.repository.RoleRepository;
 import com.example.Ecomm.repository.UserRepository;
 import com.example.Ecomm.service.CustomerService;
-import com.example.Ecomm.service.RefreshTokenService;
 import com.example.Ecomm.service.ProductService;
+import com.example.Ecomm.service.RefreshTokenService;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
-	@Autowired
-	private CustomerRepository customerRepository;
+    private static final String ENTITY_CUSTOMER = "Customer";
 
-	@Autowired
-	private RoleRepository roleRepository;
+    private final CustomerRepository customerRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final RefreshTokenService refreshTokenService;
+    private final UserRepository userRepository;
+    private final CartRepository cartRepository;
+    private final CartItemRepository cartItemRepository;
+    private final ProductService productService;
+    private final OrderRepository orderRepository;
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+    // ✅ Constructor Injection (SonarQube compliant)
+    public CustomerServiceImpl(CustomerRepository customerRepository,
+                               RoleRepository roleRepository,
+                               PasswordEncoder passwordEncoder,
+                               RefreshTokenService refreshTokenService,
+                               UserRepository userRepository,
+                               CartRepository cartRepository,
+                               CartItemRepository cartItemRepository,
+                               ProductService productService,
+                               OrderRepository orderRepository) {
 
-    @Autowired
-    private RefreshTokenService refreshTokenService;
+        this.customerRepository = customerRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.refreshTokenService = refreshTokenService;
+        this.userRepository = userRepository;
+        this.cartRepository = cartRepository;
+        this.cartItemRepository = cartItemRepository;
+        this.productService = productService;
+        this.orderRepository = orderRepository;
+    }
 
-    @Autowired
-    private UserRepository userRepository;
+    @Override
+    @Transactional(readOnly = true)
+    public CustomerDTO getCustomerById(Long customerId) {
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(ENTITY_CUSTOMER, "Id", customerId));
+        return mapCustomerToDTO(customer);
+    }
 
-    @Autowired
-    private CartRepository cartRepository;
+    @Override
+    @Transactional(readOnly = true)
+    public List<CustomerDTO> getAllCustomers() {
+        return customerRepository.findAll().stream()
+                .map(this::mapCustomerToDTO)
+                .toList(); // ✅ unmodifiable
+    }
 
-    @Autowired
-    private CartItemRepository cartItemRepository;
+    @Override
+    @Transactional
+    public CustomerDTO saveCustomer(CustomerDTO customerDto) {
 
-    @Autowired
-    private ProductService productService;
-
-    @Autowired
-    private OrderRepository orderRepository;
-
-
-	@Override
-	@Transactional(readOnly = true)
-	public CustomerDTO getCustomerById(Long customerId) {
-		Customer customer = customerRepository.findById(customerId)
-				.orElseThrow(() -> new ResourceNotFoundException("Customer", "Id", customerId));
-
-		return mapCustomerToDTO(customer);
-	}
-
-	@Override
-	@Transactional(readOnly = true)
-	public List<CustomerDTO> getAllCustomers() {
-		List<Customer> customers = customerRepository.findAll();
-		return customers.stream().map(this::mapCustomerToDTO).collect(Collectors.toList());
-	}
-
-	@Override
-	@Transactional
-	public CustomerDTO saveCustomer(CustomerDTO customerDto) {
-		UserDTO userDetails = customerDto.getUserDetails();
-
-		if (userDetails == null) {
+        UserDTO userDetails = customerDto.getUserDetails();
+        if (userDetails == null) {
             throw new IllegalArgumentException("User details are required for customer registration.");
         }
 
@@ -103,7 +106,8 @@ public class CustomerServiceImpl implements CustomerService {
         if (userRepository.findByEmail(userDetails.getEmail()).isPresent()) {
             throw new IllegalArgumentException("Email already exists.");
         }
-        if (userDetails.getPhoneNumber() != null && userRepository.findByPhoneNumber(userDetails.getPhoneNumber()).isPresent()) {
+        if (userDetails.getPhoneNumber() != null &&
+                userRepository.findByPhoneNumber(userDetails.getPhoneNumber()).isPresent()) {
             throw new IllegalArgumentException("Phone number already exists.");
         }
 
@@ -115,10 +119,12 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setActive(true);
 
         Role customerRole = roleRepository.findByName(SecurityConstants.ROLE_CUSTOMER)
-                .orElseThrow(() -> new ResourceNotFoundException("Role", "name", SecurityConstants.ROLE_CUSTOMER));
-        Set<Role> rolesSet = new HashSet<>();
-        rolesSet.add(customerRole);
-        customer.setRoles(rolesSet);
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Role", "name", SecurityConstants.ROLE_CUSTOMER));
+
+        Set<Role> roles = new HashSet<>();
+        roles.add(customerRole);
+        customer.setRoles(roles);
 
         Customer savedCustomer = customerRepository.save(customer);
 
@@ -129,219 +135,195 @@ public class CustomerServiceImpl implements CustomerService {
             profile.setLastName(profileDetails.getLastName());
             profile.setPhoneNumber(profileDetails.getPhoneNumber());
 
-            savedCustomer.setProfile(profile); 
+            savedCustomer.setProfile(profile);
 
-            if (profileDetails.getAddresses() != null && !profileDetails.getAddresses().isEmpty()) {
-                profileDetails.getAddresses().forEach(addressDto -> {
-                    Address address = mapAddressDTOToEntity(addressDto);
-                    profile.addAddress(address);
-                });
+            if (profileDetails.getAddresses() != null) {
+                profileDetails.getAddresses()
+                        .forEach(a -> profile.addAddress(mapAddressDTOToEntity(a)));
             }
         }
-        Customer finalSavedCustomer = customerRepository.save(savedCustomer);
 
-		return mapCustomerToDTO(finalSavedCustomer);
-	}
+        return mapCustomerToDTO(customerRepository.save(savedCustomer));
+    }
 
     @Override
     @Transactional
     public CustomerDTO updateCustomer(Long customerId, CustomerDTO customerDTO) {
-        Customer existingCustomer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer", "Id", customerId));
 
-        UserDTO userDetailsDTO = customerDTO.getUserDetails();
-        if (userDetailsDTO != null) {
-            existingCustomer.setEmail(userDetailsDTO.getEmail());
-            existingCustomer.setPhoneNumber(userDetailsDTO.getPhoneNumber());
-            existingCustomer.setActive(userDetailsDTO.isActive());
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(ENTITY_CUSTOMER, "Id", customerId));
+
+        UserDTO userDetails = customerDTO.getUserDetails();
+        if (userDetails != null) {
+            customer.setEmail(userDetails.getEmail());
+            customer.setPhoneNumber(userDetails.getPhoneNumber());
+            customer.setActive(userDetails.isActive());
         }
 
-        ProfileDTO profileDetailsDTO = customerDTO.getProfileDetails();
-        if (profileDetailsDTO != null) {
-            Profile profileToUpdate = existingCustomer.getProfile();
-            if (profileToUpdate == null) {
-                profileToUpdate = new Profile();
-                profileToUpdate.setCustomer(existingCustomer);
-                existingCustomer.setProfile(profileToUpdate);
+        ProfileDTO profileDTO = customerDTO.getProfileDetails();
+        if (profileDTO != null) {
+            Profile profile = customer.getProfile() != null
+                    ? customer.getProfile()
+                    : new Profile();
+
+            profile.setCustomer(customer);
+            profile.setFirstName(profileDTO.getFirstName());
+            profile.setLastName(profileDTO.getLastName());
+            profile.setPhoneNumber(profileDTO.getPhoneNumber());
+
+            profile.setAddresses(new ArrayList<>());
+            if (profileDTO.getAddresses() != null) {
+                profileDTO.getAddresses()
+                        .forEach(a -> profile.addAddress(mapAddressDTOToEntity(a)));
             }
 
-            profileToUpdate.setFirstName(profileDetailsDTO.getFirstName());
-            profileToUpdate.setLastName(profileDetailsDTO.getLastName());
-            profileToUpdate.setPhoneNumber(profileDetailsDTO.getPhoneNumber());
-
-            if (profileToUpdate.getAddresses() != null) {
-                profileToUpdate.getAddresses().clear();
-            } else {
-                profileToUpdate.setAddresses(new ArrayList<>());
-            }
-
-            if (profileDetailsDTO.getAddresses() != null && !profileDetailsDTO.getAddresses().isEmpty()) {
-                final Profile finalProfileToUpdate = profileToUpdate;
-                profileDetailsDTO.getAddresses().forEach(addressDTO -> {
-                    Address address = mapAddressDTOToEntity(addressDTO);
-                    finalProfileToUpdate.addAddress(address);
-                });
-            }
+            customer.setProfile(profile);
         }
 
-        Customer updatedCustomer = customerRepository.save(existingCustomer);
-        return mapCustomerToDTO(updatedCustomer);
+        return mapCustomerToDTO(customerRepository.save(customer));
     }
 
-	@Override
-	@Transactional
-	public void deleteCustomer(Long customerId) {
-		Customer customer = customerRepository.findById(customerId)
-				.orElseThrow(() -> new ResourceNotFoundException("Customer", "Id", customerId));
+    @Override
+    @Transactional
+    public void deleteCustomer(Long customerId) {
+
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(ENTITY_CUSTOMER, "Id", customerId));
 
         if (orderRepository.countByCustomer_Id(customerId) > 0) {
-            throw new CustomerHasActiveOrdersException("Customer has associated orders. Please ensure all orders are completed or cancelled before deletion.");
+            throw new CustomerHasActiveOrdersException(
+                    "Customer has associated orders. Please resolve them before deletion.");
         }
 
         refreshTokenService.deleteByUserId(customer.getId());
 
-        Optional<Cart> customerCart = cartRepository.findByCustomerId(customer.getId());
-        if (customerCart.isPresent()) {
-            Cart cart = customerCart.get();
+        Optional<Cart> cartOpt = cartRepository.findByCustomerId(customer.getId());
+        if (cartOpt.isPresent()) {
+            Cart cart = cartOpt.get();
             for (CartItem item : new ArrayList<>(cart.getCartItems())) {
-                if (item.getProduct() != null && item.getProduct().getStockQuantity() != null) {
-                    Product product = item.getProduct();
+                Product product = item.getProduct();
+                if (product != null && product.getStockQuantity() != null) {
                     product.setStockQuantity(product.getStockQuantity() + item.getQuantity());
-                    ProductDTO productDTOToUpdate = mapProductEntityToDTO(product);
-                    productService.updateProduct(product.getId(), productDTOToUpdate);
+                    productService.updateProduct(product.getId(), mapProductEntityToDTO(product));
                 }
                 cartItemRepository.delete(item);
             }
-            cart.getCartItems().clear();
             cartRepository.delete(cart);
         }
 
         customerRepository.delete(customer);
-	}
+    }
 
-	@Override
-	@Transactional(readOnly = true)
-	public CustomerDTO getCustomerByEmail(String email) {
-		return customerRepository.findByEmail(email)
-				.map(this::mapCustomerToDTO)
-				.orElseThrow(() -> new ResourceNotFoundException("Customer", "Email", email));
-	}
+    @Override
+    @Transactional(readOnly = true)
+    public CustomerDTO getCustomerByEmail(String email) {
+        return customerRepository.findByEmail(email)
+                .map(this::mapCustomerToDTO)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(ENTITY_CUSTOMER, "Email", email));
+    }
 
     @Override
     @Transactional(readOnly = true)
     public UserDTO getCustomerByUsername(String username) {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User", "Username", username));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User", "Username", username));
         return mapUserEntityToDTO(user);
     }
 
     @Override
     @Transactional(readOnly = true)
     public ProfileDTO getCustomerProfile(Long customerId) {
-        Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer", "Id", customerId));
 
-        Profile profile = customer.getProfile();
-        if (profile == null) {
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(ENTITY_CUSTOMER, "Id", customerId));
+
+        if (customer.getProfile() == null) {
             throw new ResourceNotFoundException("Profile", "Customer ID", customerId);
         }
-        return mapProfileToDTO(profile);
+        return mapProfileToDTO(customer.getProfile());
     }
 
     @Override
     @Transactional
     public ProfileDTO createOrUpdateCustomerProfile(Long customerId, ProfileDTO profileDTO) {
+
         Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer", "Id", customerId));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(ENTITY_CUSTOMER, "Id", customerId));
 
-        Profile profile;
-        if (customer.getProfile() == null) {
-            profile = new Profile();
-            profile.setCustomer(customer);
-            customer.setProfile(profile);
-        } else {
-            profile = customer.getProfile();
-        }
+        Profile profile = customer.getProfile() != null
+                ? customer.getProfile()
+                : new Profile();
 
+        profile.setCustomer(customer);
         profile.setFirstName(profileDTO.getFirstName());
         profile.setLastName(profileDTO.getLastName());
         profile.setPhoneNumber(profileDTO.getPhoneNumber());
+        profile.setAddresses(new ArrayList<>());
 
-        if (profile.getAddresses() != null) {
-            profile.getAddresses().clear();
-        } else {
-            profile.setAddresses(new ArrayList<>());
+        if (profileDTO.getAddresses() != null) {
+            profileDTO.getAddresses()
+                    .forEach(a -> profile.addAddress(mapAddressDTOToEntity(a)));
         }
 
-        if (profileDTO.getAddresses() != null && !profileDTO.getAddresses().isEmpty()) {
-            final Profile finalProfile = profile;
-            profileDTO.getAddresses().forEach(addressDTO -> {
-                Address address = mapAddressDTOToEntity(addressDTO);
-                finalProfile.addAddress(address);
-            });
-        }
-
-        Customer updatedCustomer = customerRepository.save(customer);
-        return mapProfileToDTO(updatedCustomer.getProfile());
+        customer.setProfile(profile);
+        return mapProfileToDTO(customerRepository.save(customer).getProfile());
     }
 
+    // ================= MAPPERS =================
 
     private CustomerDTO mapCustomerToDTO(Customer customer) {
-        CustomerDTO customerDTO = new CustomerDTO();
-        customerDTO.setId(customer.getId());
-
-        customerDTO.setUserDetails(mapUserEntityToDTO(customer));
-
+        CustomerDTO dto = new CustomerDTO();
+        dto.setId(customer.getId());
+        dto.setUserDetails(mapUserEntityToDTO(customer));
         if (customer.getProfile() != null) {
-            customerDTO.setProfileDetails(mapProfileToDTO(customer.getProfile()));
+            dto.setProfileDetails(mapProfileToDTO(customer.getProfile()));
         }
-        return customerDTO;
+        return dto;
     }
 
     private UserDTO mapUserEntityToDTO(User user) {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setId(user.getId());
-        userDTO.setUsername(user.getUsername());
-        userDTO.setEmail(user.getEmail());
-        userDTO.setPhoneNumber(user.getPhoneNumber());
-        userDTO.setActive(user.isActive());
-        userDTO.setCreatedAt(user.getCreatedAt());
-        userDTO.setUpdatedAt(user.getUpdatedAt());
-        userDTO.setRoles(user.getRoles().stream()
-                .map(Role::getName)
-                .collect(Collectors.toList()));
-        return userDTO;
+        UserDTO dto = new UserDTO();
+        dto.setId(user.getId());
+        dto.setUsername(user.getUsername());
+        dto.setEmail(user.getEmail());
+        dto.setPhoneNumber(user.getPhoneNumber());
+        dto.setActive(user.isActive());
+        dto.setCreatedAt(user.getCreatedAt());
+        dto.setUpdatedAt(user.getUpdatedAt());
+        dto.setRoles(user.getRoles().stream().map(Role::getName).toList());
+        return dto;
     }
 
     private ProfileDTO mapProfileToDTO(Profile profile) {
-        ProfileDTO profileDTO = new ProfileDTO();
-        profileDTO.setId(profile.getId());
-        profileDTO.setFirstName(profile.getFirstName());
-        profileDTO.setLastName(profile.getLastName());
-        profileDTO.setPhoneNumber(profile.getPhoneNumber());
-        profileDTO.setCustomerId(profile.getCustomer() != null ? profile.getCustomer().getId() : null);
-
-        if (profile.getAddresses() != null && !profile.getAddresses().isEmpty()) {
-            profileDTO.setAddresses(profile.getAddresses().stream()
-                    .map(this::mapAddressToDTO)
-                    .collect(Collectors.toList()));
-        } else {
-            profileDTO.setAddresses(Collections.emptyList());
-        }
-        return profileDTO;
+        ProfileDTO dto = new ProfileDTO();
+        dto.setId(profile.getId());
+        dto.setFirstName(profile.getFirstName());
+        dto.setLastName(profile.getLastName());
+        dto.setPhoneNumber(profile.getPhoneNumber());
+        dto.setCustomerId(profile.getCustomer() != null ? profile.getCustomer().getId() : null);
+        dto.setAddresses(profile.getAddresses() != null
+                ? profile.getAddresses().stream().map(this::mapAddressToDTO).toList()
+                : Collections.emptyList());
+        return dto;
     }
 
     private AddressDTO mapAddressToDTO(Address address) {
-        AddressDTO addressDTO = new AddressDTO();
-        addressDTO.setId(address.getId());
-        addressDTO.setStreet(address.getStreet());
-        addressDTO.setCity(address.getCity());
-        addressDTO.setState(address.getState());
-        addressDTO.setCountry(address.getCountry());
-        addressDTO.setPostalCode(address.getPostalCode());
-        addressDTO.setType(address.getType());
-        addressDTO.setProfileId(address.getProfile() != null ? address.getProfile().getId() : null);
-        return addressDTO;
+        AddressDTO dto = new AddressDTO();
+        dto.setId(address.getId());
+        dto.setStreet(address.getStreet());
+        dto.setCity(address.getCity());
+        dto.setState(address.getState());
+        dto.setCountry(address.getCountry());
+        dto.setPostalCode(address.getPostalCode());
+        dto.setType(address.getType());
+        dto.setProfileId(address.getProfile() != null ? address.getProfile().getId() : null);
+        return dto;
     }
 
     private Address mapAddressDTOToEntity(AddressDTO dto) {
@@ -357,17 +339,17 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     private ProductDTO mapProductEntityToDTO(Product product) {
-        ProductDTO productDTO = new ProductDTO();
-        productDTO.setId(product.getId());
-        productDTO.setName(product.getName());
-        productDTO.setDescription(product.getDescription());
-        productDTO.setImages(product.getImages());
-        productDTO.setPrice(product.getPrice());
-        productDTO.setStockQuantity(product.getStockQuantity());
+        ProductDTO dto = new ProductDTO();
+        dto.setId(product.getId());
+        dto.setName(product.getName());
+        dto.setDescription(product.getDescription());
+        dto.setImages(product.getImages());
+        dto.setPrice(product.getPrice());
+        dto.setStockQuantity(product.getStockQuantity());
         if (product.getCategory() != null) {
-            productDTO.setCategoryId(product.getCategory().getId());
-            productDTO.setCategoryName(product.getCategory().getName());
+            dto.setCategoryId(product.getCategory().getId());
+            dto.setCategoryName(product.getCategory().getName());
         }
-        return productDTO;
+        return dto;
     }
 }

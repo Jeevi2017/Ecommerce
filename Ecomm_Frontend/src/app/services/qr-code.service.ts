@@ -13,16 +13,18 @@ export class QrCodeService {
   private authService = inject(AuthService);
   private http = inject(HttpClient);
 
-  constructor() { }
+  constructor() {}
 
   private getAuthHeaders(): HttpHeaders {
     const accessToken = this.authService.getToken();
+
     if (!accessToken) {
-        return new HttpHeaders({ 'Content-Type': 'application/json' });
+      return new HttpHeaders({ 'Content-Type': 'application/json' });
     }
+
     return new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
     });
   }
 
@@ -30,25 +32,34 @@ export class QrCodeService {
    * Generates a generic QR code for any string data
    */
   generateQRCode(data: string): Observable<Blob> {
-      const headers = this.getAuthHeaders();
-      return this.http.get(
-          `${this.apiUrl}/generate`,
-          {
-              params: { data: data },
-              responseType: 'blob',
-              headers: headers
-          }
-      );
+    const headers = this.getAuthHeaders();
+
+    return this.http.get(
+      `${this.apiUrl}/generate`,
+      {
+        params: { data: data },
+        responseType: 'blob',
+        headers: headers
+      }
+    );
   }
 
   /**
-   * Generates a UPI QR code specifically for an order.
-   * Backend uses the orderId to fetch the phone number and amount.
+   * ✅ Generates UPI QR code for an order
+   * Calls backend: POST /generateForPayment
    */
   generateUpiQRCodeForOrder(orderId: number): Observable<Blob> {
     const headers = this.getAuthHeaders();
-    return this.http.get(
-      `${this.apiUrl}/order-payment/${orderId}`, 
+
+    const body = {
+      internalOrderId: orderId,
+      currency: 'INR',
+      amount: 0   // backend calculates correct amount
+    };
+
+    return this.http.post(
+      `${this.apiUrl}/generateForPayment`,
+      body,
       {
         responseType: 'blob',
         headers: headers,
@@ -57,18 +68,24 @@ export class QrCodeService {
   }
 
   /**
-   * Fallback: Generates QR based on manual payment details (if needed)
+   * Fallback: Generates QR based on manual payment details
    */
-  generateUpiQRCodeForPayment(amount: number, currency: string, internalOrderId: number): Observable<Blob> {
+  generateUpiQRCodeForPayment(
+    amount: number,
+    currency: string,
+    internalOrderId: number
+  ): Observable<Blob> {
+
     const headers = this.getAuthHeaders();
+
     const body = {
       amount: amount,
       currency: currency,
       internalOrderId: internalOrderId
     };
-    
+
     return this.http.post(
-      `${this.apiUrl}/generateForPayment`, 
+      `${this.apiUrl}/generateForPayment`,
       body,
       {
         responseType: 'blob',

@@ -6,6 +6,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { registerLocaleData } from '@angular/common';
 import localeIn from '@angular/common/locales/en-IN';
 import { jwtInterceptor } from './interceptor/jwt-interceptor.interceptor';
+import { FormsModule } from '@angular/forms';
 registerLocaleData(localeIn);
 
 export const appConfig: ApplicationConfig = {

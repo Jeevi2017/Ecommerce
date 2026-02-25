@@ -4,11 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,51 +29,60 @@ import com.example.Ecomm.service.DiscountService;
 @Service
 public class CartServiceImpl implements CartService {
 
-    @Autowired
-    private CartRepository cartRepository;
+    private final CartRepository cartRepository;
+    private final CartItemRepository cartItemRepository;
+    private final CustomerRepository customerRepository;
+    private final ProductRepository productRepository;
+    private final DiscountService discountService;
+    private final DiscountRepository discountRepository;
 
-    @Autowired
-    private CartItemRepository cartItemRepository;
+    public CartServiceImpl(CartRepository cartRepository,
+                           CartItemRepository cartItemRepository,
+                           CustomerRepository customerRepository,
+                           ProductRepository productRepository,
+                           DiscountService discountService,
+                           DiscountRepository discountRepository) {
 
-    @Autowired
-    private CustomerRepository customerRepository;
-
-    @Autowired
-    private ProductRepository productRepository;
-
-    @Autowired
-    private DiscountService discountService;
-
-    @Autowired
-    private DiscountRepository discountRepository;
+        this.cartRepository = cartRepository;
+        this.cartItemRepository = cartItemRepository;
+        this.customerRepository = customerRepository;
+        this.productRepository = productRepository;
+        this.discountService = discountService;
+        this.discountRepository = discountRepository;
+    }
 
     // ================= CART =================
 
     @Override
     @Transactional
     public Cart getOrCreateCart(Long customerId) {
-        Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer", "Id", customerId));
 
-        return cartRepository.findByCustomerId(customerId).orElseGet(() -> {
-            Cart cart = new Cart();
-            cart.setCustomer(customer);
-            cart.setCreatedAt(LocalDateTime.now());
-            cart.setUpdatedAt(LocalDateTime.now());
-            cart.setTotalAmount(BigDecimal.ZERO);
-            cart.setTotalPrice(BigDecimal.ZERO);
-            cart.setDiscountAmount(BigDecimal.ZERO);
-            cart.setCouponCode(null);
-            return cartRepository.save(cart);
-        });
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Customer", "Id", customerId));
+
+        return cartRepository.findByCustomerId(customerId)
+                .orElseGet(() -> {
+                    Cart cart = new Cart();
+                    cart.setCustomer(customer);
+                    cart.setCreatedAt(LocalDateTime.now());
+                    cart.setUpdatedAt(LocalDateTime.now());
+                    cart.setTotalAmount(BigDecimal.ZERO);
+                    cart.setTotalPrice(BigDecimal.ZERO);
+                    cart.setDiscountAmount(BigDecimal.ZERO);
+                    cart.setCouponCode(null);
+                    return cartRepository.save(cart);
+                });
     }
 
-    // ✅ REQUIRED BY INTERFACE (FIXES COMPILATION ERROR)
     @Override
     @Transactional(readOnly = true)
     public CartDTO getCartById(Long cartId) {
+
         Cart cart = cartRepository.findById(cartId)
-                .orElseThrow(() -> new ResourceNotFoundException("Cart", "Id", cartId));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Cart", "Id", cartId));
+
         recalculateCartTotal(cart);
         return mapCartToDTO(cart);
     }
@@ -88,7 +93,7 @@ public class CartServiceImpl implements CartService {
         return mapCartToDTO(getOrCreateCart(customerId));
     }
 
-    // ================= ADD TO CART (SIZE AWARE) =================
+    // ================= ADD ITEM =================
 
     @Override
     @Transactional
@@ -97,33 +102,30 @@ public class CartServiceImpl implements CartService {
         Cart cart = getOrCreateCart(customerId);
 
         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new ResourceNotFoundException("Product", "Id", productId));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Product", "Id", productId));
 
         if (product.getStockQuantity() == null || product.getStockQuantity() < quantity) {
             throw new IllegalArgumentException("Not enough stock for product: " + product.getName());
         }
 
-        Optional<CartItem> existingItem = cart.getCartItems().stream()
+        CartItem cartItem = cart.getCartItems().stream()
                 .filter(i ->
                         i.getProduct().getId().equals(productId)
                                 && i.getSize().equalsIgnoreCase(size))
-                .findFirst();
+                .findFirst()
+                .orElseGet(() -> {
+                    CartItem item = new CartItem();
+                    item.setCart(cart);
+                    item.setProduct(product);
+                    item.setQuantity(0L);
+                    item.setPrice(product.getPrice());
+                    item.setSize(size);
+                    cart.addCartItem(item);
+                    return item;
+                });
 
-        CartItem cartItem;
-
-        if (existingItem.isPresent()) {
-            cartItem = existingItem.get();
-            cartItem.setQuantity(cartItem.getQuantity() + quantity);
-        } else {
-            cartItem = new CartItem();
-            cartItem.setCart(cart);
-            cartItem.setProduct(product);
-            cartItem.setQuantity(quantity);
-            cartItem.setPrice(product.getPrice());
-            cartItem.setSize(size);
-            cart.addCartItem(cartItem);
-        }
-
+        cartItem.setQuantity(cartItem.getQuantity() + quantity);
         product.setStockQuantity(product.getStockQuantity() - quantity);
 
         cartItemRepository.save(cartItem);
@@ -212,13 +214,20 @@ public class CartServiceImpl implements CartService {
         Cart cart = getOrCreateCart(customerId);
 
         for (CartItem item : new ArrayList<>(cart.getCartItems())) {
+
+            // Restore stock
             Product product = item.getProduct();
-            product.setStockQuantity(product.getStockQuantity() + item.getQuantity());
+            product.setStockQuantity(
+                    product.getStockQuantity() + item.getQuantity()
+            );
             productRepository.save(product);
-            cart.removeCartItem(item);
+
+            // Delete item properly
+            cartItemRepository.delete(item);
         }
 
-        cartItemRepository.deleteAll(cart.getCartItems());
+        // Clear collection safely
+        cart.getCartItems().clear();
 
         cart.setTotalPrice(BigDecimal.ZERO);
         cart.setTotalAmount(BigDecimal.ZERO);
@@ -229,6 +238,7 @@ public class CartServiceImpl implements CartService {
         cartRepository.save(cart);
     }
 
+
     // ================= COUPONS =================
 
     @Override
@@ -238,7 +248,8 @@ public class CartServiceImpl implements CartService {
         Cart cart = getOrCreateCart(customerId);
 
         Discount discount = discountRepository.findByCode(couponCode)
-                .orElseThrow(() -> new ResourceNotFoundException("Discount", "code", couponCode));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Discount", "code", couponCode));
 
         if (!discountService.isValidDiscount(couponCode, calculateSubtotal(cart))) {
             throw new IllegalArgumentException("Invalid coupon");
@@ -265,12 +276,15 @@ public class CartServiceImpl implements CartService {
     // ================= CALCULATIONS =================
 
     private BigDecimal calculateSubtotal(Cart cart) {
+
         BigDecimal subtotal = BigDecimal.ZERO;
+
         for (CartItem item : cart.getCartItems()) {
             subtotal = subtotal.add(
                     item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity()))
             );
         }
+
         return subtotal.setScale(2, RoundingMode.HALF_UP);
     }
 
@@ -278,12 +292,15 @@ public class CartServiceImpl implements CartService {
 
         BigDecimal subtotal = calculateSubtotal(cart);
         cart.setTotalPrice(subtotal);
-
-        BigDecimal finalTotal = subtotal;
         cart.setDiscountAmount(BigDecimal.ZERO);
 
+        BigDecimal finalTotal = subtotal;
+
         if (cart.getCouponCode() != null) {
-            Discount discount = discountRepository.findByCode(cart.getCouponCode()).orElse(null);
+            Discount discount = discountRepository
+                    .findByCode(cart.getCouponCode())
+                    .orElse(null);
+
             if (discount != null && discountService.isValidDiscount(discount.getCode(), subtotal)) {
 
                 BigDecimal discountValue =
@@ -296,7 +313,9 @@ public class CartServiceImpl implements CartService {
             }
         }
 
-        cart.setTotalAmount(finalTotal.max(BigDecimal.ZERO).setScale(2, RoundingMode.HALF_UP));
+        cart.setTotalAmount(
+                finalTotal.max(BigDecimal.ZERO).setScale(2, RoundingMode.HALF_UP));
+
         cart.setUpdatedAt(LocalDateTime.now());
     }
 
@@ -317,7 +336,7 @@ public class CartServiceImpl implements CartService {
         dto.setCartItems(
                 cart.getCartItems().stream()
                         .map(this::mapCartItemToDTO)
-                        .collect(Collectors.toList())
+                        .toList()
         );
 
         return dto;

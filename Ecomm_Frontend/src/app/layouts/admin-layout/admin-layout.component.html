@@ -9,7 +9,11 @@
 
     <ul class="nav nav-pills flex-column mb-auto">
       <li class="nav-item">
-        <a class="nav-link text-white rounded-3 mb-1" routerLink="/admin" routerLinkActive="active">
+        <!-- <a class="nav-link text-white rounded-3 mb-1" routerLink="/admin" routerLinkActive="active"> -->
+          <a class="nav-link text-white rounded-3 mb-1"
+   routerLink="/admin"
+   routerLinkActive="active"
+   [routerLinkActiveOptions]="{ exact: true }">
           <i data-lucide="layout-dashboard" class="me-1 icon-small"></i> Dashboard
         </a>
       </li>

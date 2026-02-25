@@ -2,7 +2,7 @@ package com.example.Ecomm.entitiy;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects; 
+import java.util.Objects;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -25,31 +25,37 @@ public class Profile {
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
+
     @Column(name = "last_name", nullable = false)
     private String lastName;
+
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
-
 
     @OneToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "user_id", unique = true, nullable = false)
     private Customer customer;
 
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "profile",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     private List<Address> addresses = new ArrayList<>();
 
     public Profile() {
     }
 
-    
-    public Profile(Long id, String firstName, String lastName, String phoneNumber, Customer customer, List<Address> addresses) {
+    public Profile(Long id, String firstName, String lastName,
+                   String phoneNumber, Customer customer,
+                   List<Address> addresses) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.customer = customer;
-        this.addresses = addresses;
+        setAddresses(addresses);   // use safe setter
     }
+
+    // ---------------- GETTERS & SETTERS ----------------
 
     public Long getId() {
         return id;
@@ -98,10 +104,18 @@ public class Profile {
         return addresses;
     }
 
+    // ✅ FIXED METHOD (VERY IMPORTANT)
     public void setAddresses(List<Address> addresses) {
-        this.addresses = addresses;
+        this.addresses.clear();   // clear old addresses safely
+
+        if (addresses != null) {
+            for (Address address : addresses) {
+                addAddress(address);  // use helper method
+            }
+        }
     }
 
+    // helper method
     public void addAddress(Address address) {
         this.addresses.add(address);
         address.setProfile(this);
@@ -109,36 +123,34 @@ public class Profile {
 
     public void removeAddress(Address address) {
         this.addresses.remove(address);
-        address.setProfile(null); 
+        address.setProfile(null);
     }
+
+    // ---------------- EQUALS & HASHCODE ----------------
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Profile)) return false;
         Profile profile = (Profile) o;
-        
-        return Objects.equals(id, profile.id) &&
-               Objects.equals(firstName, profile.firstName) &&
-               Objects.equals(lastName, profile.lastName) &&
-               Objects.equals(phoneNumber, profile.phoneNumber) &&
-               Objects.equals(customer != null ? customer.getId() : null, profile.customer != null ? profile.customer.getId() : null);
+        return Objects.equals(id, profile.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, phoneNumber, customer != null ? customer.getId() : null);
+        return Objects.hash(id);
     }
+
+    // ---------------- TO STRING ----------------
 
     @Override
     public String toString() {
         return "Profile{" +
-               "id=" + id +
-               ", firstName='" + firstName + '\'' +
-               ", lastName='" + lastName + '\'' +
-               ", phoneNumber='" + phoneNumber + '\'' +
-               ", customerId=" + (customer != null ? customer.getId() : "null") +
-               ", addressesCount=" + (addresses != null ? addresses.size() : 0) +
-               '}';
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", addressesCount=" + addresses.size() +
+                '}';
     }
 }

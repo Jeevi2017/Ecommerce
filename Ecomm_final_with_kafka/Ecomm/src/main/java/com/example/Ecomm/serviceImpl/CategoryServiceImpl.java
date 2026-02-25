@@ -5,31 +5,38 @@ import com.example.Ecomm.entitiy.Category;
 import com.example.Ecomm.exception.ResourceNotFoundException;
 import com.example.Ecomm.repository.CategoryRepository;
 import com.example.Ecomm.service.CategoryService;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private static final String ENTITY_NAME = "Category";
+
+    private final CategoryRepository categoryRepository;
+
+    // ✅ Constructor Injection (SonarQube compliant)
+    public CategoryServiceImpl(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
 
     @Override
     @Transactional(readOnly = true)
     public List<CategoryDTO> getAllCategories() {
         return categoryRepository.findAll().stream()
                 .map(this::mapCategoryToDTO)
-                .collect(Collectors.toList());
+                .toList(); // ✅ unmodifiable list
     }
 
     @Override
     @Transactional(readOnly = true)
     public CategoryDTO getCategoryById(Long id) {
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Category", "Id", id));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(ENTITY_NAME, "Id", id));
         return mapCategoryToDTO(category);
     }
 
@@ -37,8 +44,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     public CategoryDTO createCategory(CategoryDTO categoryDTO) {
         if (categoryRepository.findByName(categoryDTO.getName()).isPresent()) {
-            throw new IllegalArgumentException("Category with name '" + categoryDTO.getName() + "' already exists.");
+            throw new IllegalArgumentException(
+                    ENTITY_NAME + " with name '" + categoryDTO.getName() + "' already exists.");
         }
+
         Category category = mapDTOToCategory(categoryDTO);
         Category savedCategory = categoryRepository.save(category);
         return mapCategoryToDTO(savedCategory);
@@ -47,17 +56,21 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public CategoryDTO updateCategory(Long id, CategoryDTO categoryDTO) {
-        Category existingCategory = categoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Category", "Id", id));
 
-        if (!existingCategory.getName().equalsIgnoreCase(categoryDTO.getName())) {
-            if (categoryRepository.findByName(categoryDTO.getName()).isPresent()) {
-                throw new IllegalArgumentException("Category with name '" + categoryDTO.getName() + "' already exists.");
-            }
+        Category existingCategory = categoryRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(ENTITY_NAME, "Id", id));
+
+        if (!existingCategory.getName().equalsIgnoreCase(categoryDTO.getName())
+                && categoryRepository.findByName(categoryDTO.getName()).isPresent()) {
+
+            throw new IllegalArgumentException(
+                    ENTITY_NAME + " with name '" + categoryDTO.getName() + "' already exists.");
         }
-        
+
         existingCategory.setName(categoryDTO.getName());
         existingCategory.setDescription(categoryDTO.getDescription());
+
         Category updatedCategory = categoryRepository.save(existingCategory);
         return mapCategoryToDTO(updatedCategory);
     }
@@ -66,8 +79,9 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     public void deleteCategory(Long id) {
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Category", "Id", id));
-        
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(ENTITY_NAME, "Id", id));
+
         categoryRepository.delete(category);
     }
 
@@ -75,9 +89,12 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional(readOnly = true)
     public CategoryDTO getCategoryByName(String name) {
         Category category = categoryRepository.findByName(name)
-                .orElseThrow(() -> new ResourceNotFoundException("Category", "Name", name));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(ENTITY_NAME, "Name", name));
         return mapCategoryToDTO(category);
     }
+
+    // ================= MAPPERS =================
 
     private CategoryDTO mapCategoryToDTO(Category category) {
         CategoryDTO categoryDTO = new CategoryDTO();
@@ -89,7 +106,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     private Category mapDTOToCategory(CategoryDTO categoryDTO) {
         Category category = new Category();
-        category.setId(categoryDTO.getId()); 
+        category.setId(categoryDTO.getId());
         category.setName(categoryDTO.getName());
         category.setDescription(categoryDTO.getDescription());
         return category;

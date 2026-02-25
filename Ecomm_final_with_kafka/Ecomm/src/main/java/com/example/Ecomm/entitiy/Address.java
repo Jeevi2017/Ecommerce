@@ -9,142 +9,167 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-import java.util.Objects; // NEW: Import Objects for equals/hashCode
+import java.util.Objects;
 
 @Entity
 @Table(name = "address")
 public class Address {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(name = "street", nullable = false)
-	private String street;
-	@Column(name = "city", nullable = false)
-	private String city;
-	@Column(name = "state", nullable = false)
-	private String state;
-	@Column(name = "country", nullable = false)
-	private String country;
-	@Column(name = "postal_code", nullable = false)
-	private String postalCode;
-	@Column(name = "type", nullable = false)
-	private String type;
+    @Column(name = "street", nullable = false)
+    private String street;
 
-	@ManyToOne
-	@JoinColumn(name = "profile_id", nullable = false)
-	private Profile profile;
+    @Column(name = "city", nullable = false)
+    private String city;
 
-	public Address() {
-	}
+    @Column(name = "state", nullable = false)
+    private String state;
 
-	public Address(Long id, String street, String city, String state, String country, String postalCode, String type, Profile profile) {
-		this.id = id;
-		this.street = street;
-		this.city = city;
-		this.state = state;
-		this.country = country;
-		this.postalCode = postalCode;
-		this.type = type;
-		this.profile = profile;
-	}
+    @Column(name = "country", nullable = false)
+    private String country;
 
-	public Long getId() {
-		return id;
-	}
+    @Column(name = "postal_code", nullable = false)
+    private String postalCode;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @Column(name = "type", nullable = false)
+    private String type;
 
-	public String getStreet() {
-		return street;
-	}
+    @ManyToOne
+    @JoinColumn(name = "profile_id", nullable = false)
+    private Profile profile;
 
-	public void setStreet(String street) {
-		this.street = street;
-	}
+    // Required by JPA
+    public Address() {
+    }
 
-	public String getCity() {
-		return city;
-	}
+    // SonarQube-compliant constructor (7 parameters)
+    public Address(String street,
+                   String city,
+                   String state,
+                   String country,
+                   String postalCode,
+                   String type,
+                   Profile profile) {
 
-	public void setCity(String city) {
-		this.city = city;
-	}
+        this.street = street;
+        this.city = city;
+        this.state = state;
+        this.country = country;
+        this.postalCode = postalCode;
+        this.type = type;
+        this.profile = profile;
+    }
 
-	public String getState() {
-		return state;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setState(String state) {
-		this.state = state;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getCountry() {
-		return country;
-	}
+    public String getStreet() {
+        return street;
+    }
 
-	public void setCountry(String country) {
-		this.country = country;
-	}
+    public void setStreet(String street) {
+        this.street = street;
+    }
 
-	public String getPostalCode() {
-		return postalCode;
-	}
+    public String getCity() {
+        return city;
+    }
 
-	public void setPostalCode(String postalCode) {
-		this.postalCode = postalCode;
-	}
+    public void setCity(String city) {
+        this.city = city;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public String getState() {
+        return state;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public void setState(String state) {
+        this.state = state;
+    }
 
-	public Profile getProfile() {
-		return profile;
-	}
+    public String getCountry() {
+        return country;
+    }
 
-	public void setProfile(Profile profile) {
-		this.profile = profile;
-	}
+    public void setCountry(String country) {
+        this.country = country;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		Address address = (Address) o;
-		return Objects.equals(id, address.id) &&
-			   Objects.equals(street, address.street) &&
-			   Objects.equals(city, address.city) &&
-			   Objects.equals(state, address.state) &&
-			   Objects.equals(country, address.country) &&
-			   Objects.equals(postalCode, address.postalCode) &&
-			   Objects.equals(type, address.type) &&
-			   Objects.equals(profile != null ? profile.getId() : null, address.profile != null ? address.profile.getId() : null);
-	}
+    public String getPostalCode() {
+        return postalCode;
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(id, street, city, state, country, postalCode, type, profile != null ? profile.getId() : null);
-	}
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
 
-	@Override
-	public String toString() {
-		return "Address{" +
-			   "id=" + id +
-			   ", street='" + street + '\'' +
-			   ", city='" + city + '\'' +
-			   ", state='" + state + '\'' +
-			   ", country='" + country + '\'' +
-			   ", postalCode='" + postalCode + '\'' +
-			   ", type='" + type + '\'' +
-			   ", profileId=" + (profile != null ? profile.getId() : "null") +
-			   '}';
-	}
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Address address = (Address) o;
+        return Objects.equals(id, address.id) &&
+                Objects.equals(street, address.street) &&
+                Objects.equals(city, address.city) &&
+                Objects.equals(state, address.state) &&
+                Objects.equals(country, address.country) &&
+                Objects.equals(postalCode, address.postalCode) &&
+                Objects.equals(type, address.type) &&
+                Objects.equals(
+                        profile != null ? profile.getId() : null,
+                        address.profile != null ? address.profile.getId() : null
+                );
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                id,
+                street,
+                city,
+                state,
+                country,
+                postalCode,
+                type,
+                profile != null ? profile.getId() : null
+        );
+    }
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "id=" + id +
+                ", street='" + street + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", country='" + country + '\'' +
+                ", postalCode='" + postalCode + '\'' +
+                ", type='" + type + '\'' +
+                ", profileId=" + (profile != null ? profile.getId() : "null") +
+                '}';
+    }
 }

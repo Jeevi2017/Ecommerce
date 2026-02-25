@@ -1,94 +1,198 @@
-/* Base Styles */
+/* =====================
+   BASE THEME (SOFT LUXURY)
+===================== */
 :root {
   --bs-body-bg: #f8f9fa;
-  --bs-primary: #4a5568;
-  --bs-success: #22c55e;
+  --bs-primary: #111111;          /* luxury black */
+  --bs-success: #1f9d55;          /* refined green */
   --bs-text-muted: #6b7280;
 }
 
-/* Card */
-.card {
-  border-radius: 1rem !important;
-  overflow: hidden;
-  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.08) !important;
+body {
+  background-color: #f6f6f6;
+  color: #111;
 }
 
-/* rating hover stars */
+/* =====================
+   CARD (PREMIUM SURFACE)
+===================== */
+.card {
+  border-radius: 1.25rem !important;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* =====================
+   PRODUCT IMAGE
+===================== */
+.col-md-6.bg-light {
+  background: #fafafa !important;
+}
+
+.img-fluid {
+  border-radius: 1rem;
+  background: #fff;
+}
+
+/* =====================
+   THUMBNAILS (ELEGANT)
+===================== */
+.img-thumbnail {
+  border-radius: 0.75rem;
+  border: 1px solid #e5e7eb;
+  padding: 4px;
+  transition: all 0.25s ease;
+}
+
+.img-thumbnail:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}
+
+.img-thumbnail.border-primary {
+  border-color: #111 !important;
+}
+
+/* =====================
+   PRODUCT TITLE & PRICE
+===================== */
+h2.fw-bold {
+  font-size: 2.3rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #111;
+}
+
+.text-success.fs-3 {
+  font-size: 1.9rem !important;
+  font-weight: 600;
+  color: #1f9d55 !important;
+}
+
+/* =====================
+   DESCRIPTION
+===================== */
+.text-muted {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #555 !important;
+}
+
+/* =====================
+   SIZE BUTTONS (LUXURY PILLS)
+===================== */
+.btn-outline-dark {
+  border-radius: 999px;
+  border: 1px solid #ddd;
+  background: #fff;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  transition: all 0.25s ease;
+}
+
+.btn-outline-dark:hover {
+  border-color: #111;
+  color: #111;
+}
+
+.btn-outline-dark.btn-dark {
+  background: #111 !important;
+  border-color: #111 !important;
+  color: #fff !important;
+}
+
+/* =====================
+   QUANTITY INPUT
+===================== */
+input.form-control {
+  border-radius: 12px;
+  border-color: #e5e7eb;
+}
+
+input.form-control:focus {
+  box-shadow: 0 0 0 0.2rem rgba(17,17,17,0.15);
+  border-color: #111;
+}
+
+/* =====================
+   PRIMARY ACTION (ADD TO CART)
+===================== */
+.btn-primary.btn-lg {
+  background: #111 !important;
+  border: none;
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  transition: all 0.3s ease;
+}
+
+.btn-primary.btn-lg:hover {
+  background: #000 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+}
+
+/* =====================
+   WISHLIST BUTTON
+===================== */
+.btn-outline-danger.btn-lg {
+  border-radius: 14px;
+  border-color: #e5e7eb;
+  color: #b91c1c;
+  transition: all 0.25s ease;
+}
+
+.btn-outline-danger.btn-lg:hover {
+  background: #fff5f5;
+  border-color: #fecaca;
+}
+
+/* =====================
+   RATING (PREMIUM TOUCH)
+===================== */
 .rating-summary {
-  position: relative;
   cursor: pointer;
 }
 
 .star {
-  color: #ccc;
   font-size: 16px;
+  color: #d1d5db;
 }
 
 .star.filled {
-  color: #ffa41c;
+  color: #f59e0b;
 }
 
 .rating-popup {
-  display: none;
-  position: absolute;
-  top: 120%;
-  left: 0;
-  background: #fff;
-  padding: 8px 12px;
-  border-radius: 6px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-  z-index: 100;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.18);
 }
 
-.rating-summary:hover .rating-popup {
+/* =====================
+   REVIEWS SECTION
+===================== */
+app-product-review {
   display: block;
+  margin-top: 4rem;
 }
 
 
-/* Buttons */
-.btn-white {
-  background: white;
-  border: 1px solid #e5e7eb;
-  color: #4b5563;
-  transition: all 0.2s;
-}
-.btn-white:hover {
-  background: #f9fafb;
-  border-color: #d1d5db;
-  transform: scale(1.05);
-}
-.btn-primary {
-  background: #3b82f6;
-  border: none;
-  transition: all 0.2s;
-}
-.btn-primary:hover {
-  background: #2563eb;
-  transform: translateY(-2px);
-}
 
-/* Thumbnails */
-.img-thumbnail {
-  border: 2px solid transparent;
-  transition: all 0.2s;
-}
-.img-thumbnail:hover {
-  border-color: #e5e7eb;
-}
-.img-thumbnail.border-primary {
-  border-color: #3b82f6 !important;
-}
-
-/* Input */
-.form-control:focus {
-  box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.15);
-}
-
-/* Responsive */
+/* =====================
+   RESPONSIVE
+===================== */
 @media (max-width: 768px) {
   .vh-50 {
     height: 30vh;
   }
+
+  h2.fw-bold {
+    font-size: 1.9rem;
+  }
+
   .card {
     margin-top: 2rem;
   }

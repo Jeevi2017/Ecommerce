@@ -5,12 +5,9 @@ import com.example.Ecomm.dto.OrderItemDTO;
 
 public interface OrderItemService {
 
-	OrderItemDTO saveOrderItem(OrderItemDTO orderItemDTO);
+    OrderItemDTO saveOrderItem(OrderItemDTO orderItemDTO);
 
-	List getAllOrderItems();
+    List<OrderItemDTO> getAllOrderItems();
 
-	OrderItemDTO getOrderItemById(Long id);
-
-
-
+    OrderItemDTO getOrderItemById(Long id);
 }

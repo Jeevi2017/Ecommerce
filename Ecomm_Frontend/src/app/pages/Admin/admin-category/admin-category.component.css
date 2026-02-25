@@ -1,48 +1,185 @@
+/* ==========================================
+   CATEGORY MANAGEMENT – PREMIUM ADMIN UI
+   Matches Indigo Dashboard
+   ========================================== */
 
-.card {
-  border-radius: 0.75rem;
+/* ---------- MAIN CARD ---------- */
+
+.card{
+  border:none !important;
+  border-radius:22px;
+  overflow:hidden;
+  background:white;
+  box-shadow:0 25px 60px rgba(15,23,42,.12);
 }
 
-.card-header {
-  border-top-left-radius: 0.75rem;
-  border-top-right-radius: 0.75rem;
+/* header */
+.card-header{
+  background:linear-gradient(135deg,#1e1b4b,#0f172a) !important;
+  color:white !important;
+  padding:20px 26px;
+  font-weight:600;
+  letter-spacing:.3px;
 }
 
-.table-responsive {
-  margin-top: 1rem;
+/* loading spinner */
+.spinner-border{
+  color:#6366f1 !important;
 }
 
-.form-control:focus {
-  border-color: #80bdff;
-  box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+/* ---------- FORM PANEL ---------- */
+
+.bg-light{
+  background:#f8fafc !important;
+  border-radius:16px !important;
+  border:1px solid #e2e8f0 !important;
 }
 
-.btn-primary {
-  background-color: #007bff;
-  border-color: #007bff;
+/* form labels */
+.form-label{
+  font-weight:600;
+  color:#475569;
+  margin-bottom:6px;
 }
 
-.btn-primary:hover {
-  background-color: #0056b3;
-  border-color: #0056b3;
+/* inputs */
+.form-control{
+  border-radius:12px;
+  border:1px solid #e2e8f0;
+  padding:11px 14px;
+  background:#f8fafc;
+  transition:.25s;
 }
 
-.btn-outline-info {
-  color: #17a2b8;
-  border-color: #17a2b8;
+/* focus glow (important improvement) */
+.form-control:focus{
+  border-color:#6366f1 !important;
+  box-shadow:0 0 0 4px rgba(99,102,241,.18) !important;
+  background:white;
 }
 
-.btn-outline-info:hover {
-  background-color: #17a2b8;
-  color: #fff;
+/* textarea */
+textarea.form-control{
+  min-height:90px;
 }
 
-.btn-outline-danger {
-  color: #dc3545;
-  border-color: #dc3545;
+/* ---------- BUTTONS ---------- */
+
+/* Add / Update */
+.btn-primary{
+  background:linear-gradient(135deg,#6366f1,#4f46e5) !important;
+  border:none;
+  border-radius:12px;
+  padding:10px 18px;
+  font-weight:600;
+  box-shadow:0 10px 25px rgba(79,70,229,.35);
+  transition:.25s;
 }
 
-.btn-outline-danger:hover {
-  background-color: #dc3545;
-  color: #fff;
+.btn-primary:hover{
+  transform:translateY(-2px);
+  box-shadow:0 18px 40px rgba(79,70,229,.45);
+}
+
+/* Cancel */
+.btn-secondary{
+  border-radius:12px;
+  background:#e2e8f0;
+  border:none;
+  color:#334155;
+}
+
+.btn-secondary:hover{
+  background:#cbd5e1;
+}
+
+/* Edit */
+.btn-outline-info{
+  border-radius:10px;
+  border:1px solid #c7d2fe;
+  color:#4338ca;
+  font-weight:500;
+}
+
+.btn-outline-info:hover{
+  background:#eef2ff;
+}
+
+/* Delete */
+.btn-outline-danger{
+  border-radius:10px;
+  border:1px solid #fecaca;
+  color:#dc2626;
+  font-weight:500;
+}
+
+.btn-outline-danger:hover{
+  background:#fee2e2;
+}
+
+/* ---------- TABLE ---------- */
+
+.table{
+  border-collapse:separate;
+  border-spacing:0 12px;
+}
+
+.table thead th{
+  border:none !important;
+  background:transparent !important;
+  color:#64748b;
+  font-weight:600;
+  font-size:14px;
+}
+
+/* rows as floating cards */
+.table tbody tr{
+  background:white;
+  box-shadow:0 8px 20px rgba(15,23,42,.08);
+  transition:.25s;
+}
+
+.table tbody tr:hover{
+  transform:scale(1.01);
+  box-shadow:0 18px 40px rgba(15,23,42,.15);
+}
+
+/* cells */
+.table td{
+  padding:15px 14px !important;
+  border:none !important;
+}
+
+/* rounded edges */
+.table tbody tr td:first-child{
+  border-radius:14px 0 0 14px;
+  font-weight:600;
+  color:#0f172a;
+}
+
+.table tbody tr td:last-child{
+  border-radius:0 14px 14px 0;
+}
+
+/* ---------- ALERTS ---------- */
+
+.alert-danger{
+  background:#fee2e2;
+  border:none;
+  color:#7f1d1d;
+  border-radius:14px;
+}
+
+.alert-success{
+  background:#dcfce7;
+  border:none;
+  color:#166534;
+  border-radius:14px;
+}
+
+.alert-info{
+  background:#eef2ff;
+  border:none;
+  color:#3730a3;
+  border-radius:14px;
 }

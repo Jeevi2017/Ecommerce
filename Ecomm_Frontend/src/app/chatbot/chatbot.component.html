@@ -1,0 +1,47 @@
+<!-- Floating WhatsApp Button -->
+<div class="chat-button" (click)="toggleChat()">
+  💬
+</div>
+
+<!-- Chat Window -->
+<div class="chat-container" *ngIf="isOpen">
+
+  <!-- Header -->
+  <div class="chat-header">
+    <div class="header-left">
+      <div class="avatar">🤖</div>
+      <div>
+        <div class="title">Shop Assistant</div>
+        <div class="status">online</div>
+      </div>
+    </div>
+    <span class="close-btn" (click)="toggleChat()">✖</span>
+  </div>
+
+  <!-- Messages -->
+  <div class="chat-body" #chatBody>
+    <div *ngFor="let msg of messages" class="message-wrapper">
+
+      <div class="user-message" *ngIf="msg.sender === 'user'">
+        {{msg.text}}
+        <span class="time">now</span>
+      </div>
+
+      <div class="bot-message" *ngIf="msg.sender === 'bot'">
+        {{msg.text}}
+        <span class="time">now</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Input -->
+  <div class="chat-footer">
+    <input #box
+           type="text"
+           placeholder="Type a message"
+           (keyup.enter)="sendMessage(box)">
+    <button (click)="sendMessage(box)">➤</button>
+  </div>
+
+</div>

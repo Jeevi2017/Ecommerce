@@ -42,11 +42,11 @@ export class CartComponent implements OnInit {
   private customerService = inject(CustomerService);
   private router = inject(Router);
 
-  // ✅ FIXED INIT
+  // ---------------- INIT ----------------
+
   ngOnInit(): void {
 
-    // ✅ DO NOT reload cart from backend here
-    // ✅ Use cart state from CartService
+    // Use shared cart state
     this.cartService.cart$.subscribe(cart => {
       this.cart = cart;
       this.loadingCart = false;
@@ -55,7 +55,8 @@ export class CartComponent implements OnInit {
     this.loadAvailableCoupons();
   }
 
-  // 🔥 LOAD COUPONS
+  // ---------------- COUPONS ----------------
+
   loadAvailableCoupons(): void {
     const customerId = this.authService.getCurrentUserId();
     if (!customerId) return;
@@ -66,7 +67,6 @@ export class CartComponent implements OnInit {
     });
   }
 
-  // 🔥 APPLY COUPON
   applyCoupon(code: string): void {
     const customerId = this.authService.getCurrentUserId();
     if (!customerId || !code) return;
@@ -77,7 +77,6 @@ export class CartComponent implements OnInit {
     });
   }
 
-  // 🔥 REMOVE COUPON
   removeCoupon(): void {
     const customerId = this.authService.getCurrentUserId();
     if (!customerId) return;
@@ -91,6 +90,10 @@ export class CartComponent implements OnInit {
   // ---------------- QUANTITY ----------------
 
   updateQty(item: CartItemDTO, qty: number): void {
+
+    // ✅ Safety: if cart already cleared, do nothing
+    if (!this.cart?.cartItems.length) return;
+
     const customerId = this.authService.getCurrentUserId();
     if (!customerId || !item.productId || !item.size || qty < 1) return;
 
@@ -101,13 +104,18 @@ export class CartComponent implements OnInit {
           this.cart = cart;
           this.cartUpdateService.notifyCartChanged();
         },
-        error: () => this.showError('Failed to update quantity')
+        error: () => {
+          // Ignore error after checkout (prevents 404 popup)
+        }
       });
   }
 
   // ---------------- REMOVE ITEM ----------------
 
   removeItem(item: CartItemDTO): void {
+
+    if (!this.cart?.cartItems.length) return;
+
     const customerId = this.authService.getCurrentUserId();
     if (!customerId || !item.productId || !item.size) return;
 
@@ -122,7 +130,7 @@ export class CartComponent implements OnInit {
       });
   }
 
-  // ---------------- CLEAR CART (MANUAL ONLY) ----------------
+  // ---------------- CLEAR CART (Manual Only) ----------------
 
   clearCart(): void {
     const customerId = this.authService.getCurrentUserId();
@@ -171,7 +179,14 @@ export class CartComponent implements OnInit {
       .createOrderFromCart(customerId, this.selectedAddressId)
       .subscribe({
         next: order => {
+
+          // ✅ IMPORTANT FIX
+          // Clear cart locally to prevent 404 after backend clears it
+          this.cart = null;
+          this.cartUpdateService.notifyCartChanged();
+
           this.processingCheckout = false;
+
           this.router.navigate(['/home/checkout', order.id]);
         },
         error: () => {
@@ -181,11 +196,15 @@ export class CartComponent implements OnInit {
       });
   }
 
+  // ---------------- SUBTOTAL ----------------
+
   getCartSubtotal(): number {
     return this.cart?.cartItems.reduce(
       (sum, i) => sum + i.price * i.quantity, 0
     ) || 0;
   }
+
+  // ---------------- ERROR ----------------
 
   private showError(msg: string): void {
     Swal.fire('Error', msg, 'error');

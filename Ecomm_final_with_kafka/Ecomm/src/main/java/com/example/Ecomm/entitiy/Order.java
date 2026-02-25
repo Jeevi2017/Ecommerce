@@ -1,8 +1,8 @@
 package com.example.Ecomm.entitiy;
 
-
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -10,19 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "customer_order")
@@ -44,7 +32,6 @@ public class Order {
     @Column(name = "status", nullable = false)
     private OrderStatus status;
 
-    // ✅ CORRECT SHIPPING ADDRESS MAPPING
     @ManyToOne
     @JoinColumn(name = "shipping_address_id")
     @NotFound(action = NotFoundAction.IGNORE)
@@ -70,23 +57,8 @@ public class Order {
         PENDING, PROCESSING, SHIPPED, DELIVERED, CANCELLED, PAID, RETURNED, DRAFT
     }
 
-    public Order() {}
-
-    // ✅ FIXED CONSTRUCTOR
-    public Order(Long id, LocalDateTime orderDate, BigDecimal totalAmount, OrderStatus status,
-                 Address shippingAddress, String couponCode, BigDecimal discountAmount,
-                 List<OrderItem> orderItems, List<Payment> payments, Customer customer) {
-
-        this.id = id;
-        this.orderDate = orderDate;
-        this.totalAmount = totalAmount;
-        this.status = status;
-        this.shippingAddress = shippingAddress;
-        this.couponCode = couponCode;
-        this.discountAmount = discountAmount;
-        this.orderItems = orderItems;
-        this.payments = payments;
-        this.customer = customer;
+    // ✅ REQUIRED BY JPA
+    public Order() {
     }
 
     // ================= GETTERS & SETTERS =================
@@ -123,7 +95,6 @@ public class Order {
         this.status = status;
     }
 
-    // ✅ FIXED TYPES
     public Address getShippingAddress() {
         return shippingAddress;
     }

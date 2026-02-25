@@ -1,219 +1,213 @@
-/* --- 1. Variables & Global Styles --- */
-:host {
-  --primary-blue: #007bff;
-  --bg-light: #f8fafc;
-  --border-color: #edf2f7;
-  --text-main: #2d3748;
-  --text-muted: #718096;
-  --danger-red: #dc3545;
-  --success-green: #28a745;
+/* =====================================
+   BOUTIQUE CART — MATCH WISHLIST
+===================================== */
+
+:host{
+  display:block;
 }
 
-.container {
-  padding: 2rem 1rem 3rem;
+/* Page spacing */
+.container{
+  padding:40px 15px 60px;
 }
 
-/* --- 2. Card Architecture --- */
-.card {
-  border: none;
-  border-radius: 1rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+/* MAIN CARD */
+.card{
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 22px !important;
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow:
+      0 18px 40px rgba(0,0,0,0.10),
+      0 2px 6px rgba(0,0,0,0.05);
+  color: #2d2d2d;
 }
 
-.card-header {
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  background-color: var(--primary-blue);
+/* HEADER */
+.card-header{
+  background: linear-gradient(135deg,#fff,#f8f9fb);
+  border-bottom:1px solid #eee !important;
+  color:#2b2b2b !important;
 }
 
-.summary-card {
-  border: 2px solid var(--primary-blue) !important;
-  position: sticky;
-  top: 1rem;
+.card-header h3{
+  font-weight:700;
+  letter-spacing:.4px;
 }
 
-/* --- 3. Modern Table Design --- */
-.cart-table {
-  border-collapse: separate;
-  border-spacing: 0;
-  margin: 1rem 0;
+.card-header i{
+  color:#ff5c8a;
 }
 
-.cart-table thead th {
-  background-color: #fcfcfd;
-  border-bottom: 2px solid var(--border-color);
-  color: var(--text-muted);
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 1rem;
+/* BODY */
+.card-body{
+  background:transparent;
 }
 
-.cart-table td {
-  padding: 1.25rem 1rem;
-  border-bottom: 1px solid var(--border-color);
-  vertical-align: middle;
+/* ================= TABLE ================= */
+
+.table{
+  border-collapse:separate;
+  border-spacing:0 12px;
 }
 
-.product-img {
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
-  border-radius: 0.5rem;
-  border: 1px solid var(--border-color);
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+.table thead th{
+  background:transparent !important;
+  border:none;
+  color:#6b7280;
+  font-weight:700;
+  letter-spacing:.4px;
 }
 
-.product-img:hover {
-  transform: scale(1.15);
+.table tbody tr{
+  background:#ffffff;
+  border-radius:16px;
+  box-shadow:0 8px 18px rgba(0,0,0,.08);
+  transition:.25s;
 }
 
-/* --- 4. Interactive Components --- */
-
-/* Quantity Input Styling */
-.quantity-control {
-  max-width: 120px;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+.table tbody tr:hover{
+  transform:translateY(-3px);
+  box-shadow:0 14px 28px rgba(0,0,0,.12);
 }
 
-.quantity-control .btn {
-  font-weight: bold;
-  background-color: white;
-  border-color: var(--border-color);
+.table td{
+  border:none;
+  vertical-align:middle;
 }
 
-.quantity-control input {
-  font-weight: 700;
-  border-left: none;
-  border-right: none;
+/* PRODUCT IMAGE */
+.table img{
+  width:70px !important;
+  height:70px !important;
+  border-radius:14px;
+  border:1px solid #eee;
+  background:#fff;
+  padding:4px;
+  transition:.25s;
 }
 
-/* Coupons & Promotions */
-.promo-section {
-  background-color: #f7fafc !important;
-  border: 1px dashed #cbd5e0;
-  border-radius: 0.75rem;
+.table img:hover{
+  transform:scale(1.08);
+  box-shadow:0 8px 20px rgba(0,0,0,.18);
 }
 
-.coupon-badge {
-  background-color: #e0f2fe !important;
-  color: #0369a1 !important;
-  border: 1px solid #bae6fd;
-  font-size: 0.875rem;
-  font-weight: 600;
-  border-radius: 2rem;
+/* PRODUCT TEXT */
+.fw-bold{
+  color:#2d2d2d !important;
 }
 
-.coupon-code-label {
-  font-family: 'Monaco', 'Consolas', monospace;
-  background-color: #d1fae5;
-  color: #065f46;
-  padding: 0.3rem 0.6rem;
-  border-radius: 0.25rem;
-  letter-spacing: 0.5px;
+.text-muted{
+  color:#6b7280 !important;
 }
 
-/* --- 5. Custom Button Animations --- */
+/* ================= QUANTITY CONTROL ================= */
 
-/* Remove Button */
-.btn-remove {
-  color: var(--danger-red);
-  background: transparent;
-  border: 1px solid transparent;
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.5rem;
-  transition: all 0.2s ease;
+.input-group{
+  background:#fff;
+  border-radius:10px;
+  border:1px solid #e5e7eb;
+  overflow:hidden;
 }
 
-.btn-remove:hover:not([disabled]) {
-  background-color: #fff5f5;
-  border-color: var(--danger-red);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.15);
+.input-group .btn{
+  background:#f3f4f6;
+  border:none;
+  color:#374151;
+  font-weight:600;
 }
 
-.btn-remove:hover i {
-  display: inline-block;
-  animation: icon-shake 0.4s ease-in-out infinite;
+.input-group .btn:hover{
+  background:#e5e7eb;
 }
 
-/* Checkout Button */
-.btn-checkout {
-  padding: 1rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  transition: filter 0.2s;
+.input-group input{
+  border:none;
+  text-align:center;
+  font-weight:700;
 }
 
-.btn-checkout:hover {
-  filter: brightness(1.1);
+/* DELETE BUTTON */
+.btn-link{
+  color:#ef4444 !important;
 }
 
-/* --- 6. Animations --- */
-@keyframes icon-shake {
-  0%, 100% { transform: rotate(0); }
-  25% { transform: rotate(15deg); }
-  75% { transform: rotate(-15deg); }
+.btn-link:hover{
+  color:#dc2626 !important;
+  transform:scale(1.2);
 }
 
-/* --- 7. Mobile Optimization --- */
-@media (max-width: 768px) {
-  .cart-table thead {
-    display: none; /* Mobile-first card view */
-  }
+/* ================= ORDER SUMMARY ================= */
 
-  .cart-table tr {
-    display: block;
-    margin-bottom: 1.5rem;
-    padding: 1rem;
-    background: white;
-    border: 1px solid var(--border-color);
-    border-radius: 0.75rem;
-  }
-
-  .cart-table td {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px dashed var(--border-color);
-    padding: 0.75rem 0;
-    text-align: right;
-  }
-
-  .cart-table td:last-child {
-    border-bottom: none;
-  }
-
-  /* Add Labels for mobile view */
-  .cart-table td::before {
-    content: attr(data-label);
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: 0.7rem;
-    color: var(--text-muted);
-  }
-
-  .quantity-control {
-    width: 140px !important;
-  }
-}/* Animation for the "Hurry!" text or low stock icon */
-.text-danger.fw-bold {
-  animation: pulse-attention 2.5s infinite;
+.border-primary{
+  border:1px solid #f1f5f9 !important;
+  background:#ffffff;
+  border-radius:18px;
+  box-shadow:0 10px 24px rgba(0,0,0,.08);
 }
 
-@keyframes pulse-attention {
-  0% { opacity: 1; }
-  50% { opacity: 0.6; }
-  100% { opacity: 1; }
+.border-primary h5{
+  font-weight:700;
 }
 
-.stock-display {
-  line-height: 1.2;
+/* coupon card */
+.border.rounded{
+  background:#fafafa;
+  border:1px solid #eee !important;
+  border-radius:12px !important;
 }
 
-.progress {
-  background-color: #e9ecef;
-  border-radius: 2px;
+/* APPLY COUPON */
+.btn-outline-success{
+  border:1px solid #16a34a;
+  color:#16a34a;
+  background:white;
+}
+
+.btn-outline-success:hover{
+  background:#16a34a;
+  color:white;
+  box-shadow:0 8px 18px rgba(22,163,74,.35);
+}
+
+/* TOTAL */
+.fs-5{
+  color:#16a34a !important;
+  font-weight:700;
+}
+
+/* CHECKOUT */
+.btn-success{
+  background:linear-gradient(135deg,#ff7aa2,#ff2e7a);
+  border:none;
+  border-radius:12px;
+  font-weight:700;
+}
+
+.btn-success:hover{
+  box-shadow:0 12px 26px rgba(255,46,122,.35);
+  transform:translateY(-2px);
+}
+
+/* EMPTY CART */
+.bi-cart-x{
+  color:#ff5c8a;
+}
+
+/* Browse button */
+.btn-primary{
+  background:linear-gradient(135deg,#ff7aa2,#ff2e7a);
+  border:none;
+  border-radius:999px;
+  font-weight:700;
+}
+
+.btn-primary:hover{
+  background:linear-gradient(135deg,#ff2e7a,#ff0f5b);
+  box-shadow:0 14px 28px rgba(255,46,122,.35);
+}
+
+/* spinner */
+.spinner-border{
+  color:#ff2e7a !important;
 }

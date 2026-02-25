@@ -1,6 +1,6 @@
-/* -------------------------- */
-/* Reset and Base Styling */
-/* -------------------------- */
+/* --------------------------
+   Reset and Base Styling
+-------------------------- */
 *, *::before, *::after {
   box-sizing: border-box;
 }
@@ -9,7 +9,7 @@ html, body {
   height: 100%;
   margin: 0;
   font-family: 'Inter', sans-serif;
-  background-color: #1f1f1f; /* Dark background */
+  background-color: #1f1f1f;
   color: #f0f0f0;
 }
 
@@ -19,11 +19,11 @@ html, body {
   min-height: 100vh;
 }
 
-/* -------------------------- */
-/* Navbar Styling */
-/* -------------------------- */
+/* --------------------------
+   Navbar Styling
+-------------------------- */
 .navbar {
-  background-color: #5C0D0D !important; /* Dark Bugatti Wine */
+  background-color: #5C0D0D !important;
   z-index: 1030;
   box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
@@ -36,7 +36,7 @@ html, body {
 }
 
 .navbar-brand:hover {
-  color: #e0b0b0; /* Slight lighter wine */
+  color: #e0b0b0;
 }
 
 .navbar .nav-link {
@@ -50,7 +50,7 @@ html, body {
 }
 
 .navbar .dropdown-menu {
-  background-color: #340808; /* Darker wine */
+  background-color: #340808;
   border-radius: 0.5rem;
 }
 
@@ -64,40 +64,62 @@ html, body {
   color: #fff !important;
 }
 
-/* Space between navbar items */
 .navbar-nav .nav-item {
-  margin-left: 2rem;   /* adjust: 1rem / 2rem as you like */
+  margin-left: 2rem;
 }
 
 /* =========================
-   BANNER – FULL COVER + MAX CLARITY
+   BANNER – IMAGE FULLY VISIBLE
+   TEXT ONLY (NO OVERLAY)
 ========================= */
 
 .banner-img-wrapper {
-  width: 100%;
-  height: 50vh;                 /* half viewport height */
-  overflow: hidden;
   position: relative;
+  width: 100%;
+  height: 350px;
+  overflow: hidden;
 }
 
-.banner-img-wrapper img.banner-img {
+.banner-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;            /* FULL COVER */
+  object-fit: cover;
   object-position: center;
   display: block;
+}
 
-  /* Clarity improvements */
-  image-rendering: auto;
-  -webkit-optimize-contrast: true;
-  backface-visibility: hidden;
-  transform: translateZ(0);     /* prevents GPU blur */
+/* Banner text only */
+.banner-overlay {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* center both X & Y */
+  background: transparent;   /* no image hiding */
+  padding: 0;
+  color: #730f0f;
+  /* color: #ffffff; */
+  text-align: center;
 }
 
 
-/* -------------------------- */
-/* Main Content Area */
-/* -------------------------- */
+/* Heading */
+.banner-overlay h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 0 0 6px 0;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+}
+
+/* Sub text */
+.banner-overlay p {
+  font-size: 1.1rem;
+  margin: 0;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+}
+
+/* --------------------------
+   Main Content Area
+-------------------------- */
 .container.my-4.flex-grow-1 {
   margin-top: 2rem;
   margin-bottom: 2rem;
@@ -106,29 +128,11 @@ html, body {
   flex-grow: 1;
 }
 
-/* -------------------------- */
-/* Header Banner */
-/* -------------------------- */
-header {
-  background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://placehold.co/1200x600/5C0D0D/ffffff?text=Customer+Dashboard+Banner');
-  background-size: cover;
-  background-position: center;
-  height: 45vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #fff;
-  text-align: center;
-  font-size: 2rem;
-  font-weight: 600;
-  border-bottom: 2px solid #730f0f;
-}
-
-/* -------------------------- */
-/* Cards */
-/* -------------------------- */
+/* --------------------------
+   Cards
+-------------------------- */
 .card {
-  background-color: #2b0a0a; /* dark wine card */
+  background-color: #2b0a0a;
   color: #f8f9fa;
   border: none;
   border-radius: 1rem;
@@ -158,9 +162,9 @@ header {
   line-height: 1.5;
 }
 
-/* -------------------------- */
-/* Buttons */
-/* -------------------------- */
+/* --------------------------
+   Buttons
+-------------------------- */
 .btn-custom {
   background-color: #5C0D0D;
   color: #fff;
@@ -174,9 +178,9 @@ header {
   color: #fff;
 }
 
-/* -------------------------- */
-/* Footer */
-/* -------------------------- */
+/* --------------------------
+   Footer
+-------------------------- */
 footer {
   background-color: #340808;
   color: #f8f9fa;
@@ -187,7 +191,6 @@ footer {
 footer a {
   color: #e0b0b0 !important;
   text-decoration: none;
-  transition: color 0.3s ease;
 }
 
 footer a:hover {
@@ -195,22 +198,18 @@ footer a:hover {
   text-decoration: underline;
 }
 
-/* -------------------------- */
-/* Media Queries for Responsiveness */
-/* -------------------------- */
-@media (max-width: 991.98px) {
-  .navbar-collapse {
-    background-color: #5C0D0D !important;
-    border-top: 1px solid rgba(255,255,255,0.1);
+/* --------------------------
+   Responsive
+-------------------------- */
+@media (max-width: 768px) {
+  .banner-overlay {
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
   }
 
-  .navbar-nav .nav-link {
-    padding: 0.5rem 1rem;
-  }
-
-  header {
-    font-size: 1.5rem;
-    height: 35vh;
+  .navbar-nav .nav-item {
+    margin-left: 0;
   }
 
   .card-img-top {

@@ -7,15 +7,13 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-// Removed @Value as SECRET will now come from SecurityConstants
-// import org.springframework.beans.factory.annotation.Value;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-// Removed Customer import as User is sufficient for ID/Email extraction now that Customer extends User
-// import com.example.Ecomm.entitiy.Customer;
-import com.example.Ecomm.entitiy.User; // Import User entity
+import com.example.Ecomm.entitiy.User;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -23,43 +21,57 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
-@Component 
+@Component
 public class JwtUtil {
 
-   
+    private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
+
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
 
         String roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
+
         claims.put("roles", roles);
 
-        System.out.println("DEBUG (JwtService): UserDetails type in generateToken: " + userDetails.getClass().getName());
+        logger.debug(
+                "JwtUtil: Generating token for UserDetails type={}",
+                userDetails.getClass().getName()
+        );
 
-        if (userDetails instanceof User) {
-            User user = (User) userDetails;
+        // ✅ Pattern matching for instanceof (Sonar compliant)
+        if (userDetails instanceof User user) {
             claims.put("id", user.getId());
             claims.put("email", user.getEmail());
-            System.out.println("DEBUG (JwtService): Adding User ID to JWT claims: " + user.getId());
+            logger.debug(
+                    "JwtUtil: Added user id={} and email={} to JWT claims",
+                    user.getId(),
+                    user.getEmail()
+            );
         } else {
-            System.err.println("WARNING (JwtService): UserDetails is not an instance of User. Cannot add ID/email to JWT.");
+            logger.warn(
+                    "JwtUtil: UserDetails is not instance of User. ID/email not added to JWT claims"
+            );
         }
 
-        return createToken(claims, userDetails.getUsername()); 
+        return createToken(claims, userDetails.getUsername());
     }
 
-    private String createToken(Map<String, Object> claims, String username) { 
+    private String createToken(Map<String, Object> claims, String username) {
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(username) 
+                .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME)) 
-                .signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
+                .setExpiration(
+                        new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME)
+                )
+                .signWith(getSignKey(), SignatureAlgorithm.HS256)
+                .compact();
     }
 
     private Key getSignKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SecurityConstants.SECRET); 
+        byte[] keyBytes = Decoders.BASE64.decode(SecurityConstants.SECRET);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
@@ -72,7 +84,7 @@ public class JwtUtil {
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
+        Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
@@ -84,12 +96,12 @@ public class JwtUtil {
                 .getBody();
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    public boolean validateToken(String token, UserDetails userDetails) {
+        String username = extractUsername(token);
+        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
 
-    private Boolean isTokenExpired(String token) {
+    private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 }

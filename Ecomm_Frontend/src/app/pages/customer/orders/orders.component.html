@@ -1,190 +1,154 @@
 <div class="container mt-4">
-  <div class="card shadow-sm rounded-3">
-    <div class="card-header bg-primary text-white py-3">
-      <h3 class="mb-0">Your Order History</h3>
-    </div>
-    <div class="card-body p-4">
-      <div *ngIf="loadingOrders" class="text-center py-5">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Loading orders...</span>
-        </div>
-        <p class="mt-2">Loading your past orders...</p>
+
+  <div class="orders-title mb-4">
+    <h2>Your Orders</h2>
+    <p class="text-muted">See your recent purchases and track them easily</p>
+  </div>
+
+  <!-- LOADING -->
+
+  <div *ngIf="loadingOrders" class="text-center py-5">
+    <div class="spinner-border text-primary"></div>
+    <p class="mt-2">Loading your orders...</p>
+  </div>
+
+  <!-- ERROR -->
+
+  <div *ngIf="ordersError" class="alert alert-danger">
+    {{ ordersError }}
+  </div>
+
+  <!-- ORDERS -->
+
+  <div *ngIf="!loadingOrders && orders?.length">
+
+
+<div class="order-card" *ngFor="let order of orders">
+
+  <!-- HEADER -->
+  <div class="order-header">
+
+    <div class="order-header-left">
+      <div class="order-date">
+        Ordered on
+        <strong>{{ transformDate(order.orderDate) | date : "mediumDate" }}</strong>
       </div>
 
-      <div
-        *ngIf="ordersError"
-        class="alert alert-danger alert-dismissible fade show"
-        role="alert"
-      >
-        {{ ordersError }}
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="alert"
-          aria-label="Close"
-          (click)="ordersError = null"
-        ></button>
+      <div class="order-id">
+        Order ID: {{ order.id }}
+      </div>
+    </div>
+
+    <div class="order-header-right">
+
+      <div class="order-total">
+        ₹ {{ order.totalAmount | number:'1.2-2' }}
       </div>
 
-      <!-- New alert for invoice download status -->
-      <div
-        *ngIf="invoiceStatus.message"
-        class="alert alert-info alert-dismissible fade show"
-        role="alert"
-      >
-        {{ invoiceStatus.message }}
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="alert"
-          aria-label="Close"
-          (click)="invoiceStatus.message = null"
-        ></button>
-      </div>
+      <span
+        class="order-status"
+        [ngClass]="{
+          'status-delivered': order.status === 'DELIVERED',
+          'status-paid': order.status === 'PAID',
+          'status-pending': order.status === 'PENDING',
+          'status-shipped': order.status === 'SHIPPED',
+          'status-cancelled': order.status === 'CANCELLED'
+        }">
+        {{ order.status }}
+      </span>
 
-      <div *ngIf="!loadingOrders && !ordersError">
-        <div *ngIf="orders && orders.length > 0; else noOrders">
-          <div class="accordion" id="ordersAccordion">
-            <div
-              class="accordion-item mb-3 shadow-sm"
-              *ngFor="let order of orders; let i = index"
-            >
-              <h2 class="accordion-header" id="heading{{ order.id }}">
-                <button
-                  class="accordion-button collapsed"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  [attr.data-bs-target]="'#collapse' + order.id"
-                  aria-expanded="false"
-                  [attr.aria-controls]="'collapse' + order.id"
-                >
-                  Order  - Placed on
-                  {{ transformDate(order.orderDate) | date : "mediumDate" }} (Total: ₹{{
-                    order.totalAmount | number : "1.2-2"
-                  }})
-                  <span
-                    class="badge ms-3"
-                    [ngClass]="{
-                      'bg-info': order.status === 'PENDING' || order.status === 'DRAFT',
-                      'bg-success': order.status === 'PAID' || order.status === 'DELIVERED',
-                      'bg-warning text-dark': order.status === 'SHIPPED',
-                      'bg-danger': order.status === 'CANCELLED'
-                    }"
-                    >{{ order.status }}</span
-                  >
-                </button>
-              </h2>
-              <div
-                [id]="'collapse' + order.id"
-                class="accordion-collapse collapse"
-                [attr.aria-labelledby]="'heading' + order.id"
-                data-bs-parent="#ordersAccordion"
-              >
-                <div class="accordion-body">
-                  <p><strong>Order ID:</strong> {{ order.id }}</p>
-                  <p>
-                    <strong>Order Date:</strong>
-                    {{ transformDate(order.orderDate) | date : "medium" }}
-                  </p>
-                  <p><strong>Status:</strong> {{ order.status }}</p>
-                  <p>
-                    <strong>Total Amount:</strong>₹{{
-                      order.totalAmount | number : "1.2-2"
-                    }}
-                  </p>
-                  <p>
-                    <strong>Shipping Address:</strong>
-                    {{ order.shippingAddress }}
-                  </p>
-
-                  <h6 class="mt-3">Items:</h6>
-                  <ul class="list-group list-group-flush">
-                    <li
-                      class="list-group-item d-flex justify-content-between align-items-center"
-                      *ngFor="let item of order.orderItems"
-                    >
-                      <span
-                        >{{ item.productDetails.name }} (x{{
-                          item.quantity
-                        }})</span
-                      >
-                      <span class="fw-bold"
-                        >₹{{
-                          item.quantity * item.price | number : "1.2-2"
-                        }}</span
-                      >
-                    </li>
-                  </ul>
-
-
-<div class="d-flex justify-content-end mt-3">
-  <button
-    class="btn btn-outline-primary btn-sm me-2 d-flex align-items-center"
-    (click)="toggleTracking(order.id!)"
-  >
-    <i class="bi" [ngClass]="activeTrackingId === order.id ? 'bi-x-circle' : 'bi-truck'"></i>
-    <span class="ms-1">{{ activeTrackingId === order.id ? 'Close Tracker' : 'Track Order' }}</span>
-  </button>
-
-  <button
-    *ngIf="order.status === 'PAID' || order.status === 'DELIVERED'"
-    class="btn btn-success btn-sm"
-    [disabled]="invoiceStatus.downloadingId === order.id"
-    (click)="downloadInvoice(order.id!)"
-  >
-    Download Invoice
-  </button>
-</div>
-
-<div *ngIf="activeTrackingId === order.id" class="tracking-container mt-4 p-4 border rounded bg-light shadow-sm">
-  <h6 class="fw-bold mb-4 text-center">
-    <i class="bi bi-geo-alt-fill text-primary me-2"></i>Order Journey
-  </h6>
-  
-  <div class="track">
-    <div class="step" [ngClass]="{'active': getStatusStep(order.status) >= 15}">
-      <span class="icon"><i class="bi bi-cart-check"></i></span>
-      <span class="text">Placed</span>
-    </div>
-    <div class="step" [ngClass]="{'active': getStatusStep(order.status) >= 45}">
-      <span class="icon"><i class="bi bi-gear"></i></span>
-      <span class="text">Processing</span>
-    </div>
-    <div class="step" [ngClass]="{'active': getStatusStep(order.status) >= 75}">
-      <span class="icon"><i class="bi bi-box-seam"></i></span>
-      <span class="text">Shipped</span>
-    </div>
-    <div class="step" [ngClass]="{'active': getStatusStep(order.status) >= 100}">
-      <span class="icon"><i class="bi bi-house-check"></i></span>
-      <span class="text">Delivered</span>
     </div>
   </div>
 
-  <div *ngIf="order.status === 'CANCELLED' || order.status === 'RETURNED'" class="alert alert-danger mt-4 mb-0 py-2 text-center">
-    <i class="bi bi-exclamation-triangle-fill me-2"></i>
-    This order has been <strong>{{ order.status }}</strong>.
-  </div>
-</div>
-                </div>
-              </div>
-            </div>
-          </div>
+
+  <!-- ITEMS -->
+  <div class="order-items">
+
+    <div class="order-item" *ngFor="let item of order.orderItems">
+
+      <img
+        class="order-item-img"
+        [src]="item.productDetails.images.length ? item.productDetails.images[0] : 'https://placehold.co/120x120'"
+      />
+
+      <div class="order-item-details">
+
+        <div class="product-name">
+          {{ item.productDetails.name }}
         </div>
 
-        <ng-template #noOrders>
-          <div class="alert alert-info text-center py-4" role="alert">
-            <h4 class="alert-heading">No orders found!</h4>
-            <p>
-              It looks like you haven't placed any orders yet. Start shopping
-              now!
-            </p>
-            <hr />
-            <a routerLink="/home/products" class="btn btn-primary"
-              >Start Shopping</a
-            >
-          </div>
-        </ng-template>
+        <div class="product-qty">
+          Quantity: {{ item.quantity }}
+        </div>
+
+        <div class="product-price">
+          ₹ {{ item.price | number:'1.2-2' }}
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ORDER ACTIONS (IMPORTANT — ONLY ONCE PER ORDER) -->
+  <div class="order-actions">
+
+    <button
+      class="btn btn-outline-primary btn-sm me-2"
+      (click)="toggleTracking(order.id!)">
+      <i class="bi" [ngClass]="activeTrackingId === order.id ? 'bi-x-circle' : 'bi-truck'"></i>
+      {{ activeTrackingId === order.id ? 'Close Tracker' : 'Track Order' }}
+    </button>
+
+    <button
+      *ngIf="order.status === 'PAID' || order.status === 'DELIVERED'"
+      class="btn btn-success btn-sm"
+      [disabled]="invoiceStatus.downloadingId === order.id"
+      (click)="downloadInvoice(order.id!)">
+      <i class="bi bi-download me-1"></i>
+      Download Invoice
+    </button>
+
+  </div>
+
+
+  <!-- TRACKING -->
+  <div *ngIf="activeTrackingId === order.id"
+       class="tracking-container mt-3 p-4">
+
+    <div class="track">
+      <div class="step" [ngClass]="{'active': getStatusStep(order.status) >= 15}">
+        <span class="icon"><i class="bi bi-cart-check"></i></span>
+        <span class="text">Placed</span>
+      </div>
+      <div class="step" [ngClass]="{'active': getStatusStep(order.status) >= 45}">
+        <span class="icon"><i class="bi bi-gear"></i></span>
+        <span class="text">Processing</span>
+      </div>
+      <div class="step" [ngClass]="{'active': getStatusStep(order.status) >= 75}">
+        <span class="icon"><i class="bi bi-box-seam"></i></span>
+        <span class="text">Shipped</span>
+      </div>
+      <div class="step" [ngClass]="{'active': getStatusStep(order.status) >= 100}">
+        <span class="icon"><i class="bi bi-house-check"></i></span>
+        <span class="text">Delivered</span>
       </div>
     </div>
+
   </div>
+
+</div>
+
+
+  </div>
+
+  <!-- NO ORDERS -->
+
+  <div *ngIf="!loadingOrders && !orders?.length" class="text-center py-5">
+    <h4>No orders yet</h4>
+    <a routerLink="/home/products" class="btn btn-primary mt-3">Start Shopping</a>
+  </div>
+
 </div>

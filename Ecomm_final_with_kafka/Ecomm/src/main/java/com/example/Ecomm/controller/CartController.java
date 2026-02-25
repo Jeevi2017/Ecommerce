@@ -2,11 +2,9 @@ package com.example.Ecomm.controller;
 
 import com.example.Ecomm.dto.CartDTO;
 import com.example.Ecomm.dto.CartItemDTO;
-import com.example.Ecomm.entitiy.Cart;
 import com.example.Ecomm.service.CartService;
 import com.example.Ecomm.service.CustomerService;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,11 +17,15 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "http://localhost:4200")
 public class CartController {
 
-    @Autowired
-    private CartService cartService;
+    private final CartService cartService;
+    private final CustomerService customerService;
 
-    @Autowired
-    private CustomerService customerService;
+    // ✅ Constructor Injection (SonarQube compliant)
+    public CartController(CartService cartService,
+                          CustomerService customerService) {
+        this.cartService = cartService;
+        this.customerService = customerService;
+    }
 
     // ================= AUTH =================
 

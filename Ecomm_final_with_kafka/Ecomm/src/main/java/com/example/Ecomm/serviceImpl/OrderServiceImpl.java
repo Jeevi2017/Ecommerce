@@ -3,9 +3,7 @@ package com.example.Ecomm.serviceImpl;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,28 +15,47 @@ import com.example.Ecomm.entitiy.Order.OrderStatus;
 import com.example.Ecomm.exception.ResourceNotFoundException;
 import com.example.Ecomm.repository.*;
 import com.example.Ecomm.service.OrderService;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
+
 
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    @Autowired private OrderRepository orderRepository;
-    @Autowired private CustomerRepository customerRepository;
-    @Autowired private ProductRepository productRepository;
-    @Autowired private CartRepository cartRepository;
-    @Autowired private AddressRepository addressRepository;
+    private static final String ENTITY_ORDER = "Order";
+
+    private final OrderRepository orderRepository;
+    private final CustomerRepository customerRepository;
+    private final ProductRepository productRepository;
+    private final CartRepository cartRepository;
+    private final AddressRepository addressRepository;
+
+    // ✅ Constructor Injection (Sonar compliant)
+    public OrderServiceImpl(OrderRepository orderRepository,
+                            CustomerRepository customerRepository,
+                            ProductRepository productRepository,
+                            CartRepository cartRepository,
+                            AddressRepository addressRepository) {
+        this.orderRepository = orderRepository;
+        this.customerRepository = customerRepository;
+        this.productRepository = productRepository;
+        this.cartRepository = cartRepository;
+        this.addressRepository = addressRepository;
+    }
 
     // ================= PLACE ORDER =================
-    // Order is created, but CART IS NOT CLEARED HERE
 
     @Override
     @Transactional
     public OrderDTO placeOrder(Long customerId, Long addressId) {
 
         Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer", "id", customerId));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Customer", "id", customerId));
 
         Address address = addressRepository.findById(addressId)
-                .orElseThrow(() -> new ResourceNotFoundException("Address", "id", addressId));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Address", "id", addressId));
 
         if (address.getProfile() == null ||
                 address.getProfile().getCustomer() == null ||
@@ -64,7 +81,8 @@ public class OrderServiceImpl implements OrderService {
 
         for (CartItem cartItem : cart.getCartItems()) {
             Product product = productRepository.findById(cartItem.getProduct().getId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Product", "id", cartItem.getProduct().getId()));
+                    .orElseThrow(() ->
+                            new ResourceNotFoundException("Product", "id", cartItem.getProduct().getId()));
 
             if (product.getStockQuantity() < cartItem.getQuantity()) {
                 throw new IllegalArgumentException("Not enough stock for " + product.getName());
@@ -79,7 +97,6 @@ public class OrderServiceImpl implements OrderService {
             order.addOrderItem(orderItem);
         }
 
-        // ✅ DO NOT CLEAR CART HERE
         return mapOrderToDTO(orderRepository.save(order));
     }
 
@@ -90,7 +107,7 @@ public class OrderServiceImpl implements OrderService {
         return mapOrderToDTO(
                 orderRepository.findById(id)
                         .orElseThrow(() ->
-                                new ResourceNotFoundException("Order", "id", id))
+                                new ResourceNotFoundException(ENTITY_ORDER, "id", id))
         );
     }
 
@@ -113,7 +130,7 @@ public class OrderServiceImpl implements OrderService {
                     }
                 })
                 .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+                .toList(); // ✅ Sonar compliant
     }
 
     @Override
@@ -122,7 +139,7 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findAll()
                 .stream()
                 .map(this::mapOrderToDTO)
-                .collect(Collectors.toList());
+                .toList(); // ✅ Sonar compliant
     }
 
     // ================= UPDATE =================
@@ -132,7 +149,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderDTO updateOrderStatus(Long orderId, String status) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("Order", "id", orderId));
+                        new ResourceNotFoundException(ENTITY_ORDER, "id", orderId));
 
         order.setStatus(OrderStatus.valueOf(status.toUpperCase()));
         return mapOrderToDTO(orderRepository.save(order));
@@ -141,20 +158,46 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public OrderDTO updateOrderFull(Long orderId, OrderDTO updatedDetails) {
+
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("Order", "id", orderId));
+                        new ResourceNotFoundException(ENTITY_ORDER, "id", orderId));
 
-        order.setStatus(OrderStatus.valueOf(updatedDetails.getStatus().toUpperCase()));
+        // current order status
+        OrderStatus currentStatus = order.getStatus();
+
+        // new status from UI
+        OrderStatus newStatus;
+        try {
+            newStatus = OrderStatus.valueOf(updatedDetails.getStatus().toUpperCase());
+        } catch (Exception e) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Invalid order status"
+            );
+        }
+
+        // 🚫 IMPORTANT BUSINESS RULE
+        if (currentStatus == OrderStatus.DELIVERED || currentStatus == OrderStatus.CANCELLED) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Order Status cannot be updated After Delivered Or Cancelled"
+            );
+        }
+
+        // update allowed
+        order.setStatus(newStatus);
+
         return mapOrderToDTO(orderRepository.save(order));
     }
+
 
     @Override
     @Transactional
     public void cancelOrder(Long orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("Order", "id", orderId));
+                        new ResourceNotFoundException(ENTITY_ORDER, "id", orderId));
 
         order.setStatus(OrderStatus.CANCELLED);
         orderRepository.save(order);
@@ -165,7 +208,7 @@ public class OrderServiceImpl implements OrderService {
     public void deleteOrder(Long orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("Order", "id", orderId));
+                        new ResourceNotFoundException(ENTITY_ORDER, "id", orderId));
         orderRepository.delete(order);
     }
 
@@ -173,7 +216,7 @@ public class OrderServiceImpl implements OrderService {
     public Long getCustomerIdForOrderInternal(Long orderId) {
         return orderRepository.findById(orderId)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("Order", "id", orderId))
+                        new ResourceNotFoundException(ENTITY_ORDER, "id", orderId))
                 .getCustomer()
                 .getId();
     }
@@ -183,7 +226,6 @@ public class OrderServiceImpl implements OrderService {
     private OrderDTO mapOrderToDTO(Order order) {
 
         OrderDTO dto = new OrderDTO();
-
         dto.setId(order.getId());
         dto.setOrderDate(order.getOrderDate());
         dto.setTotalAmount(order.getTotalAmount());
@@ -199,16 +241,11 @@ public class OrderServiceImpl implements OrderService {
             dto.setShippingAddress(formatAddress(order.getShippingAddress()));
         }
 
-        if (order.getOrderItems() != null) {
-            dto.setOrderItems(
-                    order.getOrderItems()
-                            .stream()
-                            .map(this::mapOrderItemToDTO)
-                            .collect(Collectors.toList())
-            );
-        } else {
-            dto.setOrderItems(List.of());
-        }
+        dto.setOrderItems(
+                order.getOrderItems() != null
+                        ? order.getOrderItems().stream().map(this::mapOrderItemToDTO).toList()
+                        : List.of()
+        );
 
         return dto;
     }

@@ -4,9 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.Ecomm.dto.CouponCheckResponseDTO;
@@ -22,204 +20,198 @@ import jakarta.transaction.Transactional;
 @Service
 public class DiscountServiceImpl implements DiscountService {
 
-	@Autowired
-	private DiscountRepository discountRepository;
+    private static final String DISCOUNT_ENTITY = "Discount";
 
-	@Override
-	@Transactional
-	public DiscountDTO createDiscount(DiscountDTO discountDTO) {
-		if (discountRepository.findByCode(discountDTO.getCode()).isPresent()) {
-			throw new IllegalArgumentException("Discount code '" + discountDTO.getCode() + "' already exists.");
-		}
-		Discount discount = mapDTOToDiscount(discountDTO);
-		discount.setUsedCount(0);
-		Discount savedDiscount = discountRepository.save(discount);
-		return mapDiscountToDTO(savedDiscount);
-	}
+    private final DiscountRepository discountRepository;
 
-	@Override
-	public DiscountDTO getDiscountById(Long id) {
-		Discount discount = discountRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Discount", "id", id));
-		return mapDiscountToDTO(discount);
-	}
+    // ✅ Constructor injection
+    public DiscountServiceImpl(DiscountRepository discountRepository) {
+        this.discountRepository = discountRepository;
+    }
 
-	@Override
-	public DiscountDTO getDiscountByCode(String code) {
-		Discount discount = discountRepository.findByCode(code)
-				.orElseThrow(() -> new ResourceNotFoundException("Discount", "code", code));
-		return mapDiscountToDTO(discount);
-	}
+    @Override
+    @Transactional
+    public DiscountDTO createDiscount(DiscountDTO discountDTO) {
+        if (discountRepository.findByCode(discountDTO.getCode()).isPresent()) {
+            throw new IllegalArgumentException(
+                    DISCOUNT_ENTITY + " code '" + discountDTO.getCode() + "' already exists.");
+        }
 
-	@Override
-	public List<DiscountDTO> getAllDiscounts() {
-		return discountRepository.findAll().stream().map(this::mapDiscountToDTO).collect(Collectors.toList());
-	}
+        Discount discount = mapDTOToDiscount(discountDTO);
+        discount.setUsedCount(0);
+        return mapDiscountToDTO(discountRepository.save(discount));
+    }
 
-	@Override
-	@Transactional
-	public DiscountDTO updateDiscount(Long id, DiscountDTO discountDTO) {
-		Discount existingDiscount = discountRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Discount", "id", id));
+    @Override
+    public DiscountDTO getDiscountById(Long id) {
+        return mapDiscountToDTO(
+                discountRepository.findById(id)
+                        .orElseThrow(() -> new ResourceNotFoundException(DISCOUNT_ENTITY, "id", id))
+        );
+    }
 
-		if (!existingDiscount.getCode().equals(discountDTO.getCode())
-				&& discountRepository.findByCode(discountDTO.getCode()).isPresent()) {
-			throw new IllegalArgumentException("Discount code '" + discountDTO.getCode() + "' already exists.");
-		}
+    @Override
+    public DiscountDTO getDiscountByCode(String code) {
+        return mapDiscountToDTO(
+                discountRepository.findByCode(code)
+                        .orElseThrow(() -> new ResourceNotFoundException(DISCOUNT_ENTITY, "code", code))
+        );
+    }
 
-		existingDiscount.setCode(discountDTO.getCode());
-		existingDiscount.setType(DiscountType.valueOf(discountDTO.getType()));
-		existingDiscount.setValue(discountDTO.getValue());
-		existingDiscount.setMinOrderAmount(discountDTO.getMinOrderAmount());
+    @Override
+    public List<DiscountDTO> getAllDiscounts() {
+        return discountRepository.findAll()
+                .stream()
+                .map(this::mapDiscountToDTO)
+                .toList();
+    }
 
-		existingDiscount.setStartDate(discountDTO.getStartDate());
-		existingDiscount.setEndDate(discountDTO.getEndDate());
+    @Override
+    @Transactional
+    public DiscountDTO updateDiscount(Long id, DiscountDTO discountDTO) {
+        Discount existingDiscount = discountRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(DISCOUNT_ENTITY, "id", id));
 
-		existingDiscount.setUsageLimit(discountDTO.getUsageLimit());
-		existingDiscount.setActive(discountDTO.isActive());
+        if (!existingDiscount.getCode().equals(discountDTO.getCode())
+                && discountRepository.findByCode(discountDTO.getCode()).isPresent()) {
+            throw new IllegalArgumentException(
+                    DISCOUNT_ENTITY + " code '" + discountDTO.getCode() + "' already exists.");
+        }
 
-		Discount updatedDiscount = discountRepository.save(existingDiscount);
-		return mapDiscountToDTO(updatedDiscount);
-	}
+        existingDiscount.setCode(discountDTO.getCode());
+        existingDiscount.setType(DiscountType.valueOf(discountDTO.getType()));
+        existingDiscount.setValue(discountDTO.getValue());
+        existingDiscount.setMinOrderAmount(discountDTO.getMinOrderAmount());
+        existingDiscount.setStartDate(discountDTO.getStartDate());
+        existingDiscount.setEndDate(discountDTO.getEndDate());
+        existingDiscount.setUsageLimit(discountDTO.getUsageLimit());
+        existingDiscount.setActive(discountDTO.isActive());
 
-	@Override
-	@Transactional
-	public void deleteDiscount(Long id) {
-		Discount discount = discountRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Discount", "id", id));
-		discountRepository.delete(discount);
-	}
+        return mapDiscountToDTO(discountRepository.save(existingDiscount));
+    }
 
-	@Override
-	public boolean isValidDiscount(String code, BigDecimal currentAmount) {
-		return discountRepository.findByCode(code).map(discount -> {
-			LocalDateTime now = LocalDateTime.now();
-			if (!discount.isActive())
-				return false;
-			if (now.isBefore(discount.getStartDate()) || now.isAfter(discount.getEndDate()))
-				return false;
-			if (discount.getUsageLimit() != null && discount.getUsedCount() >= discount.getUsageLimit())
-				return false;
-			if (discount.getMinOrderAmount() != null && currentAmount.compareTo(discount.getMinOrderAmount()) < 0)
-				return false;
-			return true;
-		}).orElse(false);
-	}
+    @Override
+    @Transactional
+    public void deleteDiscount(Long id) {
+        Discount discount = discountRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(DISCOUNT_ENTITY, "id", id));
+        discountRepository.delete(discount);
+    }
 
-	private Discount mapDTOToDiscount(DiscountDTO discountDTO) {
-		Discount discount = new Discount();
-		if (discountDTO.getId() != null) {
-			discount.setId(discountDTO.getId());
-		}
-		discount.setCode(discountDTO.getCode());
-		discount.setType(DiscountType.valueOf(discountDTO.getType()));
-		discount.setValue(discountDTO.getValue());
-		discount.setMinOrderAmount(discountDTO.getMinOrderAmount());
+    @Override
+    public boolean isValidDiscount(String code, BigDecimal currentAmount) {
+        return discountRepository.findByCode(code)
+                .map(discount -> {
+                    LocalDateTime now = LocalDateTime.now();
+                    return discount.isActive()
+                            && !now.isBefore(discount.getStartDate())
+                            && !now.isAfter(discount.getEndDate())
+                            && (discount.getUsageLimit() == null
+                            || discount.getUsedCount() < discount.getUsageLimit())
+                            && (discount.getMinOrderAmount() == null
+                            || currentAmount.compareTo(discount.getMinOrderAmount()) >= 0);
+                })
+                .orElse(false);
+    }
 
-		discount.setStartDate(discountDTO.getStartDate());
-		discount.setEndDate(discountDTO.getEndDate());
+    @Override
+    public List<DiscountDTO> getAvailableCouponsForCustomer(Long customerId) {
+        LocalDateTime now = LocalDateTime.now();
 
-		discount.setUsageLimit(discountDTO.getUsageLimit());
-		discount.setActive(discountDTO.isActive());
-		discount.setUsedCount(discountDTO.getUsedCount() != null ? discountDTO.getUsedCount() : 0);
-		return discount;
-	}
+        return discountRepository.findByActiveTrue()
+                .stream()
+                .filter(discount ->
+                        !now.isBefore(discount.getStartDate())
+                                && !now.isAfter(discount.getEndDate())
+                                && (discount.getUsageLimit() == null
+                                || discount.getUsedCount() < discount.getUsageLimit())
+                )
+                .map(this::mapDiscountToDTO)
+                .toList();
+    }
 
-	private DiscountDTO mapDiscountToDTO(Discount discount) {
-		DiscountDTO discountDTO = new DiscountDTO();
-		discountDTO.setId(discount.getId());
-		discountDTO.setCode(discount.getCode());
-		discountDTO.setType(discount.getType().name());
-		discountDTO.setValue(discount.getValue());
-		discountDTO.setMinOrderAmount(discount.getMinOrderAmount());
+    @Override
+    public CouponCheckResponseDTO checkCouponValidityAndUsage(
+            String code, BigDecimal currentAmount, Long customerId) {
 
-		discountDTO.setStartDate(discount.getStartDate());
-		discountDTO.setEndDate(discount.getEndDate());
+        CouponCheckResponseDTO response = new CouponCheckResponseDTO();
+        response.setCouponCode(code);
 
-		discountDTO.setUsageLimit(discount.getUsageLimit());
-		discountDTO.setUsedCount(discount.getUsedCount());
-		discountDTO.setActive(discount.isActive());
-		return discountDTO;
-	}
+        Optional<Discount> discountOpt = discountRepository.findByCode(code);
+        if (discountOpt.isEmpty()) {
+            response.setValid(false);
+            response.setUsed(false);
+            response.setMessage("Coupon code does not exist.");
+            return response;
+        }
 
-	@Override
-	public List<DiscountDTO> getAvailableCouponsForCustomer(Long customerId) {
-		List<Discount> allActiveDiscounts = discountRepository.findByActiveTrue();
-		LocalDateTime now = LocalDateTime.now();
-		List<Discount> availableDiscounts = allActiveDiscounts.stream().filter(discount -> {
-			if (now.isBefore(discount.getStartDate())) {
-				return false;
-			}
+        Discount discount = discountOpt.get();
+        LocalDateTime now = LocalDateTime.now();
 
-			if (now.isAfter(discount.getEndDate())) {
-				return false;
-			}
+        if (discount.getUsageLimit() != null && discount.getUsedCount() >= discount.getUsageLimit()) {
+            response.setValid(false);
+            response.setUsed(true);
+            response.setMessage("Coupon has reached its maximum usage limit globally.");
+            return response;
+        }
 
-			if (discount.getUsageLimit() != null && discount.getUsedCount() >= discount.getUsageLimit()) {
-				return false;
-			}
+        if (!discount.isActive()) {
+            response.setValid(false);
+            response.setMessage("Coupon is not currently active.");
+        } else if (now.isBefore(discount.getStartDate()) || now.isAfter(discount.getEndDate())) {
+            response.setValid(false);
+            response.setMessage("Coupon is expired or not yet active.");
+        } else if (discount.getMinOrderAmount() != null
+                && currentAmount.compareTo(discount.getMinOrderAmount()) < 0) {
+            response.setValid(false);
+            response.setMessage("Minimum order amount of " + discount.getMinOrderAmount() + " is required.");
+        } else {
+            response.setValid(true);
+            response.setMessage("Coupon is valid.");
+        }
 
-			return true;
-		})
+        if (response.isValid()) {
+            response.setDiscountType(discount.getType().name());
+            response.setDiscountValue(discount.getValue());
+        }
 
-				.collect(Collectors.toList());
+        return response;
+    }
 
-		return availableDiscounts.stream().map(this::mapDiscountToDTO).collect(Collectors.toList());
-	}
+    @Override
+    public boolean isCodeDuplicate(String code) {
+        return discountRepository.findByCode(code).isPresent();
+    }
 
-	@Override
-	public CouponCheckResponseDTO checkCouponValidityAndUsage(String code, BigDecimal currentAmount, Long customerId) {
-		Optional<Discount> discountOpt = discountRepository.findByCode(code);
-		CouponCheckResponseDTO response = new CouponCheckResponseDTO();
-		response.setCouponCode(code);
+    // ===================== MAPPERS =====================
 
-		if (discountOpt.isEmpty()) {
-			response.setValid(false);
-			response.setUsed(false);
-			response.setMessage("Coupon code does not exist.");
-			return response;
-		}
+    private Discount mapDTOToDiscount(DiscountDTO dto) {
+        Discount discount = new Discount();
+        discount.setId(dto.getId());
+        discount.setCode(dto.getCode());
+        discount.setType(DiscountType.valueOf(dto.getType()));
+        discount.setValue(dto.getValue());
+        discount.setMinOrderAmount(dto.getMinOrderAmount());
+        discount.setStartDate(dto.getStartDate());
+        discount.setEndDate(dto.getEndDate());
+        discount.setUsageLimit(dto.getUsageLimit());
+        discount.setUsedCount(dto.getUsedCount() != null ? dto.getUsedCount() : 0);
+        discount.setActive(dto.isActive());
+        return discount;
+    }
 
-		Discount discount = discountOpt.get();
-		LocalDateTime now = LocalDateTime.now();
-
-		if (discount.getUsageLimit() != null && discount.getUsedCount() >= discount.getUsageLimit()) {
-			response.setValid(false);
-			response.setUsed(true);
-			response.setMessage("Coupon has reached its maximum usage limit globally.");
-			return response;
-		}
-
-		if (!discount.isActive()) {
-			response.setValid(false);
-			response.setMessage("Coupon is not currently active.");
-		} else if (now.isBefore(discount.getStartDate()) || now.isAfter(discount.getEndDate())) {
-			response.setValid(false);
-			response.setMessage("Coupon is expired or not yet active.");
-		} else if (discount.getMinOrderAmount() != null && currentAmount.compareTo(discount.getMinOrderAmount()) < 0) {
-			response.setValid(false);
-			response.setMessage("Minimum order amount of " + discount.getMinOrderAmount() + " is required.");
-		} else {
-			response.setValid(true);
-			response.setMessage("Coupon is valid.");
-			if (customerId != null) {
-				boolean customerHasUsedCoupon = false;
-				if (customerHasUsedCoupon) {
-					response.setValid(false);
-					response.setUsed(true);
-					response.setMessage("You have already redeemed this coupon.");
-				}
-			}
-		}
-		if (response.isValid()) {
-			response.setDiscountType(discount.getType().name());
-			response.setDiscountValue(discount.getValue());
-		}
-		return response;
-	}
-
-	@Override
-	public boolean isCodeDuplicate(String code) {
-		return discountRepository.findByCode(code).isPresent();
-	}
+    private DiscountDTO mapDiscountToDTO(Discount discount) {
+        DiscountDTO dto = new DiscountDTO();
+        dto.setId(discount.getId());
+        dto.setCode(discount.getCode());
+        dto.setType(discount.getType().name());
+        dto.setValue(discount.getValue());
+        dto.setMinOrderAmount(discount.getMinOrderAmount());
+        dto.setStartDate(discount.getStartDate());
+        dto.setEndDate(discount.getEndDate());
+        dto.setUsageLimit(discount.getUsageLimit());
+        dto.setUsedCount(discount.getUsedCount());
+        dto.setActive(discount.isActive());
+        return dto;
+    }
 }
